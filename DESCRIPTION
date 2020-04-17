@@ -1,0 +1,17 @@
+Package: mpipe
+Type: Package
+Title: Adds extra functionality to pipelines
+Version: 0.0.0.9000
+Authors@R: person("Michael A", "Barrowman", email="myko101ab@gmail.com",role=c("aut","cre"))
+Maintainer: Michael A Barrowman <myko101ab@gmail.com>
+Description: A package to streamline pipelines
+License: CC0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0.9000
+Roxygen: list(markdown = TRUE)
+Import:
+    rlang
+    magrittr
+Suggests: 
+    dplyr
