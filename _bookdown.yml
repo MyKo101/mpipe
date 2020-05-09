@@ -1,0 +1,19 @@
+output_dir: "docs"
+book_filename: "thesis"
+chapter_name: "Chapter "
+appendix_name: "Appendix "
+rmd_files: ["index.Rmd",
+            "01-Lit_Report.Rmd",
+            "02-Scoping_Review_Paper.Rmd",
+            "03-CR_Conf.Rmd",
+            "04-IPCW_logistic.Rmd",
+            "05-Performance_Metrics.Rmd",
+            "06-Dev_Paper.Rmd",
+            "10-Conclusion.Rmd",
+            "appendix.Rmd",
+            "06a-Dev_Paper_Supp.Rmd",
+            "99-references.rmd"]
+download: [["thesis.pdf", "PDF"]]
+delete_merged_file: false
+#new_session: true
+#before_chapter_script: "setup.R"

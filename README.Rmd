@@ -1,0 +1,70 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(tidyverse)
+library(mpipe)
+```
+
+# mpipe <img src="logo.png" align="right" height=139 />
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The `mpipe` package provides added functionality to pipelines. With the "good grammar" associated with `tidyverse`  
+
+
+## Installation
+
+You can install the development version of `typos` from [GitHub](https://github.com/) with:
+
+```
+# install.packages("devtools")
+devtools::install_github("MyKo101/mpipe")
+```
+## Example: `if_pipe()`
+
+Within programming, there exists two fundamental methods of code manipulation: branches and loops. Both of these are avaliable in `R` with functions such as `if()` and `else()` for branching and `for()` or `while()` for looping. Looping has been moved on to a more advanced state with the `apply()` family of functions and integrated into `tidyverse` within the `purrr` package. However, there is no "pipe-able" method to perform branching.
+
+The `if_pipe()` function introduces a pipe-able branch for your code so you don't need to break out of your current pipeline.
+
+```{r if-pipe-eg}
+
+get_grouped <- T
+
+10 %>%
+  seq_len %>%
+  tibble(id=.) %>%
+  mutate(groups=sample(letters[1:3],n(),replace=T),
+         x=runif(n()),
+         y=runif(n())) %>%
+  if_pipe(get_grouped,
+          group_by(groups) %>%
+            summarise(x.mean=mean(x),
+                      x.sd = sd(x),
+                      y.mean=mean(y),
+                      y.sd = sd(y)) %>%
+            expand(x=rnorm(10,x.mean,x.sd),
+                   y=rnorm(10,y.mean,y.sd)) %>%
+            ungroup,
+          mutate(x = x^2,y=y^2))
+
+```
+
+Without `if_pipe()`, the above code would 
+
+
+
+
+
+
+

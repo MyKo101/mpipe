@@ -1,6 +1,6 @@
 Package: mpipe
 Type: Package
-Title: Adds extra functionality to pipelines
+  Title: Adds extra functionality to pipelines
 Version: 0.0.0.9000
 Authors@R: person("Michael A", "Barrowman", email="myko101ab@gmail.com",role=c("aut","cre"))
 Maintainer: Michael A Barrowman <myko101ab@gmail.com>
