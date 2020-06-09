@@ -1,7 +1,7 @@
 Type: Package
 Package: mpipe
 Title: Adds extra functionality to pipelines
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R:
     person(given = "Michael",
            family = "Barrowman",
@@ -25,6 +25,8 @@ Suggests:
     covr,
     roxygen2,
     testthat
+Remotes: 
+    MyKo101/mutils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
