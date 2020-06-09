@@ -43,7 +43,7 @@ information regarding these arguments.}
 The \code{\link[ggplot2:qplot]{qplot()}} function is traditionally used
 when your data is not stored in a data.frame/tibble and are
 "loose" within your environment and can be convenient if you are
-familiar with the base \code{\link[base:plot]{plot()}}, but haven't quite
+familiar with the base \code{plot()}, but haven't quite
 learned the grammar of \code{ggplot2}.
 It is a wrapper that creates a \code{\link[ggplot2:ggplot]{ggplot()}}
 style plot.

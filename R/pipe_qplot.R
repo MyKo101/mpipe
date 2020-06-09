@@ -7,7 +7,7 @@
 #' The [`qplot()`][ggplot2::qplot()] function is traditionally used
 #' when your data is not stored in a data.frame/tibble and are
 #' "loose" within your environment and can be convenient if you are
-#' familiar with the base [`plot()`][base::plot()], but haven't quite
+#' familiar with the base `plot()`, but haven't quite
 #' learned the grammar of `ggplot2`.
 #' It is a wrapper that creates a [`ggplot()`][ggplot2::ggplot()]
 #' style plot.

@@ -21,23 +21,24 @@ is_fseq(object)
 
 \item{rhs}{\code{fseq} to be performed second}
 
-\item{x}{an \code{fseq} object to extract the length of. Here, \code{length(x)} is
-defined as the number of functions in the sequence.}
+\item{x}{an \code{fseq} object.}
 
 \item{object}{object to be tested.}
 }
 \description{
 When pipelines are created without an initial term, the
-\code{\link{magrittr}} package (where the pipes originate)
+\code{magrittr} package (where the pipes originate)
 creates a specialised type of function called a \code{fseq}.
-However, \code{\link{magrittr}} doesn't do much with these
+However, \code{magrittr} doesn't do much with these
 \code{fseq} objects.
 }
 \examples{
-a <- . \%>\% `+`(2) \%>\% `/`(3)
-b <- . \%>\% rep(3) \%>\% sum
-
-a + b
+a <- . \%>\%
+  magrittr::add(2) \%>\%
+  magrittr::divide_by(3)
+b <- . \%>\%
+  rep(3) \%>\%
+  sum
 
 (a+b)(2)
 (b+a)(2)
@@ -47,7 +48,9 @@ a + b
 length(a)
 
 is.fseq(a)
+is.fseq(mean)
 
 is_fseq(a)
+is_fseq(mean)
 
 }

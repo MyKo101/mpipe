@@ -5,10 +5,10 @@
 #'
 #' @description
 #' When pipelines are created without an initial term, the
-#' \code{\link{magrittr}} package (where the pipes originate)
-#' creates a specialised type of function called a \code{fseq}.
-#' However, \code{\link{magrittr}} doesn't do much with these
-#' \code{fseq} objects.
+#' `magrittr` package (where the pipes originate)
+#' creates a specialised type of function called a `fseq`.
+#' However, `magrittr` doesn't do much with these
+#' `fseq` objects.
 #'
 #' @param lhs
 #' `fseq` to be performed first
@@ -17,10 +17,12 @@
 #' `fseq` to be performed second
 #'
 #' @examples
-#' a <- . %>% `+`(2) %>% `/`(3)
-#' b <- . %>% rep(3) %>% sum
-#'
-#' a + b
+#' a <- . %>%
+#'   magrittr::add(2) %>%
+#'   magrittr::divide_by(3)
+#' b <- . %>%
+#'   rep(3) %>%
+#'   sum
 #'
 #' (a+b)(2)
 #' (b+a)(2)
@@ -28,7 +30,6 @@
 #'
 #'
 #' @export
-
 
 `+.fseq` <- function(lhs,rhs)
 {
@@ -58,8 +59,7 @@
 #' length(a)
 #'
 #' @param x
-#' an `fseq` object to extract the length of. Here, `length(x)` is
-#' defined as the number of functions in the sequence.
+#' an `fseq` object.
 
 length.fseq <- function(x)
 {
@@ -71,9 +71,12 @@ length.fseq <- function(x)
 #'
 #' @examples
 #' is.fseq(a)
+#' is.fseq(mean)
 #'
 #' @param object
 #' object to be tested.
+#'
+#'
 #'
 
 is.fseq <- function(object)
@@ -87,6 +90,7 @@ is.fseq <- function(object)
 #'
 #' @examples
 #' is_fseq(a)
+#' is_fseq(mean)
 #'
 
 is_fseq <- function(object)

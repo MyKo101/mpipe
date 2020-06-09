@@ -1,5 +1,5 @@
 url: https://michaelbarrowman.co.uk/mpipe
-references:
+reference:
   - title: "Branching Methods"
     desc: "Functions used in Branching of pipelines"
   - contents:
@@ -24,7 +24,6 @@ references:
     desc: "Functions associated with the fseq class of functions"
   - contents:
     - fseq_methods
-    - import-freduce
     - fseq_env
 
   - title: "Evaluation"
