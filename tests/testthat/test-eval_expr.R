@@ -201,7 +201,11 @@ test_that("value precedent works correctly",{
 
 
 
+test_that("NULL outputs are flagged as errors (when needed)",{
+  expect_error(eval_expr(1,NULL))
+  expect_null(eval_expr(1,NULL,allow_NULL = T))
 
+})
 
 
 
