@@ -1,0 +1,36 @@
+url: https://michaelbarrowman.co.uk/mpipe
+references:
+  - title: "Branching Methods"
+    desc: "Functions used in Branching of pipelines"
+  - contents:
+    - if_branch
+    - switch_branch
+
+
+  - title: "Looping Methods"
+    desc: "Function used in the Looping of pipelines"
+  - contents:
+    - while_pipe
+
+
+  - title: "Side Effects"
+    desc: "Functions used to generate Side-Effects"
+  - contents:
+    - pipe_cat
+    - pipe_qplot
+
+
+  - title: "fseq Related"
+    desc: "Functions associated with the fseq class of functions"
+  - contents:
+    - fseq_methods
+    - import-freduce
+    - fseq_env
+
+  - title: "Evaluation"
+    desc: "Evaluation and Environment related functions"
+  - contents:
+    - eval_expr
+    - copy_env
+
+

@@ -4,6 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -12,56 +13,161 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 library(tidyverse)
-library(mpipe)
+library(magrittr)
 ```
 
-# mpipe <img src="logo.png" align="right" height=139 />
+# mpipe <img src='man/figures/logo.png' align="right" height="139" />
 
-<!-- badges: start -->
-<!-- badges: end -->
+ <!-- badges: start -->
+  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
+  [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
+  <!-- badges: end -->
 
-The `mpipe` package provides added functionality to pipelines. With the "good grammar" associated with `tidyverse`  
-
+The `mpipe` package is designed to add to extra functionality to the "pipelining" of `tidyverse` style processes. When running a pipeline, it is common to break out of a pipeline to perform other actions, and then to commence a new pipeline. `mpipe` aims to permit a stronger use of pipelining, whilst reducing the need to break out. This piece of software is still under very active development and suggestions for improvements are welcome.
 
 ## Installation
 
-You can install the development version of `typos` from [GitHub](https://github.com/) with:
+You can install the development version of `mpipe` from [GitHub](https://github.com/MyKo101/mpipe) with:
 
-```
+```{r}
 # install.packages("devtools")
-devtools::install_github("MyKo101/mpipe")
+#devtools::install_github("MyKo101/mpipe")
+library(mpipe)
 ```
-## Example: `if_pipe()`
 
-Within programming, there exists two fundamental methods of code manipulation: branches and loops. Both of these are avaliable in `R` with functions such as `if()` and `else()` for branching and `for()` or `while()` for looping. Looping has been moved on to a more advanced state with the `apply()` family of functions and integrated into `tidyverse` within the `purrr` package. However, there is no "pipe-able" method to perform branching.
+The `mpipe` package is not currently available on CRAN.
 
-The `if_pipe()` function introduces a pipe-able branch for your code so you don't need to break out of your current pipeline.
+## Side Effects
 
-```{r if-pipe-eg}
+A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the `mpipe` package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. 
 
-get_grouped <- T
+* `pipe_qplot()` - allows the user to create `ggplot2` style plots using `qplot()` syntax (akin to the base R `plot()` syntax)
+* `pipe_cat()` - allows the user to output information to the console (or any other sink) in the much the same way that `cat()` does. Any calls/functions will be evaluated appropriately for this output.
 
-10 %>%
-  seq_len %>%
-  tibble(id=.) %>%
-  mutate(groups=sample(letters[1:3],n(),replace=T),
-         x=runif(n()),
-         y=runif(n())) %>%
-  if_pipe(get_grouped,
-          group_by(groups) %>%
-            summarise(x.mean=mean(x),
-                      x.sd = sd(x),
-                      y.mean=mean(y),
-                      y.sd = sd(y)) %>%
-            expand(x=rnorm(10,x.mean,x.sd),
-                   y=rnorm(10,y.mean,y.sd)) %>%
-            ungroup,
-          mutate(x = x^2,y=y^2))
+```{r side_effects_example}
+iris %>%
+  tibble %>%
+  select(Species,Sepal.Length,Sepal.Width) %>%
+  pipe_qplot(Sepal.Length,Sepal.Width,col=Species) %>%
+  pipe_cat("Total Average Sepal.Length: ",mean(Sepal.Length),"\n") %>%
+  group_by(Species) %>%
+  pipe_cat(as.character(Species)," Average Sepal.Length: ",mean(Sepal.Length),"\n") %>%
+  summarise(Length_mean = mean(Sepal.Length),
+            Width_mean = mean(Sepal.Width))
 
 ```
 
-Without `if_pipe()`, the above code would 
 
+## Control Flow
+
+One of the key aspects of programming is being able to manipulate which lines of code are ran and when. This manipulation is called "Control Flow" (i.e. you control the flow of the processes through your code). The two main methods of this are via branches and loops. Branches force our code to make a choice, where loops allow repetition of the same lines of code.
+
+In traditional R (as in many other languages), Branching is performed using `if()` or `switch()` statements, and can also be vectorised with functions such as `if_else()` and `case_when()`. Loops are implemented using the `for()`, `while()` and `repeat()` statements and can essentially be vectorised using the `apply()` and `map()` families of functions. 
+
+### Branches
+
+The `if_branch()` and `switch_branch()` functions. The `if_branch()` function chooses whether to proceed with the `fun` branch or the `elsefun` branch (if supplied) depending on how `predicate` is evaluated.
+
+```{r if_example}
+ 1 %>%
+  multiply_by(2) %>%
+  if_branch(. %>% equals(2),
+            . %>%
+            multiply_by(3) %>%
+            add(2)) %>%
+  multiply_by(2)
+
+ 2 %>%
+  multiply_by(2) %>%
+  if_branch(. %>% equals(2),
+            . %>%
+            multiply_by(3) %>%
+            add(2)) %>%
+  multiply_by(2)
+
+
+```
+
+Similarly, the `switch_branch()` function allows us to expand on this by following a different path depending on the evaluation of `case`
+
+```{r switch_example}
+
+set.seed(100)
+iris %>%
+  sample_n(nrow(.)) %>%
+  switch_branch(. %>%
+                  slice(1) %>%
+                  pull("Species") %>%
+                  as.character,
+                setosa = . %>%
+                  pipe_cat("setosa was one top\n") %>%
+                  filter(Species == "setosa"),
+                versicolor = . %>%
+                  pipe_cat("versicolor was on top\n") %>%
+                  filter(Species == "versicolor"),
+                virginica = . %>%
+                  pipe_cat("virginica was on top\n") %>%
+                  filter(Species == "virginica")) %>%
+  slice(1)
+
+set.seed(1000)
+iris %>%
+  sample_n(nrow(.)) %>%
+  switch_branch(. %>%
+                  slice(1) %>%
+                  pull("Species") %>%
+                  as.character,
+                setosa = . %>%
+                  pipe_cat("setosa was one top\n") %>%
+                  filter(Species == "setosa"),
+                versicolor = . %>%
+                  pipe_cat("versicolor was on top\n") %>%
+                  filter(Species == "versicolor"),
+                virginica = . %>%
+                  pipe_cat("virginica was on top\n") %>%
+                  filter(Species == "virginica")) %>%
+  slice(1)
+
+set.seed(10000)
+iris %>%
+  sample_n(nrow(.)) %>%
+  switch_branch(. %>%
+                  slice(1) %>%
+                  pull("Species") %>%
+                  as.character,
+                setosa = . %>%
+                  pipe_cat("setosa was one top\n") %>%
+                  filter(Species == "setosa"),
+                versicolor = . %>%
+                  pipe_cat("versicolor was on top\n") %>%
+                  filter(Species == "versicolor"),
+                virginica = . %>%
+                  pipe_cat("virginica was on top\n") %>%
+                  filter(Species == "virginica")) %>%
+  slice(1)
+
+
+```
+
+
+### Loops
+
+In terms of loops, we have the `while_pipe()` function which acts similar to a `while()` loop, but within a pipeline. It will repeatedly apply the `fun` argument to the `data` until `cond` is not `TRUE`. `cond` will be evaluated within the context of `data`. The `while_pipe()` function also provides a `.counter` pronoun to keep track of how many times the loop as been run.
+
+```{r while_example}
+ tibble::tibble(x = runif(5)) %>%
+   while_pipe(.counter <= 5,
+              . %>%
+                dplyr::mutate(!!paste0("x_",.counter) := x - x[.counter]))
+  
+
+```
+
+
+
+## Code of Conduct
+  
+Please note that the mpipe project is released with a [Contributor Code of Conduct](https://michaelbarrowman.co.uk/mpipe/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
 
 
