@@ -12,15 +12,17 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-library(tidyverse)
+library(dplyr)
 library(magrittr)
 ```
 
 # mpipe <img src='man/figures/logo.png' align="right" height="139" />
 
  <!-- badges: start -->
-  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
-  [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
+ 
+ [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
+ [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
+ 
   <!-- badges: end -->
 
 The `mpipe` package is designed to add to extra functionality to the "pipelining" of `tidyverse` style processes. When running a pipeline, it is common to break out of a pipeline to perform other actions, and then to commence a new pipeline. `mpipe` aims to permit a stronger use of pipelining, whilst reducing the need to break out. This piece of software is still under very active development and suggestions for improvements are welcome.
@@ -31,11 +33,40 @@ You can install the development version of `mpipe` from [GitHub](https://github.
 
 ```{r}
 # install.packages("devtools")
-#devtools::install_github("MyKo101/mpipe")
+# devtools::install_github("MyKo101/mpipe")
 library(mpipe)
 ```
 
 The `mpipe` package is not currently available on CRAN.
+
+## fseq
+A little used feature of the `magrittr` package's `%>%` pipe is that is can be used to create functions. By using a `.` as the initial argument, the output will be a function and can be applied to other pieces of data. These kinds of functions are called `fseq` functions (short for functional sequences).
+
+```{r fseq_define_f}
+f <- . %>%
+  group_by(Species) %>%
+  summarise_all(mean)
+f
+```
+
+The `mpipe` package includes a couple of extra things that can be done to these packages, including composition of `fseq` by adding them together
+
+```{r fseq_define_g}
+g <- . %>%
+  filter(Sepal.Length > 5.2) %>%
+  select(Species,Sepal.Length,Sepal.Width)
+g
+```
+
+```{r fseq_add}
+g+f
+```
+
+```{r fseq_add_apply}
+(g+f)(iris)
+```
+
+It also includes a `length()` method for `fseq` which returns the number of elements in the functional sequence, as well as a pair of functions to check whether something is an `fseq`: `is.fseq()` and `is_fseq()` (depending on your own preference)
 
 ## Side Effects
 
@@ -66,99 +97,98 @@ In traditional R (as in many other languages), Branching is performed using `if(
 
 ### Branches
 
-The `if_branch()` and `switch_branch()` functions. The `if_branch()` function chooses whether to proceed with the `fun` branch or the `elsefun` branch (if supplied) depending on how `predicate` is evaluated.
+The `if_branch()` and `switch_branch()` functions allow branching similar to `if()` and `switch()` statements. The `if_branch()` function chooses whether to proceed with the `fun` branch or the `elsefun` branch (if supplied) depending on how `predicate` is evaluated.
 
-```{r if_example}
- 1 %>%
+```{r if_example_def}
+f <- . %>%
   multiply_by(2) %>%
   if_branch(. %>% equals(2),
             . %>%
-            multiply_by(3) %>%
-            add(2)) %>%
+              multiply_by(3) %>%
+              add(2)) %>%
   multiply_by(2)
+```
 
- 2 %>%
-  multiply_by(2) %>%
-  if_branch(. %>% equals(2),
+```
+f(1):-
+1 %>%
+  multiply_by(2) %>% # => 1*2 = 2
+  if_branch(. %>% equals(2), # TRUE
             . %>%
-            multiply_by(3) %>%
-            add(2)) %>%
-  multiply_by(2)
+              multiply_by(3) %>% # => 2*3 = 6
+              add(2)) %>% # => 6+2 = 8
+  multiply_by(2) # => 8*2 = 16
+```
+```{r if_example1,echo=F}
+f(1)
+```
 
-
+```
+f(2):-
+2 %>%
+  multiply_by(2) %>% # => 2*2 = 4
+  if_branch(. %>% equals(2), # FALSE
+            . %>%
+              multiply_by(3) %>% 
+              add(2)) %>%
+  multiply_by(2) # => 4*2 = 8
+```
+```{r if_example2,echo=F}
+f(2)
 ```
 
 Similarly, the `switch_branch()` function allows us to expand on this by following a different path depending on the evaluation of `case`
 
-```{r switch_example}
+```{r switch_example_setup}
+f <- . %>%
+  sample_n(nrow(.)) %>%
+  switch_branch(. %>% # What Species ends up at the top row?
+                  slice(1) %>% #Choose a path, based on that
+                  pull("Species") %>%
+                  as.character,
+                setosa = . %>%
+                  pipe_cat("setosa was one top\n") %>%
+                  filter(Species == "setosa"),
+                versicolor = . %>%
+                  pipe_cat("versicolor was on top\n") %>%
+                  filter(Species == "versicolor"),
+                virginica = . %>%
+                  pipe_cat("virginica was on top\n") %>%
+                  filter(Species == "virginica")) %>%
+  slice(1)
 
+```
+
+
+```{r switch_example1}
+## Force the "random" shuffle to put a "virginica" Species is at the top
 set.seed(100)
-iris %>%
-  sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
-                  pull("Species") %>%
-                  as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
+f(iris)
+```
 
+```{r switch_example2}
+## Force the "random" shuffle to put a "verisicolor" Species is at the top
 set.seed(1000)
-iris %>%
-  sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
-                  pull("Species") %>%
-                  as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
+f(iris)
+```
 
+```{r switch_example3}
+## Force the "random" shuffle to put a "setosa" Species is at the top
 set.seed(10000)
-iris %>%
-  sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
-                  pull("Species") %>%
-                  as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
-
+f(iris)
 
 ```
 
 
 ### Loops
 
-In terms of loops, we have the `while_pipe()` function which acts similar to a `while()` loop, but within a pipeline. It will repeatedly apply the `fun` argument to the `data` until `cond` is not `TRUE`. `cond` will be evaluated within the context of `data`. The `while_pipe()` function also provides a `.counter` pronoun to keep track of how many times the loop as been run.
+In terms of loops, we have the `while_pipe()` function which acts similar to a `while()` loop, but within a pipeline. It will repeatedly apply the `fun` argument to the `data` until `cond` is not `TRUE`. `cond` will be evaluated within the context of `data`. The `while_pipe()` function also provides a `.counter` pronoun to keep track of how many times the loop as been run (however any `cond` that evaluates to `TRUE` or `FALSE` similar to the `if_branch()` function will work).
 
 ```{r while_example}
- tibble::tibble(x = runif(5)) %>%
-   while_pipe(.counter <= 5,
-              . %>%
-                dplyr::mutate(!!paste0("x_",.counter) := x - x[.counter]))
+tibble(x = runif(5)) %>%
+  while_pipe(.counter <= 5,
+             . %>%
+               mutate(!!paste0("x_",.counter) := x - x[.counter]))
   
 
 ```

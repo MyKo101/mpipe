@@ -3,10 +3,13 @@
 
 # mpipe <img src='man/figures/logo.png' align="right" height="139" />
 
-<!-- badges: start --> [![R build
+<!-- badges: start -->
+
+[![R build
 status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
+
 <!-- badges: end -->
 
 The `mpipe` package is designed to add to extra functionality to the
@@ -24,11 +27,76 @@ You can install the development version of `mpipe` from
 
 ``` r
 # install.packages("devtools")
-#devtools::install_github("MyKo101/mpipe")
+# devtools::install_github("MyKo101/mpipe")
 library(mpipe)
 ```
 
 The `mpipe` package is not currently available on CRAN.
+
+## fseq
+
+A little used feature of the `magrittr` package’s `%>%` pipe is that is
+can be used to create functions. By using a `.` as the initial argument,
+the output will be a function and can be applied to other pieces of
+data. These kinds of functions are called `fseq` functions (short for
+functional sequences).
+
+``` r
+f <- . %>%
+  group_by(Species) %>%
+  summarise_all(mean)
+f
+#> Functional sequence with the following components:
+#> 
+#>  1. group_by(., Species)
+#>  2. summarise_all(., mean)
+#> 
+#> Use 'functions' to extract the individual functions.
+```
+
+The `mpipe` package includes a couple of extra things that can be done
+to these packages, including composition of `fseq` by adding them
+together
+
+``` r
+g <- . %>%
+  filter(Sepal.Length > 5.2) %>%
+  select(Species,Sepal.Length,Sepal.Width)
+g
+#> Functional sequence with the following components:
+#> 
+#>  1. filter(., Sepal.Length > 5.2)
+#>  2. select(., Species, Sepal.Length, Sepal.Width)
+#> 
+#> Use 'functions' to extract the individual functions.
+```
+
+``` r
+g+f
+#> Functional sequence with the following components:
+#> 
+#>  1. filter(., Sepal.Length > 5.2)
+#>  2. select(., Species, Sepal.Length, Sepal.Width)
+#>  3. group_by(., Species)
+#>  4. summarise_all(., mean)
+#> 
+#> Use 'functions' to extract the individual functions.
+```
+
+``` r
+(g+f)(iris)
+#> # A tibble: 3 x 3
+#>   Species    Sepal.Length Sepal.Width
+#>   <fct>             <dbl>       <dbl>
+#> 1 setosa             5.5         3.81
+#> 2 versicolor         6.04        2.81
+#> 3 virginica          6.62        2.98
+```
+
+It also includes a `length()` method for `fseq` which returns the number
+of elements in the functional sequence, as well as a pair of functions
+to check whether something is an `fseq`: `is.fseq()` and `is_fseq()`
+(depending on your own preference)
 
 ## Side Effects
 
@@ -90,41 +158,51 @@ functions.
 
 ### Branches
 
-The `if_branch()` and `switch_branch()` functions. The `if_branch()`
-function chooses whether to proceed with the `fun` branch or the
-`elsefun` branch (if supplied) depending on how `predicate` is
-evaluated.
+The `if_branch()` and `switch_branch()` functions allow branching
+similar to `if()` and `switch()` statements. The `if_branch()` function
+chooses whether to proceed with the `fun` branch or the `elsefun` branch
+(if supplied) depending on how `predicate` is evaluated.
 
 ``` r
- 1 %>%
+f <- . %>%
   multiply_by(2) %>%
   if_branch(. %>% equals(2),
             . %>%
-            multiply_by(3) %>%
-            add(2)) %>%
+              multiply_by(3) %>%
+              add(2)) %>%
   multiply_by(2)
-#> [1] 16
-
- 2 %>%
-  multiply_by(2) %>%
-  if_branch(. %>% equals(2),
-            . %>%
-            multiply_by(3) %>%
-            add(2)) %>%
-  multiply_by(2)
-#> [1] 8
 ```
+
+    f(1):-
+    1 %>%
+      multiply_by(2) %>% # => 1*2 = 2
+      if_branch(. %>% equals(2), # TRUE
+                . %>%
+                  multiply_by(3) %>% # => 2*3 = 6
+                  add(2)) %>% # => 6+2 = 8
+      multiply_by(2) # => 8*2 = 16
+
+    #> [1] 16
+
+    f(2):-
+    2 %>%
+      multiply_by(2) %>% # => 2*2 = 4
+      if_branch(. %>% equals(2), # FALSE
+                . %>%
+                  multiply_by(3) %>% 
+                  add(2)) %>%
+      multiply_by(2) # => 4*2 = 8
+
+    #> [1] 8
 
 Similarly, the `switch_branch()` function allows us to expand on this by
 following a different path depending on the evaluation of `case`
 
 ``` r
-
-set.seed(100)
-iris %>%
+f <- . %>%
   sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
+  switch_branch(. %>% # What Species ends up at the top row?
+                  slice(1) %>% #Choose a path, based on that
                   pull("Species") %>%
                   as.character,
                 setosa = . %>%
@@ -137,48 +215,30 @@ iris %>%
                   pipe_cat("virginica was on top\n") %>%
                   filter(Species == "virginica")) %>%
   slice(1)
+```
+
+``` r
+## Force the "random" shuffle to put a "virginica" Species is at the top
+set.seed(100)
+f(iris)
 #> virginica was on top
 #>   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
 #> 1          5.8         2.7          5.1         1.9 virginica
+```
 
+``` r
+## Force the "random" shuffle to put a "verisicolor" Species is at the top
 set.seed(1000)
-iris %>%
-  sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
-                  pull("Species") %>%
-                  as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
+f(iris)
 #> versicolor was on top
 #>   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
 #> 1          5.8         2.7          4.1           1 versicolor
+```
 
+``` r
+## Force the "random" shuffle to put a "setosa" Species is at the top
 set.seed(10000)
-iris %>%
-  sample_n(nrow(.)) %>%
-  switch_branch(. %>%
-                  slice(1) %>%
-                  pull("Species") %>%
-                  as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
+f(iris)
 #> setosa was one top
 #>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #> 1          4.7         3.2          1.6         0.2  setosa
@@ -191,13 +251,15 @@ similar to a `while()` loop, but within a pipeline. It will repeatedly
 apply the `fun` argument to the `data` until `cond` is not `TRUE`.
 `cond` will be evaluated within the context of `data`. The
 `while_pipe()` function also provides a `.counter` pronoun to keep track
-of how many times the loop as been run.
+of how many times the loop as been run (however any `cond` that
+evaluates to `TRUE` or `FALSE` similar to the `if_branch()` function
+will work).
 
 ``` r
- tibble::tibble(x = runif(5)) %>%
-   while_pipe(.counter <= 5,
-              . %>%
-                dplyr::mutate(!!paste0("x_",.counter) := x - x[.counter]))
+tibble(x = runif(5)) %>%
+  while_pipe(.counter <= 5,
+             . %>%
+               mutate(!!paste0("x_",.counter) := x - x[.counter]))
 #> # A tibble: 5 x 6
 #>        x    x_1   x_2    x_3    x_4    x_5
 #>    <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl>
