@@ -89,9 +89,6 @@ switch_branch <- function(data,case,...,warn=F)
   {
     if(warn) rlang::warn(paste0("case evaluated to ",case_eval," which was not supplied"))
     chosen_f <- identity
-  } else if(!is.character(case_eval) && !is.numeric(case_eval))
-  {
-    rlang::abort("case must evaluate to character or numeric")
   } else
   {
     chosen_f <- fs[[case_eval]]

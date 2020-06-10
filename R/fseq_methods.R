@@ -45,7 +45,7 @@
     new_function_list[[length(lhs)+i]] <- copy_fun(rhs_fl[[i]])
   }
 
-  fun_var_env(new_lhs,"_function_list",new_function_list)
+  environment(new_lhs)[["_function_list"]] <- new_function_list
 
   new_lhs
 
