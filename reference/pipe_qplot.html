@@ -96,7 +96,7 @@ if needed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9006</span>
       </span>
     </div>
 
@@ -212,18 +212,16 @@ information regarding these arguments.</p></td>
 <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='no'>iris</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>pipe_qplot</span>(<span class='no'>Sepal.Length</span>,
-             <span class='kw'>fill</span><span class='kw'>=</span><span class='no'>Species</span>,
-             <span class='kw'>geom</span><span class='kw'>=</span><span class='st'>"histogram"</span>,
-             <span class='kw'>binwidth</span><span class='kw'>=</span><span class='fl'>0.1</span>) <span class='kw'>%&gt;%</span>
+    <span class='kw'>fill</span> <span class='kw'>=</span> <span class='no'>Species</span>,
+    <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"histogram"</span>,
+    <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>0.1</span>
+  ) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>Sepal.Length</span>))</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='img'><img src='pipe_qplot-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 2</span><span>
 #&gt;   Species     mean
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> setosa      5.01
 #&gt; </span><span style='color: #555555;'>2</span><span> versicolor  5.94
-#&gt; </span><span style='color: #555555;'>3</span><span> virginica   6.59</div><div class='input'>
-
-
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'>3</span><span> virginica   6.59</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

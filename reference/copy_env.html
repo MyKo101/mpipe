@@ -98,7 +98,7 @@ heavily on their function environment" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9006</span>
       </span>
     </div>
 
@@ -186,19 +186,17 @@ heavily on their function environment</p>
 <span class='no'>a</span>$<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>20</span>))
 
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_env</span>(<span class='no'>a</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>a</span>$<span class='no'>z</span>,<span class='no'>b</span>$<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='no'>a</span>) <span class='kw'>==</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='no'>b</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>a</span>$<span class='no'>z</span>, <span class='no'>b</span>$<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='no'>a</span>) <span class='kw'>==</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='no'>b</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='no'>f1</span> <span class='kw'>&lt;-</span> <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-        <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>add</a></span>(<span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
-        <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>)
+  <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>add</a></span>(<span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>)
 <span class='no'>f2</span> <span class='kw'>&lt;-</span> <span class='no'>f1</span>
 <span class='no'>f3</span> <span class='kw'>&lt;-</span> <span class='fu'>copy_fun</span>(<span class='no'>f1</span>)
 
 <span class='no'>f1_env_label</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/get_env.html'>get_env</a></span>(<span class='no'>f1</span>))
 <span class='no'>f2_env_label</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/get_env.html'>get_env</a></span>(<span class='no'>f2</span>))
 <span class='no'>f3_env_label</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/env_name.html'>env_label</a></span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/get_env.html'>get_env</a></span>(<span class='no'>f3</span>))
-<span class='no'>f1_env_label</span> <span class='kw'>==</span> <span class='no'>f2_env_label</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>f1_env_label</span> <span class='kw'>==</span> <span class='no'>f3_env_label</span></div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-
-</div></pre>
+<span class='no'>f1_env_label</span> <span class='kw'>==</span> <span class='no'>f2_env_label</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>f1_env_label</span> <span class='kw'>==</span> <span class='no'>f3_env_label</span></div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

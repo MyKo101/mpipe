@@ -84,7 +84,7 @@ elsefun, however any function can be used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9006</span>
       </span>
     </div>
 
@@ -163,20 +163,24 @@ to decide which branch to follow</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fl'>1</span> <span class='kw'>%&gt;%</span>
- <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>if_branch</span>(<span class='no'>.</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>equals</a></span>(<span class='fl'>2</span>),
-           <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-           <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-           <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>add</a></span>(<span class='fl'>2</span>)) <span class='kw'>%&gt;%</span>
- <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 16</div><div class='input'>
-<span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>),<span class='kw'>y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>if_branch</span>(
+    <span class='no'>.</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>equals</a></span>(<span class='fl'>2</span>),
+    <span class='no'>.</span> <span class='kw'>%&gt;%</span>
+      <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+      <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>add</a></span>(<span class='fl'>2</span>)
+  ) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>multiply_by</a></span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 16</div><div class='input'>
+<span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='no'>y</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>if_branch</span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>z</span>) <span class='kw'>&gt;</span> <span class='fl'>0</span>,
-            <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-              <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"z is high\n\n"</span>),
-            <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-              <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>z</span>) <span class='kw'>%&gt;%</span>
-              <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"z is low, so it was dropped\n\n"</span>))</div><div class='output co'>#&gt; z is high
+  <span class='fu'>if_branch</span>(
+    <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>z</span>) <span class='kw'>&gt;</span> <span class='fl'>0</span>,
+    <span class='no'>.</span> <span class='kw'>%&gt;%</span>
+      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"z is high\n\n"</span>),
+    <span class='no'>.</span> <span class='kw'>%&gt;%</span>
+      <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>z</span>) <span class='kw'>%&gt;%</span>
+      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"z is low, so it was dropped\n\n"</span>)
+  )</div><div class='output co'>#&gt; z is high
 #&gt; </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 100 x 3</span><span>
 #&gt;          x      y       z
 #&gt;      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -190,9 +194,7 @@ to decide which branch to follow</p></td>
 #&gt; </span><span style='color: #555555;'> 8</span><span> -</span><span style='color: #BB0000;'>0.052</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span> -</span><span style='color: #BB0000;'>1.68</span><span>  -</span><span style='color: #BB0000;'>1.74</span><span>  
 #&gt; </span><span style='color: #555555;'> 9</span><span>  0.543   0.249  0.792 
 #&gt; </span><span style='color: #555555;'>10</span><span> -</span><span style='color: #BB0000;'>0.914</span><span>   1.07   0.159 
-#&gt; </span><span style='color: #555555;'># … with 90 more rows</span><span></div><div class='input'>
-
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'># … with 90 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
