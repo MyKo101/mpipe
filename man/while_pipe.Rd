@@ -27,20 +27,21 @@ to reference how many iterations have been performed so far.
 }
 \examples{
 
-sample(100,1) \%>\%
-  runif \%>\%
-  pipe_cat("Current length: ",length(.),"\n") \%>\%
-  while_pipe(length(.) > 1,
-             . \%>\%
-               diff \%>\%
-               magrittr::divide_by(2))
+sample(100, 1) \%>\%
+  runif() \%>\%
+  pipe_cat("Current length: ", length(.), "\n") \%>\%
+  while_pipe(
+    length(.) > 1,
+    . \%>\%
+      diff() \%>\%
+      magrittr::divide_by(2)
+  )
 
 
 tibble::tibble(x = runif(5)) \%>\%
-  while_pipe(.counter <= 5,
-             . \%>\%
-               dplyr::mutate(!!paste0("x_",.counter) := x - x[.counter]))
-
-
-
+  while_pipe(
+    .counter <= 5,
+    . \%>\%
+      dplyr::mutate(!!paste0("x_", .counter) := x - x[.counter])
+  )
 }

@@ -35,66 +35,61 @@
 #' @examples
 #'
 #'
-#' tibble::tibble(x = rnorm(10),
-#'                y = sample(c("red","blue","yellow"),10,replace=TRUE)) %>%
+#' tibble::tibble(
+#'   x = rnorm(10),
+#'   y = sample(c("red", "blue", "yellow"), 10, replace = TRUE)
+#' ) %>%
 #'   dplyr::arrange(x) %>%
 #'   switch_branch(. %>%
-#'                   dplyr::slice(1) %>%
-#'                   dplyr::pull(y),
-#'                 red  = . %>%
-#'                          pipe_cat("top was red\n") %>%
-#'                          dplyr::filter(y == "red"),
-#'                 blue = . %>%
-#'                          pipe_cat("top was blue\n") %>%
-#'                          dplyr::filter(x < 0)) %>%
+#'     dplyr::slice(1) %>%
+#'     dplyr::pull(y),
+#'   red = . %>%
+#'     pipe_cat("top was red\n") %>%
+#'     dplyr::filter(y == "red"),
+#'   blue = . %>%
+#'     pipe_cat("top was blue\n") %>%
+#'     dplyr::filter(x < 0)
+#'   ) %>%
 #'   dplyr::summarise(m.x = mean(x))
 #'
 #' iris %>%
 #'   tibble::tibble() %>%
-#'   dplyr::mutate(Species = factor(Species,levels=c("setosa","virginica","versicolor"))) %>%
+#'   dplyr::mutate(Species = factor(Species, levels = c("setosa", "virginica", "versicolor"))) %>%
 #'   dplyr::sample_n(1) %>%
-#'   switch_branch(. %>%
-#'                   dplyr::pull(Species) %>%
-#'                   as.numeric,
-#'                 . %>%
-#'                   pipe_cat("Selected row is setosa\n"),
-#'                 . %>%
-#'                   pipe_cat("Selected row is virginica\n"),
-#'                 . %>%
-#'                   pipe_cat("Selected row is versicolor\n"))
-#'
-#'
-
-
-switch_branch <- function(data,case,...,warn=F)
-{
-
+#'   switch_branch(
+#'     . %>%
+#'       dplyr::pull(Species) %>%
+#'       as.numeric(),
+#'     . %>%
+#'       pipe_cat("Selected row is setosa\n"),
+#'     . %>%
+#'       pipe_cat("Selected row is virginica\n"),
+#'     . %>%
+#'       pipe_cat("Selected row is versicolor\n")
+#'   )
+switch_branch <- function(data, case, ..., warn = F) {
   parent <- rlang::caller_env()
-  env <- new.env(parent=parent)
+  env <- new.env(parent = parent)
 
   fs <- rlang::list2(...)
 
-  case_eval <- eval_expr(data,!!enquo(case),env=env)
+  case_eval <- eval_expr(data, !!enquo(case), env = env)
 
 
-  if(!is.character(case_eval) && !is.numeric(case_eval))
+  if (!is.character(case_eval) && !is.numeric(case_eval)) {
     rlang::abort("case must evaluate to character or numeric")
+  }
 
   case_list <- names(fs)
-  if(is.numeric(case_eval) && case_eval > length(fs))
-  {
-    if(warn) rlang::warn(paste0("Only ",length(fs),"case(s) supplied, case evaluated to ",case_eval))
+  if (is.numeric(case_eval) && case_eval > length(fs)) {
+    if (warn) rlang::warn(paste0("Only ", length(fs), "case(s) supplied, case evaluated to ", case_eval))
     chosen_f <- identity
-  } else if(is.character(case_eval) && !(case_eval %in% names(fs)))
-  {
-    if(warn) rlang::warn(paste0("case evaluated to ",case_eval," which was not supplied"))
+  } else if (is.character(case_eval) && !(case_eval %in% names(fs))) {
+    if (warn) rlang::warn(paste0("case evaluated to ", case_eval, " which was not supplied"))
     chosen_f <- identity
-  } else
-  {
+  } else {
     chosen_f <- fs[[case_eval]]
   }
 
   chosen_f(data)
-
 }
-

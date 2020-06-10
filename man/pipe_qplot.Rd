@@ -65,11 +65,9 @@ if needed.
 tibble::tibble(iris) \%>\%
   dplyr::group_by(Species) \%>\%
   pipe_qplot(Sepal.Length,
-             fill=Species,
-             geom="histogram",
-             binwidth=0.1) \%>\%
+    fill = Species,
+    geom = "histogram",
+    binwidth = 0.1
+  ) \%>\%
   dplyr::summarise(mean = mean(Sepal.Length))
-
-
-
 }

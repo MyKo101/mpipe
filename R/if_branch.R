@@ -30,41 +30,36 @@
 #' @examples
 #'
 #' 1 %>%
-#'  magrittr::multiply_by(2) %>%
-#'  if_branch(. %>% magrittr::equals(2),
-#'            . %>%
-#'            magrittr::multiply_by(3) %>%
-#'            magrittr::add(2)) %>%
-#'  magrittr::multiply_by(2)
+#'   magrittr::multiply_by(2) %>%
+#'   if_branch(
+#'     . %>% magrittr::equals(2),
+#'     . %>%
+#'       magrittr::multiply_by(3) %>%
+#'       magrittr::add(2)
+#'   ) %>%
+#'   magrittr::multiply_by(2)
 #'
-#' tibble::tibble(x = rnorm(100),y=rnorm(100)) %>%
+#' tibble::tibble(x = rnorm(100), y = rnorm(100)) %>%
 #'   dplyr::mutate(z = x + y) %>%
-#'   if_branch(mean(z) > 0,
-#'             . %>%
-#'               pipe_cat("z is high\n\n"),
-#'             . %>%
-#'               dplyr::select(-z) %>%
-#'               pipe_cat("z is low, so it was dropped\n\n"))
-#'
-#'
-
-if_branch <- function(data,predicate,fun,elsefun=NULL)
-{
+#'   if_branch(
+#'     mean(z) > 0,
+#'     . %>%
+#'       pipe_cat("z is high\n\n"),
+#'     . %>%
+#'       dplyr::select(-z) %>%
+#'       pipe_cat("z is low, so it was dropped\n\n")
+#'   )
+if_branch <- function(data, predicate, fun, elsefun = NULL) {
   parent <- rlang::caller_env()
-  env <- new.env(parent=parent)
+  env <- new.env(parent = parent)
 
-  predicate_eval <- eval_expr(data,!!enquo(predicate),env=env)
+  predicate_eval <- eval_expr(data, !!enquo(predicate), env = env)
 
-  if(predicate_eval)
-  {
+  if (predicate_eval) {
     fun(data)
-  } else if(!is.null(elsefun))
-  {
+  } else if (!is.null(elsefun)) {
     elsefun(data)
   } else {
     data
   }
-
 }
-
-

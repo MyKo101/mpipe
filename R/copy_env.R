@@ -42,12 +42,12 @@
 #' a$z <- data.frame(x = runif(20))
 #'
 #' b <- copy_env(a)
-#' identical(a$z,b$z)
+#' identical(a$z, b$z)
 #' rlang::env_label(a) == rlang::env_label(b)
 #'
 #' f1 <- . %>%
-#'         magrittr::add(2) %>%
-#'         magrittr::multiply_by(2)
+#'   magrittr::add(2) %>%
+#'   magrittr::multiply_by(2)
 #' f2 <- f1
 #' f3 <- copy_fun(f1)
 #'
@@ -56,47 +56,32 @@
 #' f3_env_label <- rlang::env_label(rlang::get_env(f3))
 #' f1_env_label == f2_env_label
 #' f1_env_label == f3_env_label
-#'
-#'
-
-copy_env <- function(env)
-{
+copy_env <- function(env) {
   obj_list <- ls(env)
 
-  new_env <- rlang::new_environment(parent=parent.env(env))
+  new_env <- rlang::new_environment(parent = parent.env(env))
 
-  for(c_obj in obj_list)
+  for (c_obj in obj_list)
   {
-    if(!is.environment(env[[c_obj]]))
-    {
+    if (!is.environment(env[[c_obj]])) {
       new_env[[c_obj]] <- env[[c_obj]]
     }
   }
 
   new_env
-
 }
 
 #' @rdname copy_env
 #' @export
 #'
 
-copy_fun <- function(fun)
-{
-
-  if(is_fseq(fun))
-  {
+copy_fun <- function(fun) {
+  if (is_fseq(fun)) {
     new_fun <- fseq_copy_fun(fun)
-  } else if(rlang::is_function(fun))
-  {
+  } else if (rlang::is_function(fun)) {
     new_fun <- fun
     environment(new_fun) <- copy_env(environment(fun))
   }
 
   new_fun
-
 }
-
-
-
-

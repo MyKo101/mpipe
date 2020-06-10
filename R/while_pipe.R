@@ -29,59 +29,46 @@
 #'
 #' @examples
 #'
-#' sample(100,1) %>%
-#'   runif %>%
-#'   pipe_cat("Current length: ",length(.),"\n") %>%
-#'   while_pipe(length(.) > 1,
-#'              . %>%
-#'                diff %>%
-#'                magrittr::divide_by(2))
+#' sample(100, 1) %>%
+#'   runif() %>%
+#'   pipe_cat("Current length: ", length(.), "\n") %>%
+#'   while_pipe(
+#'     length(.) > 1,
+#'     . %>%
+#'       diff() %>%
+#'       magrittr::divide_by(2)
+#'   )
 #'
 #'
 #' tibble::tibble(x = runif(5)) %>%
-#'   while_pipe(.counter <= 5,
-#'              . %>%
-#'                dplyr::mutate(!!paste0("x_",.counter) := x - x[.counter]))
-#'
-#'
-#'
-
-
-while_pipe <- function(data,cond,fun)
-{
+#'   while_pipe(
+#'     .counter <= 5,
+#'     . %>%
+#'       dplyr::mutate(!!paste0("x_", .counter) := x - x[.counter])
+#'   )
+while_pipe <- function(data, cond, fun) {
   c_env <- rlang::current_env()
 
   quo_cond <- enquo(cond)
-  quo_cond <- rlang::quo_set_env(quo_cond,c_env)
+  quo_cond <- rlang::quo_set_env(quo_cond, c_env)
 
   .counter <- 1L
   current_data <- data
 
-  cond_eval <- eval_expr(current_data,!!quo_cond,.counter)
+  cond_eval <- eval_expr(current_data, !!quo_cond, .counter)
 
 
   new_fun <- copy_fun(fun)
 
-  fun_var_env(new_fun,".counter",.counter)
+  fun_var_env(new_fun, ".counter", .counter)
 
-  while(cond_eval)
-  {
-    fun_var_env(new_fun,".counter",.counter)
+  while (cond_eval) {
+    fun_var_env(new_fun, ".counter", .counter)
     current_data <- new_fun(current_data)
 
-    .counter <- .counter+1L
-    cond_eval <- eval_expr(current_data,!!quo_cond,.counter)
+    .counter <- .counter + 1L
+    cond_eval <- eval_expr(current_data, !!quo_cond, .counter)
   }
 
   current_data
-
 }
-
-
-
-
-
-
-
-
-

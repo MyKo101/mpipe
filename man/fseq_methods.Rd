@@ -38,19 +38,13 @@ a <- . \%>\%
   magrittr::divide_by(3)
 b <- . \%>\%
   rep(3) \%>\%
-  sum
+  sum()
 
-(a+b)(2)
-(b+a)(2)
-
-
-
+(a + b)(2)
+(b + a)(2)
 length(a)
-
 is.fseq(a)
 is.fseq(mean)
-
 is_fseq(a)
 is_fseq(mean)
-
 }

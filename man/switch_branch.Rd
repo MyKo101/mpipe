@@ -32,33 +32,36 @@ match, then the original data is passed unchanged
 \examples{
 
 
-tibble::tibble(x = rnorm(10),
-               y = sample(c("red","blue","yellow"),10,replace=TRUE)) \%>\%
+tibble::tibble(
+  x = rnorm(10),
+  y = sample(c("red", "blue", "yellow"), 10, replace = TRUE)
+) \%>\%
   dplyr::arrange(x) \%>\%
   switch_branch(. \%>\%
-                  dplyr::slice(1) \%>\%
-                  dplyr::pull(y),
-                red  = . \%>\%
-                         pipe_cat("top was red\n") \%>\%
-                         dplyr::filter(y == "red"),
-                blue = . \%>\%
-                         pipe_cat("top was blue\n") \%>\%
-                         dplyr::filter(x < 0)) \%>\%
+    dplyr::slice(1) \%>\%
+    dplyr::pull(y),
+  red = . \%>\%
+    pipe_cat("top was red\n") \%>\%
+    dplyr::filter(y == "red"),
+  blue = . \%>\%
+    pipe_cat("top was blue\n") \%>\%
+    dplyr::filter(x < 0)
+  ) \%>\%
   dplyr::summarise(m.x = mean(x))
 
 iris \%>\%
   tibble::tibble() \%>\%
-  dplyr::mutate(Species = factor(Species,levels=c("setosa","virginica","versicolor"))) \%>\%
+  dplyr::mutate(Species = factor(Species, levels = c("setosa", "virginica", "versicolor"))) \%>\%
   dplyr::sample_n(1) \%>\%
-  switch_branch(. \%>\%
-                  dplyr::pull(Species) \%>\%
-                  as.numeric,
-                . \%>\%
-                  pipe_cat("Selected row is setosa\n"),
-                . \%>\%
-                  pipe_cat("Selected row is virginica\n"),
-                . \%>\%
-                  pipe_cat("Selected row is versicolor\n"))
-
-
+  switch_branch(
+    . \%>\%
+      dplyr::pull(Species) \%>\%
+      as.numeric(),
+    . \%>\%
+      pipe_cat("Selected row is setosa\n"),
+    . \%>\%
+      pipe_cat("Selected row is virginica\n"),
+    . \%>\%
+      pipe_cat("Selected row is versicolor\n")
+  )
 }

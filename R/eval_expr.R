@@ -42,66 +42,59 @@
 #'
 #' @examples
 #'
-#' #Can do simple evaluations of functions on vectors
+#' # Can do simple evaluations of functions on vectors
 #' 1:10 %>% eval_expr(mean)
 #'
-#' #Or on a variable
+#' # Or on a variable
 #' x <- 1:10
-#' eval_expr(x,mean)
+#' eval_expr(x, mean)
 #'
-#' #or within a data.frame (or tibble)
-#' tbl <- data.frame(x=1:10)
-#' eval_expr(tbl,mean(x))
+#' # or within a data.frame (or tibble)
+#' tbl <- data.frame(x = 1:10)
+#' eval_expr(tbl, mean(x))
 #'
-#' #or a list
-#' lst <- list(x=1:10)
-#' eval_expr(lst,mean(x))
+#' # or a list
+#' lst <- list(x = 1:10)
+#' eval_expr(lst, mean(x))
 #'
-#' #functions are applied to data
-#' eval_expr(tbl,nrow)
+#' # functions are applied to data
+#' eval_expr(tbl, nrow)
 #'
-#' #but they are evaluated within data first
-#' lst <- c(fun=mean,lst)
-#' eval_expr(lst,fun(x))
+#' # but they are evaluated within data first
+#' lst <- c(fun = mean, lst)
+#' eval_expr(lst, fun(x))
 #'
-#' #additional named arguments can be passed in too
+#' # additional named arguments can be passed in too
 #' tbl %>%
-#'   eval_expr(mean(x+y),y=5)
+#'   eval_expr(mean(x + y), y = 5)
 #'
 #' x %>%
-#'   eval_expr(. %>% magrittr::add(y) %>% mean,y=5)
+#'   eval_expr(. %>% magrittr::add(y) %>% mean(), y = 5)
 #'
 #'
-#' #Environment scope:
-#' lst <- list(x=1:3,y=1)
+#' # Environment scope:
+#' lst <- list(x = 1:3, y = 1)
 #' y <- 4
 #'
-#' e1 <- new.env(parent=emptyenv())
+#' e1 <- new.env(parent = emptyenv())
 #' e1$y <- 3
 #'
-#' #additional arguments in data take priority over others
-#' eval_expr(lst,y,y=2,env=e1)
+#' # additional arguments in data take priority over others
+#' eval_expr(lst, y, y = 2, env = e1)
 #'
 #' lst$y <- NULL
 #' # then the ... argument:
-#' eval_expr(lst,y,y=2,env=e1)
+#' eval_expr(lst, y, y = 2, env = e1)
 #'
-#' #then in env
-#' eval_expr(lst,y,env=e1)
+#' # then in env
+#' eval_expr(lst, y, env = e1)
 #'
-#' #without env, the calling environment is used
-#' eval_expr(lst,y)
-#'
-#'
-#'
-
-
-eval_expr <- function(data,expr,...,env=NULL,allow_NULL=F,verbose=F)
-{
+#' # without env, the calling environment is used
+#' eval_expr(lst, y)
+eval_expr <- function(data, expr, ..., env = NULL, allow_NULL = F, verbose = F) {
   cat0 <- mutils::chatty(verbose)
 
-  if(is.null(env))
-  {
+  if (is.null(env)) {
     cat0("No environment provided, so the caller environment is used")
     env <- rlang::caller_env()
   }
@@ -110,47 +103,39 @@ eval_expr <- function(data,expr,...,env=NULL,allow_NULL=F,verbose=F)
   quo_expr <- enquo(expr)
 
 
-  if(!rlang::is_named(data))
-  {
+  if (!rlang::is_named(data)) {
     cat0("data doesn't have names, so it will be wrapped in a list")
-    named_data <- list(. = data,.data=data,.env=env)
-  } else
-  {
+    named_data <- list(. = data, .data = data, .env = env)
+  } else {
     cat0("data has names")
     named_data <- as.list(data)
-    named_data <- c(named_data,list(.=data,.data=data,.env=env))
+    named_data <- c(named_data, list(. = data, .data = data, .env = env))
   }
 
   cat0("Checking for `...`")
-  dots <- rlang::dots_list(...,.homonyms = "first")
+  dots <- rlang::dots_list(..., .homonyms = "first")
   dot_nms <- names(dots)
   dots <- dots[dot_nms != "" & !is.environment(dots)]
 
-  if(length(dots) > 0)
-  {
+  if (length(dots) > 0) {
     cat0("Input has usable `...` argument")
-    named_data <-c(named_data,dots[!names(dots) %in% names(named_data)])
+    named_data <- c(named_data, dots[!names(dots) %in% names(named_data)])
   }
 
   cat0("Setting the environment of the quoted expr")
-  quo_expr <- rlang::quo_set_env(quo_expr,env)
+  quo_expr <- rlang::quo_set_env(quo_expr, env)
 
   cat0("Evaluating with eval_tidy()")
-  res <- rlang::eval_tidy(quo_expr,named_data,env)
+  res <- rlang::eval_tidy(quo_expr, named_data, env)
 
-  if(is.function(res))
-  {
+  if (is.function(res)) {
     cat0("Output was a function, so it will be applied to the data")
     res <- res(data)
   }
 
-  if(!allow_NULL && is.null(res))
-  {
+  if (!allow_NULL && is.null(res)) {
     rlang::abort("eval_expr() returning NULL. Should this be allowed?")
   }
   cat0("Thanks for listening")
   res
-
 }
-
-

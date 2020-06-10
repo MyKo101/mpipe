@@ -22,34 +22,30 @@
 #'   magrittr::divide_by(3)
 #' b <- . %>%
 #'   rep(3) %>%
-#'   sum
+#'   sum()
 #'
-#' (a+b)(2)
-#' (b+a)(2)
-#'
-#'
-#'
+#' (a + b)(2)
+#' (b + a)(2)
 #' @export
 
-`+.fseq` <- function(lhs,rhs)
-{
+`+.fseq` <- function(lhs, rhs) {
   new_lhs <- copy_fun(lhs)
 
-  new_function_list <- c(functions(new_lhs),
-                         vector("list",length=length(rhs)))
+  new_function_list <- c(
+    functions(new_lhs),
+    vector("list", length = length(rhs))
+  )
 
   rhs_fl <- functions(rhs)
 
-  for(i in 1:length(rhs))
+  for (i in 1:length(rhs))
   {
-    new_function_list[[length(lhs)+i]] <- copy_fun(rhs_fl[[i]])
+    new_function_list[[length(lhs) + i]] <- copy_fun(rhs_fl[[i]])
   }
 
   environment(new_lhs)[["_function_list"]] <- new_function_list
 
   new_lhs
-
-
 }
 
 #' @rdname fseq_methods
@@ -57,12 +53,10 @@
 #'
 #' @examples
 #' length(a)
-#'
 #' @param x
 #' an `fseq` object.
 
-length.fseq <- function(x)
-{
+length.fseq <- function(x) {
   length(magrittr::functions(x))
 }
 
@@ -72,15 +66,13 @@ length.fseq <- function(x)
 #' @examples
 #' is.fseq(a)
 #' is.fseq(mean)
-#'
 #' @param object
 #' object to be tested.
 #'
 #'
 #'
 
-is.fseq <- function(object)
-{
+is.fseq <- function(object) {
   "fseq" %in% class(object)
 }
 
@@ -91,10 +83,6 @@ is.fseq <- function(object)
 #' @examples
 #' is_fseq(a)
 #' is_fseq(mean)
-#'
-
-is_fseq <- function(object)
-{
+is_fseq <- function(object) {
   "fseq" %in% class(object)
 }
-

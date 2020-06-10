@@ -49,21 +49,17 @@
 #' tibble::tibble(iris) %>%
 #'   dplyr::group_by(Species) %>%
 #'   pipe_qplot(Sepal.Length,
-#'              fill=Species,
-#'              geom="histogram",
-#'              binwidth=0.1) %>%
+#'     fill = Species,
+#'     geom = "histogram",
+#'     binwidth = 0.1
+#'   ) %>%
 #'   dplyr::summarise(mean = mean(Sepal.Length))
-#'
-#'
-#'
 pipe_qplot <- function(data, x, y, ..., facets = NULL, margins = FALSE, geom = "auto",
-                       xlim = c(NA, NA), ylim = c(NA, NA),log = "",
+                       xlim = c(NA, NA), ylim = c(NA, NA), log = "",
                        main = NULL, xlab = NULL, ylab = NULL, asp = NA,
                        stat = stat, position = position,
-                       save.options = NULL, print.plot = T)
-{
-  if(is.null(save.options) & !print.plot)
-  {
+                       save.options = NULL, print.plot = T) {
+  if (is.null(save.options) & !print.plot) {
     rlang::warn("print.plot set to FALSE in pipe_qplot() &
                 no save.options supplied. Nothing done")
   } else {
@@ -74,40 +70,30 @@ pipe_qplot <- function(data, x, y, ..., facets = NULL, margins = FALSE, geom = "
 
     .args <- names(.call)
 
-    if(any(.args %in% c("print.plot","save.options","data")))
-      .call <- .call[-which(.args %in% c("print.plot","save.options","data"))]
+    if (any(.args %in% c("print.plot", "save.options", "data"))) {
+      .call <- .call[-which(.args %in% c("print.plot", "save.options", "data"))]
+    }
 
 
     .call[[1]] <- quote(ggplot2::qplot)
-    quo_call <- rlang::quo( )
-    quo_call <- rlang::quo_set_expr(quo_call,.call)
+    quo_call <- rlang::quo()
+    quo_call <- rlang::quo_set_expr(quo_call, .call)
 
 
-    p <- eval_expr(data,!!quo_call)
+    p <- eval_expr(data, !!quo_call)
 
-    if(print.plot)
+    if (print.plot) {
       print(p)
-
-    if(!is.null(save.options))
-    {
-      if(any(names(save.options) == "plot"))
-        save.options <- save.options[-which(names(save.options) == "plot")]
-
-      save.call <- as.call(c(quote(ggsave),save.options,plot=quote(p)))
-      eval(save.call)
     }
 
+    if (!is.null(save.options)) {
+      if (any(names(save.options) == "plot")) {
+        save.options <- save.options[-which(names(save.options) == "plot")]
+      }
+
+      save.call <- as.call(c(quote(ggsave), save.options, plot = quote(p)))
+      eval(save.call)
+    }
   }
   return(data)
 }
-
-
-
-
-
-
-
-
-
-
-

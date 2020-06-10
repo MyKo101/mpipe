@@ -39,56 +39,53 @@ second) to keep in line with the pipeline theme of \code{mpipe}.
 }
 \examples{
 
-#Can do simple evaluations of functions on vectors
+# Can do simple evaluations of functions on vectors
 1:10 \%>\% eval_expr(mean)
 
-#Or on a variable
+# Or on a variable
 x <- 1:10
-eval_expr(x,mean)
+eval_expr(x, mean)
 
-#or within a data.frame (or tibble)
-tbl <- data.frame(x=1:10)
-eval_expr(tbl,mean(x))
+# or within a data.frame (or tibble)
+tbl <- data.frame(x = 1:10)
+eval_expr(tbl, mean(x))
 
-#or a list
-lst <- list(x=1:10)
-eval_expr(lst,mean(x))
+# or a list
+lst <- list(x = 1:10)
+eval_expr(lst, mean(x))
 
-#functions are applied to data
-eval_expr(tbl,nrow)
+# functions are applied to data
+eval_expr(tbl, nrow)
 
-#but they are evaluated within data first
-lst <- c(fun=mean,lst)
-eval_expr(lst,fun(x))
+# but they are evaluated within data first
+lst <- c(fun = mean, lst)
+eval_expr(lst, fun(x))
 
-#additional named arguments can be passed in too
+# additional named arguments can be passed in too
 tbl \%>\%
-  eval_expr(mean(x+y),y=5)
+  eval_expr(mean(x + y), y = 5)
 
 x \%>\%
-  eval_expr(. \%>\% magrittr::add(y) \%>\% mean,y=5)
+  eval_expr(. \%>\% magrittr::add(y) \%>\% mean(), y = 5)
 
 
-#Environment scope:
-lst <- list(x=1:3,y=1)
+# Environment scope:
+lst <- list(x = 1:3, y = 1)
 y <- 4
 
-e1 <- new.env(parent=emptyenv())
+e1 <- new.env(parent = emptyenv())
 e1$y <- 3
 
-#additional arguments in data take priority over others
-eval_expr(lst,y,y=2,env=e1)
+# additional arguments in data take priority over others
+eval_expr(lst, y, y = 2, env = e1)
 
 lst$y <- NULL
 # then the ... argument:
-eval_expr(lst,y,y=2,env=e1)
+eval_expr(lst, y, y = 2, env = e1)
 
-#then in env
-eval_expr(lst,y,env=e1)
+# then in env
+eval_expr(lst, y, env = e1)
 
-#without env, the calling environment is used
-eval_expr(lst,y)
-
-
-
+# without env, the calling environment is used
+eval_expr(lst, y)
 }

@@ -1,7 +1,7 @@
 Type: Package
 Package: mpipe
 Title: Adds extra functionality to pipelines
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R:
     person(given = "Michael",
            family = "Barrowman",

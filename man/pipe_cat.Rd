@@ -30,25 +30,25 @@ of a pipeline to do so.
 }
 \examples{
 
-sample(100,1) \%>\%
+sample(100, 1) \%>\%
   runif() \%>\%
-  pipe_cat("Current length: ",length(.),"\n") \%>\%
-  pipe_cat("Current average: ",mean(.),"\n") \%>\%
-  pipe_cat("Current standard error: ",sd(.)/length(.),"\n") \%>\%
+  pipe_cat("Current length: ", length(.), "\n") \%>\%
+  pipe_cat("Current average: ", mean(.), "\n") \%>\%
+  pipe_cat("Current standard error: ", sd(.) / length(.), "\n") \%>\%
   pipe_cat("Returning mean:\n") \%>\%
-  mean
+  mean()
 
-tibble::tibble(x = runif(10),
-               y = runif(10)) \%>\%
-  pipe_cat("Average x: ", mean(x),"\n") \%>\%
-  pipe_cat("Current number of rows: ",nrow,"\n") \%>\%
+tibble::tibble(
+  x = runif(10),
+  y = runif(10)
+) \%>\%
+  pipe_cat("Average x: ", mean(x), "\n") \%>\%
+  pipe_cat("Current number of rows: ", nrow, "\n") \%>\%
   dplyr::mutate(z = x + y)
 
 iris \%>\%
   dplyr::mutate(Species = as.character(Species)) \%>\%
-  pipe_cat("Total average Sepal Length: ",mean(Sepal.Length),"\n") \%>\%
+  pipe_cat("Total average Sepal Length: ", mean(Sepal.Length), "\n") \%>\%
   dplyr::group_by(Species) \%>\%
-  pipe_cat(Species," average Sepal Length: ",mean(Sepal.Length),"\n")
-
-
+  pipe_cat(Species, " average Sepal Length: ", mean(Sepal.Length), "\n")
 }

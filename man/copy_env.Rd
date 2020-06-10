@@ -44,12 +44,12 @@ a$y <- "hello"
 a$z <- data.frame(x = runif(20))
 
 b <- copy_env(a)
-identical(a$z,b$z)
+identical(a$z, b$z)
 rlang::env_label(a) == rlang::env_label(b)
 
 f1 <- . \%>\%
-        magrittr::add(2) \%>\%
-        magrittr::multiply_by(2)
+  magrittr::add(2) \%>\%
+  magrittr::multiply_by(2)
 f2 <- f1
 f3 <- copy_fun(f1)
 
@@ -58,6 +58,4 @@ f2_env_label <- rlang::env_label(rlang::get_env(f2))
 f3_env_label <- rlang::env_label(rlang::get_env(f3))
 f1_env_label == f2_env_label
 f1_env_label == f3_env_label
-
-
 }

@@ -28,21 +28,23 @@ to use \code{fseq} style arguments (i.e. pipelines) for \code{fun} and
 \examples{
 
 1 \%>\%
- magrittr::multiply_by(2) \%>\%
- if_branch(. \%>\% magrittr::equals(2),
-           . \%>\%
-           magrittr::multiply_by(3) \%>\%
-           magrittr::add(2)) \%>\%
- magrittr::multiply_by(2)
+  magrittr::multiply_by(2) \%>\%
+  if_branch(
+    . \%>\% magrittr::equals(2),
+    . \%>\%
+      magrittr::multiply_by(3) \%>\%
+      magrittr::add(2)
+  ) \%>\%
+  magrittr::multiply_by(2)
 
-tibble::tibble(x = rnorm(100),y=rnorm(100)) \%>\%
+tibble::tibble(x = rnorm(100), y = rnorm(100)) \%>\%
   dplyr::mutate(z = x + y) \%>\%
-  if_branch(mean(z) > 0,
-            . \%>\%
-              pipe_cat("z is high\n\n"),
-            . \%>\%
-              dplyr::select(-z) \%>\%
-              pipe_cat("z is low, so it was dropped\n\n"))
-
-
+  if_branch(
+    mean(z) > 0,
+    . \%>\%
+      pipe_cat("z is high\n\n"),
+    . \%>\%
+      dplyr::select(-z) \%>\%
+      pipe_cat("z is low, so it was dropped\n\n")
+  )
 }
