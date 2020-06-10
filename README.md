@@ -85,12 +85,12 @@ g+f
 
 ``` r
 (g+f)(iris)
-#> [90m# A tibble: 3 x 3[39m
+#> # A tibble: 3 x 3
 #>   Species    Sepal.Length Sepal.Width
-#>   [3m[90m<fct>[39m[23m             [3m[90m<dbl>[39m[23m       [3m[90m<dbl>[39m[23m
-#> [90m1[39m setosa             5.5         3.81
-#> [90m2[39m versicolor         6.04        2.81
-#> [90m3[39m virginica          6.62        2.98
+#>   <fct>             <dbl>       <dbl>
+#> 1 setosa             5.5         3.81
+#> 2 versicolor         6.04        2.81
+#> 3 virginica          6.62        2.98
 ```
 
 It also includes a `length()` method for `fseq` which returns the number
@@ -125,25 +125,20 @@ iris %>%
   pipe_cat(as.character(Species)," Average Sepal.Length: ",mean(Sepal.Length),"\n") %>%
   summarise(Length_mean = mean(Sepal.Length),
             Width_mean = mean(Sepal.Width))
-#> Total Average Sepal.Length:  5.843333
-#> Warning: The `keep` argument of `group_split()` is deprecated as of dplyr 1.0.0.
-#> Please use the `.keep` argument instead.
-#> [90mThis warning is displayed once every 8 hours.[39m
-#> [90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m
-#> setosa  Average Sepal.Length:  5.006 
-#> versicolor  Average Sepal.Length:  5.936 
-#> virginica  Average Sepal.Length:  6.588
-#> `summarise()` ungrouping output (override with `.groups` argument)
 ```
 
 <img src="man/figures/README-side_effects_example-1.png" width="100%" />
 
-    #> [90m# A tibble: 3 x 3[39m
+    #> Total Average Sepal.Length:  5.843333 
+    #> setosa  Average Sepal.Length:  5.006 
+    #> versicolor  Average Sepal.Length:  5.936 
+    #> virginica  Average Sepal.Length:  6.588
+    #> # A tibble: 3 x 3
     #>   Species    Length_mean Width_mean
-    #>   [3m[90m<fct>[39m[23m            [3m[90m<dbl>[39m[23m      [3m[90m<dbl>[39m[23m
-    #> [90m1[39m setosa            5.01       3.43
-    #> [90m2[39m versicolor        5.94       2.77
-    #> [90m3[39m virginica         6.59       2.97
+    #>   <fct>            <dbl>      <dbl>
+    #> 1 setosa            5.01       3.43
+    #> 2 versicolor        5.94       2.77
+    #> 3 virginica         6.59       2.97
 
 ## Control Flow
 
@@ -265,14 +260,14 @@ tibble(x = runif(5)) %>%
   while_pipe(.counter <= 5,
              . %>%
                mutate(!!paste0("x_",.counter) := x - x[.counter]))
-#> [90m# A tibble: 5 x 6[39m
+#> # A tibble: 5 x 6
 #>        x    x_1   x_2    x_3    x_4    x_5
-#>    [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m
-#> [90m1[39m 0.795   0     0.772  0.133  0.241  0.342
-#> [90m2[39m 0.023[4m0[24m -[31m0[39m[31m.[39m[31m772[39m 0     -[31m0[39m[31m.[39m[31m638[39m -[31m0[39m[31m.[39m[31m530[39m -[31m0[39m[31m.[39m[31m430[39m
-#> [90m3[39m 0.661  -[31m0[39m[31m.[39m[31m133[39m 0.638  0      0.108  0.208
-#> [90m4[39m 0.553  -[31m0[39m[31m.[39m[31m241[39m 0.530 -[31m0[39m[31m.[39m[31m108[39m  0      0.101
-#> [90m5[39m 0.453  -[31m0[39m[31m.[39m[31m342[39m 0.430 -[31m0[39m[31m.[39m[31m208[39m -[31m0[39m[31m.[39m[31m101[39m  0
+#>    <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 0.795   0     0.772  0.133  0.241  0.342
+#> 2 0.0230 -0.772 0     -0.638 -0.530 -0.430
+#> 3 0.661  -0.133 0.638  0      0.108  0.208
+#> 4 0.553  -0.241 0.530 -0.108  0      0.101
+#> 5 0.453  -0.342 0.430 -0.208 -0.101  0
 ```
 
 ## Code of Conduct
