@@ -82,7 +82,7 @@ of a pipeline to do so." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
       </span>
     </div>
 
@@ -191,30 +191,29 @@ information regarding these arguments.</p></td>
 #&gt; </span><span style='color: #555555;'> 8</span><span> 0.101 0.262  0.363
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0.273 0.416  0.689
 #&gt; </span><span style='color: #555555;'>10</span><span> 0.654 0.439  1.09 </div><div class='input'>
-<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>Species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='no'>Species</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Total average Sepal Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>Sepal.Length</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='no'>Species</span>, <span class='st'>" average Sepal Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>Sepal.Length</span>), <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Total average Sepal Length:  5.843333 </div><div class='output co'>#&gt; <span class='warning'>Warning: The `keep` argument of `group_split()` is deprecated as of dplyr 1.0.0.</span>
-#&gt; <span class='warning'>Please use the `.keep` argument instead.</span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; setosa  average Sepal Length:  5.006 
-#&gt; versicolor  average Sepal Length:  5.936 
-#&gt; virginica  average Sepal Length:  6.588 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 150 x 5</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   Species [3]</span><span>
-#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span>          5.1         3.5          1.4         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 2</span><span>          4.9         3            1.4         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 3</span><span>          4.7         3.2          1.3         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 4</span><span>          4.6         3.1          1.5         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 5</span><span>          5           3.6          1.4         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 6</span><span>          5.4         3.9          1.7         0.4 setosa 
-#&gt; </span><span style='color: #555555;'> 7</span><span>          4.6         3.4          1.4         0.3 setosa 
-#&gt; </span><span style='color: #555555;'> 8</span><span>          5           3.4          1.5         0.2 setosa 
-#&gt; </span><span style='color: #555555;'> 9</span><span>          4.4         2.9          1.4         0.2 setosa 
-#&gt; </span><span style='color: #555555;'>10</span><span>          4.9         3.1          1.5         0.1 setosa 
-#&gt; </span><span style='color: #555555;'># … with 140 more rows</span><span></div></span></pre>
+<span class='kw pkg'>palmerpenguins</span><span class='kw ns'>::</span><span class='no'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='no'>species</span>)) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(!<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>culmen_length_mm</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pipe_cat</span>(<span class='st'>"Total average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>culmen_length_mm</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>species</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pipe_cat</span>(<span class='no'>species</span>, <span class='st'>" average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>culmen_length_mm</span>), <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Total average Culmen Length:  43.92193 
+#&gt; Adelie     average Culmen Length:  38.79139 
+#&gt; Chinstrap  average Culmen Length:  48.83382 
+#&gt; Gentoo     average Culmen Length:  47.50488 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 342 x 7</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   species [3]</span><span>
+#&gt;    species island culmen_length_mm culmen_depth_mm flipper_length_… body_mass_g
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Adelie  Torge…             39.1            18.7              181        </span><span style='text-decoration: underline;'>3</span><span>750
+#&gt; </span><span style='color: #555555;'> 2</span><span> Adelie  Torge…             39.5            17.4              186        </span><span style='text-decoration: underline;'>3</span><span>800
+#&gt; </span><span style='color: #555555;'> 3</span><span> Adelie  Torge…             40.3            18                195        </span><span style='text-decoration: underline;'>3</span><span>250
+#&gt; </span><span style='color: #555555;'> 4</span><span> Adelie  Torge…             36.7            19.3              193        </span><span style='text-decoration: underline;'>3</span><span>450
+#&gt; </span><span style='color: #555555;'> 5</span><span> Adelie  Torge…             39.3            20.6              190        </span><span style='text-decoration: underline;'>3</span><span>650
+#&gt; </span><span style='color: #555555;'> 6</span><span> Adelie  Torge…             38.9            17.8              181        </span><span style='text-decoration: underline;'>3</span><span>625
+#&gt; </span><span style='color: #555555;'> 7</span><span> Adelie  Torge…             39.2            19.6              195        </span><span style='text-decoration: underline;'>4</span><span>675
+#&gt; </span><span style='color: #555555;'> 8</span><span> Adelie  Torge…             34.1            18.1              193        </span><span style='text-decoration: underline;'>3</span><span>475
+#&gt; </span><span style='color: #555555;'> 9</span><span> Adelie  Torge…             42              20.2              190        </span><span style='text-decoration: underline;'>4</span><span>250
+#&gt; </span><span style='color: #555555;'>10</span><span> Adelie  Torge…             37.8            17.1              186        </span><span style='text-decoration: underline;'>3</span><span>300
+#&gt; </span><span style='color: #555555;'># … with 332 more rows, and 1 more variable: sex </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

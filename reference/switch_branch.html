@@ -85,7 +85,7 @@ match, then the original data is passed unchanged" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
       </span>
     </div>
 
@@ -170,7 +170,10 @@ the <code>data</code> will be returned untouched.</p></td>
 
 <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>),
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"red"</span>, <span class='st'>"blue"</span>, <span class='st'>"yellow"</span>), <span class='fl'>10</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"red"</span>, <span class='st'>"blue"</span>, <span class='st'>"yellow"</span>),
+    <span class='fl'>10</span>,
+    <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  )
 ) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='no'>x</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>switch_branch</span>(<span class='no'>.</span> <span class='kw'>%&gt;%</span>
@@ -187,24 +190,24 @@ the <code>data</code> will be returned untouched.</p></td>
 #&gt;     m.x
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> -</span><span style='color: #BB0000;'>1.06</span><span></div><div class='input'>
-<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>Species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>Species</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"setosa"</span>, <span class='st'>"virginica"</span>, <span class='st'>"versicolor"</span>))) <span class='kw'>%&gt;%</span>
+<span class='kw pkg'>palmerpenguins</span><span class='kw ns'>::</span><span class='no'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>species</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Gentoo"</span>, <span class='st'>"Adelie"</span>, <span class='st'>"Chinstrap"</span>))) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/sample_n.html'>sample_n</a></span>(<span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>switch_branch</span>(
     <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
+      <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='no'>species</span>) <span class='kw'>%&gt;%</span>
       <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(),
     <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is setosa\n"</span>),
+      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is Gentoo\n"</span>),
     <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is virginica\n"</span>),
+      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is Adelie\n"</span>),
     <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is versicolor\n"</span>)
-  )</div><div class='output co'>#&gt; Selected row is versicolor</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 5</span><span>
-#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species   
-#&gt;          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     
-#&gt; </span><span style='color: #555555;'>1</span><span>          5.5         2.5            4         1.3 versicolor</div></span></pre>
+      <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Selected row is Chinstrap\n"</span>)
+  )</div><div class='output co'>#&gt; Selected row is Gentoo</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
+#&gt;   species island culmen_length_mm culmen_depth_mm flipper_length_… body_mass_g
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Gentoo  Biscoe             40.9            13.7              214        </span><span style='text-decoration: underline;'>4</span><span>650
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: sex </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
