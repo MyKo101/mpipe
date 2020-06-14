@@ -21,6 +21,7 @@ pipe_qplot(
   asp = NA,
   stat = stat,
   position = position,
+  theme = NULL,
   save.options = NULL,
   print.plot = T
 )
@@ -32,6 +33,9 @@ pipe_qplot(
 
 \item{facets, margins, geom, xlim, ylim, log, main, xlab, ylab, asp, stat, position}{see the \code{\link[ggplot2:qplot]{qplot()}} documentation for more
 information regarding these arguments.}
+
+\item{theme}{a character string that links to a function of the form
+\verb{theme_*()}, e.g. the agrument \code{theme="bw"} will apply \code{theme_bw()}}
 
 \item{save.options}{list of values to be passed to \code{\link[ggplot2:ggsave]{ggsave()}}
 (if NULL, plot won't be saved)}
@@ -62,12 +66,14 @@ if needed.
 }
 \examples{
 
-tibble::tibble(iris) \%>\%
-  dplyr::group_by(Species) \%>\%
-  pipe_qplot(Sepal.Length,
-    fill = Species,
-    geom = "histogram",
+palmerpenguins::penguins \%>\%
+  dplyr::group_by(species) \%>\%
+  pipe_qplot(culmen_length_mm,
+    fill = species,
+    theme = "light",
+    geom = "density",
+    alpha = 0.5,
     binwidth = 0.1
   ) \%>\%
-  dplyr::summarise(mean = mean(Sepal.Length))
+  dplyr::summarise(mean = mean(culmen_length_mm))
 }

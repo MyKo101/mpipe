@@ -12,7 +12,7 @@ test_that("check environment contents stay the same", {
 })
 
 test_that("check environment locations are the different", {
-  expect_false(isTRUE(all.equal(format(e1), format(e2))))
+  expect_different(format(e1), format(e2))
 })
 
 

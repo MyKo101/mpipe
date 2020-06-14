@@ -1,10 +1,10 @@
 
 test_that("return is same as input", {
-  expect_equal(iris %>% pipe_cat(""), iris)
+  expect_equal(penguins %>% pipe_cat(""), penguins)
 })
 
 test_that("plain text is output", {
-  expect_output(iris %>%
+  expect_output(penguins %>%
     pipe_cat("hello"), "hello")
   expect_output(1:10 %>%
     pipe_cat("world"), "world")
@@ -12,35 +12,35 @@ test_that("plain text is output", {
 
 test_that("evaluated text is output", {
   expect_output(
-    iris %>%
-      pipe_cat("Average Sepal.Length:", round(mean(Sepal.Length), 3)),
-    paste("Average Sepal.Length:", round(mean(iris$Sepal.Length), 3))
+    penguins %>%
+      pipe_cat("Average culmen_length:", round(mean(culmen_length), 3)),
+    paste("Average culmen_length:", round(mean(penguins$culmen_length), 3))
   )
   expect_output(
-    iris %>%
-      pipe_cat("Average Sepal.Width:", round(mean(Sepal.Length), 3)),
-    paste("Average Sepal.Width:", round(mean(iris$Sepal.Length), 3))
+    penguins %>%
+      pipe_cat("Average Sepal.Width:", round(mean(culmen_length), 3)),
+    paste("Average Sepal.Width:", round(mean(penguins$culmen_length), 3))
   )
   expect_output(
-    iris %>%
+    penguins %>%
       pipe_cat("Number of rows:", nrow(.)),
-    paste("Number of rows:", nrow(iris))
+    paste("Number of rows:", nrow(penguins))
   )
 })
 
 test_that("grouped tibbles are printed separately", {
-  grouped_out <- iris %>%
-    group_by(Species) %>%
-    summarise(mean_SL = round(mean(Sepal.Length), 3)) %>%
-    mutate(output = paste(as.character(Species), "Average Sepal.Length:", mean_SL)) %>%
+  grouped_out <- penguins %>%
+    group_by(species) %>%
+    summarise(mean_CL = round(mean(culmen_length), 3)) %>%
+    mutate(output = paste(as.character(species), "Average culmen_length:", mean_CL)) %>%
     pull(output) %>%
     paste0(collapse = "\\n") %>%
     gsub(".", "\\.", fixed = T)
 
   expect_output(
-    iris %>%
-      group_by(Species) %>%
-      pipe_cat(as.character(Species), "Average Sepal.Length:", round(mean(Sepal.Length), 3), "\n"),
+    penguins %>%
+      group_by(species) %>%
+      pipe_cat(as.character(species), "Average culmen_length:", round(mean(culmen_length), 3), "\n"),
     grouped_out
   )
 })

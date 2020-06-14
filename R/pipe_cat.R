@@ -40,16 +40,20 @@
 #'   pipe_cat("Current number of rows: ", nrow, "\n") %>%
 #'   dplyr::mutate(z = x + y)
 #'
-#' iris %>%
-#'   dplyr::mutate(Species = as.character(Species)) %>%
-#'   pipe_cat("Total average Sepal Length: ", mean(Sepal.Length), "\n") %>%
-#'   dplyr::group_by(Species) %>%
-#'   pipe_cat(Species, " average Sepal Length: ", mean(Sepal.Length), "\n")
+#' palmerpenguins::penguins %>%
+#'   dplyr::mutate(species = as.character(species)) %>%
+#'   dplyr::filter(!is.na(culmen_length_mm)) %>%
+#'   pipe_cat("Total average Culmen Length: ", mean(culmen_length_mm), "\n") %>%
+#'   dplyr::group_by(species) %>%
+#'   pipe_cat(species, " average Culmen Length: ", mean(culmen_length_mm), "\n")
 pipe_cat <- function(data, ..., file = "", sep = " ", fill = FALSE,
                      labels = NULL, append = FALSE) {
   if (dplyr::is_grouped_df(data)) {
-    grp_tbl <- dplyr::group_keys(data)
-    data_split <- dplyr::group_split(data, keep = F)
+    grp_tbl <- dplyr::group_keys(data) %>%
+      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::mutate_all(mutils::justify)
+
+    data_split <- dplyr::group_split(data, .keep = F)
 
     if (length(data_split) != nrow(grp_tbl)) {
       rlang::abort("groups returned are inconsistent in pipe_cat")

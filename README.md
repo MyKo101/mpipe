@@ -9,6 +9,8 @@
 status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
+[![Version
+Badge](https://img.shields.io/badge/Version-0.0.0.9007-orange.svg)](https://github.com/MyKo101/mpipe)
 
 <!-- badges: end -->
 
@@ -33,6 +35,25 @@ library(mpipe)
 
 The `mpipe` package is not currently available on CRAN.
 
+### Examples
+
+The `palmerpenguins` package provides data on three species of penguins
+(Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and
+Torgersen). We’ll use the length and breadth of their Culmens (the ridge
+along a bird’s bill). A lot of the examples in this page are rather
+convoluted (and for many, there are other easier ways to get the same
+results, but they’re here to demonstrate `mpipe` functionality)
+
+    library(dplyr)
+    library(magrittr)
+    library(palmerpenguins)
+    library(mutils)
+    library(ggplot2)
+    #palmerpenguins has other variables and missing data, so I'll start by getting rid of these
+    penguins <- palmerpenguins::penguins %>% 
+      select(-body_mass_g,-flipper_length_mm) %>%
+      filter_all(~!is.na(.))
+
 ## fseq
 
 A little used feature of the `magrittr` package’s `%>%` pipe is that is
@@ -42,61 +63,89 @@ data. These kinds of functions are called `fseq` functions (short for
 functional sequences).
 
 ``` r
-f <- . %>%
-  group_by(Species) %>%
-  summarise_all(mean)
-f
+summarise_my_data <- . %>%
+  group_by(species,island,sex) %>%
+  summarise_all(mean,.groups="keep")
+summarise_my_data
 #> Functional sequence with the following components:
 #> 
-#>  1. group_by(., Species)
-#>  2. summarise_all(., mean)
+#>  1. group_by(., species, island, sex)
+#>  2. summarise_all(., mean, .groups = "keep")
 #> 
 #> Use 'functions' to extract the individual functions.
+
+summarise_my_data(penguins)
+#> # A tibble: 10 x 5
+#> # Groups:   species, island [5]
+#>    species   island    sex    culmen_length_mm culmen_depth_mm
+#>    <fct>     <fct>     <fct>             <dbl>           <dbl>
+#>  1 Adelie    Biscoe    FEMALE             37.4            17.7
+#>  2 Adelie    Biscoe    MALE               40.6            19.0
+#>  3 Adelie    Dream     FEMALE             36.9            17.6
+#>  4 Adelie    Dream     MALE               40.1            18.8
+#>  5 Adelie    Torgersen FEMALE             37.6            17.6
+#>  6 Adelie    Torgersen MALE               40.6            19.4
+#>  7 Chinstrap Dream     FEMALE             46.6            17.6
+#>  8 Chinstrap Dream     MALE               51.1            19.3
+#>  9 Gentoo    Biscoe    FEMALE             45.6            14.2
+#> 10 Gentoo    Biscoe    MALE               49.5            15.7
 ```
 
 The `mpipe` package includes a couple of extra things that can be done
-to these packages, including composition of `fseq` by adding them
-together
+to these kinds of functions, including composition of `fseq` by adding
+them together. We’ll define another `fseq` to filter out some penguins
+and variables.
 
 ``` r
-g <- . %>%
-  filter(Sepal.Length > 5.2) %>%
-  select(Species,Sepal.Length,Sepal.Width)
-g
+filter_my_data <- . %>%
+  filter(culmen_length_mm > 43) %>%
+  select(species,island,sex,culmen_length_mm)
+filter_my_data
 #> Functional sequence with the following components:
 #> 
-#>  1. filter(., Sepal.Length > 5.2)
-#>  2. select(., Species, Sepal.Length, Sepal.Width)
+#>  1. filter(., culmen_length_mm > 43)
+#>  2. select(., species, island, sex, culmen_length_mm)
 #> 
 #> Use 'functions' to extract the individual functions.
 ```
 
+Then we can create the composite functional sequence
+
 ``` r
-g+f
+filter_my_data + summarise_my_data
 #> Functional sequence with the following components:
 #> 
-#>  1. filter(., Sepal.Length > 5.2)
-#>  2. select(., Species, Sepal.Length, Sepal.Width)
-#>  3. group_by(., Species)
-#>  4. summarise_all(., mean)
+#>  1. filter(., culmen_length_mm > 43)
+#>  2. select(., species, island, sex, culmen_length_mm)
+#>  3. group_by(., species, island, sex)
+#>  4. summarise_all(., mean, .groups = "keep")
 #> 
 #> Use 'functions' to extract the individual functions.
 ```
 
+We can either assign this to a new function name, or apply it to the
+data implicitly (using brackets)
+
 ``` r
-(g+f)(iris)
-#> # A tibble: 3 x 3
-#>   Species    Sepal.Length Sepal.Width
-#>   <fct>             <dbl>       <dbl>
-#> 1 setosa             5.5         3.81
-#> 2 versicolor         6.04        2.81
-#> 3 virginica          6.62        2.98
+(filter_my_data + summarise_my_data)(penguins)
+#> # A tibble: 7 x 4
+#> # Groups:   species, island [5]
+#>   species   island    sex    culmen_length_mm
+#>   <fct>     <fct>     <fct>             <dbl>
+#> 1 Adelie    Biscoe    MALE               44.4
+#> 2 Adelie    Dream     MALE               43.7
+#> 3 Adelie    Torgersen MALE               44.8
+#> 4 Chinstrap Dream     FEMALE             47.2
+#> 5 Chinstrap Dream     MALE               51.1
+#> 6 Gentoo    Biscoe    FEMALE             46.0
+#> 7 Gentoo    Biscoe    MALE               49.5
 ```
 
-It also includes a `length()` method for `fseq` which returns the number
-of elements in the functional sequence, as well as a pair of functions
-to check whether something is an `fseq`: `is.fseq()` and `is_fseq()`
-(depending on your own preference)
+The `mpipe` package also includes a `length()` method for `fseq` which
+returns the number of elements in the functional sequence, as well as a
+pair of functions to check whether something is an `fseq`: `is.fseq()`
+and `is_fseq()` (depending on your own preference). More functions for
+using `fseq` to their full potential will be added in future releases.
 
 ## Side Effects
 
@@ -105,40 +154,52 @@ plotting or providing feedback to the user. the `mpipe` package provides
 two functions that are particularly useful for avoiding leaving a
 pipeline. The way this is done is that the functions side effects are
 activated, but the functions return an untouched version of the data it
-was originally provided.
+was originally provided. This is similar to using the `%T>%` pipe in
+magrittr, but cn be done with the traditional `%>%` pipe and is explicit
+in the name of the function.
 
   - `pipe_qplot()` - allows the user to create `ggplot2` style plots
-    using `qplot()` syntax (akin to the base R `plot()` syntax)
+    using `qplot()` syntax (akin to the base R `plot()` syntax). This is
+    essentially a wrapper function that also permits saving and theming
+    of the plots.
   - `pipe_cat()` - allows the user to output information to the console
     (or any other sink) in the much the same way that `cat()` does. Any
     calls/functions will be evaluated appropriately for this output.
+    Grouped tibbles will be parsed separately.
 
-<!-- end list -->
+Here we will create a plot of Culmen length against Culmen depth
+stratified by the three grouping variables (species, sex and island). We
+will then focus on the Biscoe island penguins, and output the average
+Culmen length, stratified by sex and species. Finally, we will return a
+dataset that contains the mean & sd across these groups.
 
 ``` r
-iris %>%
-  tibble %>%
-  select(Species,Sepal.Length,Sepal.Width) %>%
-  pipe_qplot(Sepal.Length,Sepal.Width,col=Species) %>%
-  pipe_cat("Total Average Sepal.Length: ",mean(Sepal.Length),"\n") %>%
-  group_by(Species) %>%
-  pipe_cat(as.character(Species)," Average Sepal.Length: ",mean(Sepal.Length),"\n") %>%
-  summarise(Length_mean = mean(Sepal.Length),
-            Width_mean = mean(Sepal.Width))
+penguins %>%
+  pipe_qplot(culmen_length_mm,culmen_depth_mm,col=species,
+             xlab="Culmen Length (mm)",ylab="Culmun Depth (mm)",
+             theme = "light",facets=sex~island) %>%
+  filter(island == "Biscoe") %>% 
+  pipe_cat("Biscoe Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
+  group_by(species,sex) %>%
+  pipe_cat(sex, species,"Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
+  summarise_if(is.numeric,list(mean=mean,sd=sd))
 ```
 
 <img src="man/figures/README-side_effects_example-1.png" width="100%" />
 
-    #> Total Average Sepal.Length:  5.843333 
-    #> setosa  Average Sepal.Length:  5.006 
-    #> versicolor  Average Sepal.Length:  5.936 
-    #> virginica  Average Sepal.Length:  6.588
-    #> # A tibble: 3 x 3
-    #>   Species    Length_mean Width_mean
-    #>   <fct>            <dbl>      <dbl>
-    #> 1 setosa            5.01       3.43
-    #> 2 versicolor        5.94       2.77
-    #> 3 virginica         6.59       2.97
+    #> Biscoe Average Culmun Length (mm): 45.24847 
+    #> FEMALE Adelie Average Culmun Length (mm): 37.35909 
+    #> MALE   Adelie Average Culmun Length (mm): 40.59091 
+    #> FEMALE Gentoo Average Culmun Length (mm): 45.56379 
+    #> MALE   Gentoo Average Culmun Length (mm): 49.47377
+    #> # A tibble: 4 x 6
+    #> # Groups:   species [2]
+    #>   species sex    culmen_length_mm~ culmen_depth_mm~ culmen_length_m~ culmen_depth_mm~
+    #>   <fct>   <fct>              <dbl>            <dbl>            <dbl>            <dbl>
+    #> 1 Adelie  FEMALE              37.4             17.7             1.76            1.09 
+    #> 2 Adelie  MALE                40.6             19.0             2.01            0.880
+    #> 3 Gentoo  FEMALE              45.6             14.2             2.05            0.540
+    #> 4 Gentoo  MALE                49.5             15.7             2.72            0.741
 
 ## Control Flow
 
@@ -156,104 +217,165 @@ using the `for()`, `while()` and `repeat()` statements and can
 essentially be vectorised using the `apply()` and `map()` families of
 functions.
 
+the `mpipe` package allows us to integrate this kind of control flow
+into a pipe by supplying different paths for data to follow based on a
+predicate, case or condition. Branches are implemented via the
+`if_branch()` and `switch_branch()` functions, and loops are implemented
+via the `while_pipe()` function.
+
 ### Branches
 
-The `if_branch()` and `switch_branch()` functions allow branching
-similar to `if()` and `switch()` statements. The `if_branch()` function
-chooses whether to proceed with the `fun` branch or the `elsefun` branch
-(if supplied) depending on how `predicate` is evaluated.
+#### if\_branch()
+
+The `if_branch()` works similar to an `if` statement. The function
+chooses whether to data should proceed down the `fun` branch or the
+`elsefun` branch (if supplied) depending on how `predicate` is
+evaluated.
+
+First, we’ll define an `fseq` style function, and apply it to the data
+twice. The `fseq` function will first shuffle the data and then if a
+male penguin ends up at the top of our list, we’ll pick just the Biscoe
+island penguins and extract the culmen length summary statistics, if a
+female penguin ends up on top, we’ll pick out the Biscoe & Dream island
+penguis and extract the culmen depth summary statistics.
 
 ``` r
 f <- . %>%
-  multiply_by(2) %>%
-  if_branch(. %>% equals(2),
-            . %>%
-              multiply_by(3) %>%
-              add(2)) %>%
-  multiply_by(2)
+  sample_n(nrow(.)) %>% #Shuffle the data
+  if_branch(sex[1] == "MALE", #predicate: Is the top row a male penguin?
+            . %>% #TRUE path
+              pipe_cat("Male penguin on top, extracting Culmen Length for Biscoe penguins\n") %>%
+              filter(island == "Biscoe") %>%
+              pull("culmen_length_mm") %>%
+              summary(), # End of TRUE Path
+            . %>% #FALSE path
+              pipe_cat("Female penguin on top, extracting Culmen Depth for Biscoe & Dream penguins\n") %>%
+              filter(island != "Torgersen") %>%
+              pull("culmen_length_mm") %>%
+              summary()) # End of FALSE Path & end of if_branch()
+              
 ```
 
-    f(1):-
-    1 %>%
-      multiply_by(2) %>% # => 1*2 = 2
-      if_branch(. %>% equals(2), # TRUE
-                . %>%
-                  multiply_by(3) %>% # => 2*3 = 6
-                  add(2)) %>% # => 6+2 = 8
-      multiply_by(2) # => 8*2 = 16
+``` r
+set.seed(1)
+f(penguins)
+#> Male penguin on top, extracting Culmen Length for Biscoe penguins
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>   34.50   41.85   45.80   45.25   48.75   59.60
+```
 
-    #> [1] 16
+``` r
+set.seed(2)
+f(penguins)
+#> Female penguin on top, extracting Culmen Depth for Biscoe & Dream penguins
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>   32.10   40.52   45.55   44.81   49.20   59.60
+```
 
-    f(2):-
-    2 %>%
-      multiply_by(2) %>% # => 2*2 = 4
-      if_branch(. %>% equals(2), # FALSE
-                . %>%
-                  multiply_by(3) %>% 
-                  add(2)) %>%
-      multiply_by(2) # => 4*2 = 8
-
-    #> [1] 8
+#### switch\_branch()
 
 Similarly, the `switch_branch()` function allows us to expand on this by
-following a different path depending on the evaluation of `case`
+following a different path depending on the evaluation of `case`. The
+`case` argument will be evaluated in the context of `data` and shoudl
+return either a character value or a numeric value. Characters will be
+matched to the other arguments provided to the `switch_branch()`
+function and numerics will be matched by position.
+
+This time, we will do similar to the previous example except checking
+which island ends up on top. We can see from the below (using the
+`table()` function in the `mutils` package), that if Torgersen is chosen
+as our random island, only Adelie penguins will be in our output.
+
+``` r
+penguins %>%
+  table(species,island)
+#>            island
+#> species     Biscoe Dream Torgersen
+#>   Adelie        44    55        47
+#>   Chinstrap      0    68         0
+#>   Gentoo       119     0         0
+```
+
+This means we can drop this level and output only based on sex.
+`switch_branch()` will output the data untouched if `case` doesn’t match
+any of the other arguments supplied. So we will adapt our function for
+this:
 
 ``` r
 f <- . %>%
   sample_n(nrow(.)) %>%
-  switch_branch(. %>% # What Species ends up at the top row?
-                  slice(1) %>% #Choose a path, based on that
-                  pull("Species") %>%
+  pipe_cat(as.character(island[1]),"island is on top, so it will be chosen.\n") %>%
+  filter(island == island[1]) %>%
+  group_by(species,sex) %>%
+  switch_branch(. %>% # What island ends up at the top row?
+                  slice(1) %>% #This time, we write case as an `fseq` as well.
+                  pull("island") %>%
                   as.character,
-                setosa = . %>%
-                  pipe_cat("setosa was one top\n") %>%
-                  filter(Species == "setosa"),
-                versicolor = . %>%
-                  pipe_cat("versicolor was on top\n") %>%
-                  filter(Species == "versicolor"),
-                virginica = . %>%
-                  pipe_cat("virginica was on top\n") %>%
-                  filter(Species == "virginica")) %>%
-  slice(1)
+                Torgersen = . %>%
+                  pipe_cat("\t\tspecies will be dropped\n") %>%
+                  group_by(sex) %>%
+                  select(-species)) %>%
+  summarise_if(is.numeric,mean)
 ```
 
 ``` r
-## Force the "random" shuffle to put a "virginica" Species is at the top
+## Force the "random" shuffle to put a "Biscoe" species is at the top
 set.seed(100)
-f(iris)
-#> virginica was on top
-#>   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-#> 1          5.8         2.7          5.1         1.9 virginica
+f(penguins)
+#> Biscoe island is on top, so it will be chosen.
+#> # A tibble: 4 x 4
+#> # Groups:   species [2]
+#>   species sex    culmen_length_mm culmen_depth_mm
+#>   <fct>   <fct>             <dbl>           <dbl>
+#> 1 Adelie  FEMALE             37.4            17.7
+#> 2 Adelie  MALE               40.6            19.0
+#> 3 Gentoo  FEMALE             45.6            14.2
+#> 4 Gentoo  MALE               49.5            15.7
 ```
 
 ``` r
-## Force the "random" shuffle to put a "verisicolor" Species is at the top
+## Force the "random" shuffle to put a "Torgersen" species is at the top
 set.seed(1000)
-f(iris)
-#> versicolor was on top
-#>   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-#> 1          5.8         2.7          4.1           1 versicolor
-```
-
-``` r
-## Force the "random" shuffle to put a "setosa" Species is at the top
-set.seed(10000)
-f(iris)
-#> setosa was one top
-#>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#> 1          4.7         3.2          1.6         0.2  setosa
+f(penguins)
+#> Torgersen island is on top, so it will be chosen.
+#>      species will be dropped
+#>      species will be dropped
+#> # A tibble: 2 x 3
+#>   sex    culmen_length_mm culmen_depth_mm
+#>   <fct>             <dbl>           <dbl>
+#> 1 FEMALE             37.6            17.6
+#> 2 MALE               40.6            19.4
 ```
 
 ### Loops
 
-In terms of loops, we have the `while_pipe()` function which acts
+In terms of loops, we introduce the `while_pipe()` function which acts
 similar to a `while()` loop, but within a pipeline. It will repeatedly
 apply the `fun` argument to the `data` until `cond` is not `TRUE`.
-`cond` will be evaluated within the context of `data`. The
-`while_pipe()` function also provides a `.counter` pronoun to keep track
-of how many times the loop as been run (however any `cond` that
-evaluates to `TRUE` or `FALSE` similar to the `if_branch()` function
-will work).
+`cond` will be evaluated within the context of `data` at each iteration.
+
+For this example, we’re simply going to shuffle until the first penguin
+is a female.
+
+``` r
+penguins %>%
+  while_pipe(sex[1] != "FEMALE",
+             . %>%
+               sample_n(nrow(.))) %>%
+  slice(1:5)
+#> # A tibble: 5 x 5
+#>   species   island culmen_length_mm culmen_depth_mm sex   
+#>   <fct>     <fct>             <dbl>           <dbl> <fct> 
+#> 1 Adelie    Biscoe             35              17.9 FEMALE
+#> 2 Adelie    Dream              40.9            18.9 MALE  
+#> 3 Chinstrap Dream              51.3            19.9 MALE  
+#> 4 Gentoo    Biscoe             50.5            15.9 MALE  
+#> 5 Adelie    Biscoe             39              17.5 FEMALE
+```
+
+The `while_pipe()` function also provides a `.counter` pronoun to keep
+track of how many times the loop as been run. This can be used in the
+predicate and in the functions.
 
 ``` r
 tibble(x = runif(5)) %>%
@@ -261,13 +383,13 @@ tibble(x = runif(5)) %>%
              . %>%
                mutate(!!paste0("x_",.counter) := x - x[.counter]))
 #> # A tibble: 5 x 6
-#>        x    x_1   x_2    x_3    x_4    x_5
-#>    <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 0.795   0     0.772  0.133  0.241  0.342
-#> 2 0.0230 -0.772 0     -0.638 -0.530 -0.430
-#> 3 0.661  -0.133 0.638  0      0.108  0.208
-#> 4 0.553  -0.241 0.530 -0.108  0      0.101
-#> 5 0.453  -0.342 0.430 -0.208 -0.101  0
+#>        x   x_1    x_2     x_3     x_4     x_5
+#>    <dbl> <dbl>  <dbl>   <dbl>   <dbl>   <dbl>
+#> 1 0.0852 0     -0.578 -0.219  -0.151  -0.301 
+#> 2 0.663  0.578  0      0.359   0.427   0.277 
+#> 3 0.304  0.219 -0.359  0       0.0682 -0.0815
+#> 4 0.236  0.151 -0.427 -0.0682  0      -0.150 
+#> 5 0.386  0.301 -0.277  0.0815  0.150   0
 ```
 
 ## Code of Conduct
@@ -275,3 +397,10 @@ tibble(x = runif(5)) %>%
 Please note that the mpipe project is released with a [Contributor Code
 of Conduct](https://michaelbarrowman.co.uk/mpipe/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+## References
+
+`palmerpenguins`: Gorman KB, Williams TD, Fraser WR (2014) Ecological
+Sexual Dimorphism and Environmental Variability within a Community of
+Antarctic Penguins (Genus Pygoscelis). PLoS ONE 9(3): e90081.
+<https://doi.org/10.1371/journal.pone.0090081>

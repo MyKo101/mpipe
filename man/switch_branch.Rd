@@ -34,7 +34,10 @@ match, then the original data is passed unchanged
 
 tibble::tibble(
   x = rnorm(10),
-  y = sample(c("red", "blue", "yellow"), 10, replace = TRUE)
+  y = sample(c("red", "blue", "yellow"),
+    10,
+    replace = TRUE
+  )
 ) \%>\%
   dplyr::arrange(x) \%>\%
   switch_branch(. \%>\%
@@ -49,19 +52,18 @@ tibble::tibble(
   ) \%>\%
   dplyr::summarise(m.x = mean(x))
 
-iris \%>\%
-  tibble::tibble() \%>\%
-  dplyr::mutate(Species = factor(Species, levels = c("setosa", "virginica", "versicolor"))) \%>\%
+palmerpenguins::penguins \%>\%
+  dplyr::mutate(species = factor(species, levels = c("Gentoo", "Adelie", "Chinstrap"))) \%>\%
   dplyr::sample_n(1) \%>\%
   switch_branch(
     . \%>\%
-      dplyr::pull(Species) \%>\%
+      dplyr::pull(species) \%>\%
       as.numeric(),
     . \%>\%
-      pipe_cat("Selected row is setosa\n"),
+      pipe_cat("Selected row is Gentoo\n"),
     . \%>\%
-      pipe_cat("Selected row is virginica\n"),
+      pipe_cat("Selected row is Adelie\n"),
     . \%>\%
-      pipe_cat("Selected row is versicolor\n")
+      pipe_cat("Selected row is Chinstrap\n")
   )
 }

@@ -4,43 +4,43 @@
 
 test_that("predicate works implicitly", {
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         TRUE,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "setosa"])
+    mean(penguins$culmen_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         FALSE,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "virginica"])
+    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
   )
 
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         FALSE,
         . %>%
-          filter(Species == "setosa")
+          filter(species == "Adelie")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length)
+    mean(penguins$culmen_length)
   )
 
   f <- function(x) {
@@ -48,31 +48,31 @@ test_that("predicate works implicitly", {
       if_branch(
         TRUE,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean()
   }
 
-  expect_equal(f(iris), mean(iris$Sepal.Length[iris$Species == "setosa"]))
+  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
 })
 
 test_that("predicate works for external variable", {
   this_predicate <- TRUE
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         this_predicate,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "setosa"])
+    mean(penguins$culmen_length[penguins$species == "Adelie"])
   )
 
   f <- function(x) {
@@ -82,44 +82,44 @@ test_that("predicate works for external variable", {
       if_branch(
         this_predicate,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean()
   }
 
-  expect_equal(f(iris), mean(iris$Sepal.Length[iris$Species == "virginica"]))
+  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Chinstrap"]))
 })
 
 test_that("predicate statement is evaluated within data (uses eval_expr)", {
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         nrow(.) > 100,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "setosa"])
+    mean(penguins$culmen_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         nrow(.) < 100,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "virginica"])
+    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
   )
 
   f <- function(x) {
@@ -127,48 +127,48 @@ test_that("predicate statement is evaluated within data (uses eval_expr)", {
       if_branch(
         nrow(.) < 100,
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean()
   }
 
-  expect_equal(f(iris), mean(iris$Sepal.Length[iris$Species == "virginica"]))
+  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Chinstrap"]))
 })
 
 test_that("predicate function is evaluated within data (uses eval_expr)", {
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         . %>%
           nrow() %>%
           is_greater_than(100),
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "setosa"])
+    mean(penguins$culmen_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
-    iris %>%
+    penguins %>%
       if_branch(
         . %>%
           nrow() %>%
           is_less_than(100),
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean(),
-    mean(iris$Sepal.Length[iris$Species == "virginica"])
+    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
   )
 
   f <- function(x) {
@@ -178,15 +178,15 @@ test_that("predicate function is evaluated within data (uses eval_expr)", {
           nrow() %>%
           is_greater_than(100),
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean()
   }
 
-  expect_equal(f(iris), mean(iris$Sepal.Length[iris$Species == "setosa"]))
+  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
 })
 
 test_that("works with enquo-ing of cond", {
@@ -195,16 +195,16 @@ test_that("works with enquo-ing of cond", {
       if_branch(
         !!enquo(cond),
         . %>%
-          filter(Species == "setosa"),
+          filter(species == "Adelie"),
         . %>%
-          filter(Species == "virginica")
+          filter(species == "Chinstrap")
       ) %>%
-      pull(Sepal.Length) %>%
+      pull(culmen_length) %>%
       mean()
   }
 
   expect_equal(
-    f(iris, nrow(.) < 100),
-    mean(iris$Sepal.Length[iris$Species == "virginica"])
+    f(penguins, nrow(.) < 100),
+    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
   )
 })

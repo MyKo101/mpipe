@@ -1,7 +1,8 @@
 Type: Package
 Package: mpipe
 Title: Adds extra functionality to pipelines
-Version: 0.0.0.9006
+Version: 0.0.0.9007
+Date: 2020-06-14
 Authors@R:
     person(given = "Michael",
            family = "Barrowman",
@@ -20,13 +21,16 @@ Imports:
     magrittr,
     mutils,
     rlang (>= 0.1.2),
-    tibble
+    tibble,
+    palmerpenguins,
+    Rdpack
 Suggests: 
     covr,
     roxygen2,
     testthat
 Remotes: 
-    MyKo101/mutils
+    MyKo101/mutils,
+    allisonhorst/palmerpenguins
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

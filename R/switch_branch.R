@@ -37,7 +37,10 @@
 #'
 #' tibble::tibble(
 #'   x = rnorm(10),
-#'   y = sample(c("red", "blue", "yellow"), 10, replace = TRUE)
+#'   y = sample(c("red", "blue", "yellow"),
+#'     10,
+#'     replace = TRUE
+#'   )
 #' ) %>%
 #'   dplyr::arrange(x) %>%
 #'   switch_branch(. %>%
@@ -52,20 +55,19 @@
 #'   ) %>%
 #'   dplyr::summarise(m.x = mean(x))
 #'
-#' iris %>%
-#'   tibble::tibble() %>%
-#'   dplyr::mutate(Species = factor(Species, levels = c("setosa", "virginica", "versicolor"))) %>%
+#' palmerpenguins::penguins %>%
+#'   dplyr::mutate(species = factor(species, levels = c("Gentoo", "Adelie", "Chinstrap"))) %>%
 #'   dplyr::sample_n(1) %>%
 #'   switch_branch(
 #'     . %>%
-#'       dplyr::pull(Species) %>%
+#'       dplyr::pull(species) %>%
 #'       as.numeric(),
 #'     . %>%
-#'       pipe_cat("Selected row is setosa\n"),
+#'       pipe_cat("Selected row is Gentoo\n"),
 #'     . %>%
-#'       pipe_cat("Selected row is virginica\n"),
+#'       pipe_cat("Selected row is Adelie\n"),
 #'     . %>%
-#'       pipe_cat("Selected row is versicolor\n")
+#'       pipe_cat("Selected row is Chinstrap\n")
 #'   )
 switch_branch <- function(data, case, ..., warn = F) {
   parent <- rlang::caller_env()
@@ -73,7 +75,12 @@ switch_branch <- function(data, case, ..., warn = F) {
 
   fs <- rlang::list2(...)
 
+  original_data <- data
+
+  if (dplyr::is_grouped_df(data)) data <- dplyr::ungroup(data)
+
   case_eval <- eval_expr(data, !!enquo(case), env = env)
+
 
 
   if (!is.character(case_eval) && !is.numeric(case_eval)) {
@@ -91,5 +98,5 @@ switch_branch <- function(data, case, ..., warn = F) {
     chosen_f <- fs[[case_eval]]
   }
 
-  chosen_f(data)
+  chosen_f(original_data)
 }

@@ -38,6 +38,10 @@
 #' should the plot be displayed? Should only be used if
 #' `save.options` is not NULL
 #'
+#' @param theme
+#' a character string that links to a function of the form
+#' `theme_*()`, e.g. the agrument `theme="bw"` will apply `theme_bw()`
+#'
 #' @param  facets,margins,geom,xlim,ylim,log,main,xlab,ylab,asp,stat,position
 #' see the [`qplot()`][ggplot2::qplot()] documentation for more
 #' information regarding these arguments.
@@ -46,41 +50,60 @@
 #'
 #' @examples
 #'
-#' tibble::tibble(iris) %>%
-#'   dplyr::group_by(Species) %>%
-#'   pipe_qplot(Sepal.Length,
-#'     fill = Species,
-#'     geom = "histogram",
+#' palmerpenguins::penguins %>%
+#'   dplyr::group_by(species) %>%
+#'   pipe_qplot(culmen_length_mm,
+#'     fill = species,
+#'     theme = "light",
+#'     geom = "density",
+#'     alpha = 0.5,
 #'     binwidth = 0.1
 #'   ) %>%
-#'   dplyr::summarise(mean = mean(Sepal.Length))
+#'   dplyr::summarise(mean = mean(culmen_length_mm))
 pipe_qplot <- function(data, x, y, ..., facets = NULL, margins = FALSE, geom = "auto",
                        xlim = c(NA, NA), ylim = c(NA, NA), log = "",
                        main = NULL, xlab = NULL, ylab = NULL, asp = NA,
                        stat = stat, position = position,
-                       save.options = NULL, print.plot = T) {
+                       theme = NULL, save.options = NULL, print.plot = T) {
+  requireNamespace("ggplot2", quietly = T)
   if (is.null(save.options) & !print.plot) {
     rlang::warn("print.plot set to FALSE in pipe_qplot() &
                 no save.options supplied. Nothing done")
   } else {
-    parent <- parent.frame()
-    env <- new.env(parent = parent)
+    parent <- rlang::caller_env()
+    env <- list2env(data, parent = parent)
+    env[["data"]] <- data
 
     .call <- match.call()
 
     .args <- names(.call)
 
-    if (any(.args %in% c("print.plot", "save.options", "data"))) {
-      .call <- .call[-which(.args %in% c("print.plot", "save.options", "data"))]
+    if (any(.args %in% c("print.plot", "save.options", "theme"))) {
+      .call <- .call[-which(.args %in% c("print.plot", "save.options", "theme"))]
     }
-
+    ####
 
     .call[[1]] <- quote(ggplot2::qplot)
+
     quo_call <- rlang::quo()
     quo_call <- rlang::quo_set_expr(quo_call, .call)
 
+    env[[".call"]] <- .call
+    p <- eval(.call, env)
 
-    p <- eval_expr(data, !!quo_call)
+    if (!is.null(theme)) {
+      theme_func_search <- tryCatch(match.fun(paste0("theme_", theme)),
+        error = function(e) NULL
+      )
+      if (is.null(theme_func_search)) {
+        theme_func_search <- tryCatch(match.fun(paste0("ggplot2::theme_", theme)),
+          error = function(e) NULL
+        )
+      }
+      if (!is.null(theme_func_search)) {
+        p <- p + theme_func_search()
+      }
+    }
 
     if (print.plot) {
       print(p)
