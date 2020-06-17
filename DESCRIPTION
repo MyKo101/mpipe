@@ -29,7 +29,7 @@ Suggests:
     roxygen2,
     testthat
 Remotes: 
-    MyKo101/mutils,
+    MyKo101/mutils@main,
     allisonhorst/palmerpenguins
 Encoding: UTF-8
 LazyData: true
