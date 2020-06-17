@@ -10,7 +10,7 @@ status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
 [![Version
-Badge](https://img.shields.io/badge/Version-0.0.0.9008-orange.svg)](https://github.com/MyKo101/mpipe)
+Badge](https://img.shields.io/badge/Version-0.0.0.9009-orange.svg)](https://github.com/MyKo101/mpipe)
 
 <!-- badges: end -->
 
