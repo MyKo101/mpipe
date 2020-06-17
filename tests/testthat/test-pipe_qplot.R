@@ -2,7 +2,7 @@ library(ggplot2)
 
 test_that("returned value is same as input", {
   expect_equal(
-    penguins %>% pipe_qplot(culmen_length, culmen_depth),
+    penguins %>% pipe_qplot(culmen_length, culmen_depth,theme="light"),
     penguins
   )
 })

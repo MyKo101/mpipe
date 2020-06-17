@@ -18,6 +18,20 @@ test_that("case works implicitly with characters", {
 
   expect_equal(
     penguins %>%
+      group_by(species) %>%
+      switch_branch("Gentoo",
+        Gentoo = . %>%
+          filter(species == "Gentoo"),
+        Adelie = . %>%
+          filter(species == "Adelie")
+      ) %>%
+      pull(culmen_length) %>%
+      mean(),
+    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+  )
+
+  expect_equal(
+    penguins %>%
       switch_branch("Adelie",
         Gentoo = . %>%
           filter(species == "Gentoo"),

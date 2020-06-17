@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+options(crayon.enabled=NULL)
 ```
 
 # mpipe <img src='man/figures/logo.png' align="right" height="139" />
@@ -19,8 +20,8 @@ knitr::opts_chunk$set(
  <!-- badges: start -->
  
  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
- [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=master)
- [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9007-orange.svg)](https://github.com/MyKo101/mpipe)
+ [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
+ [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9008-orange.svg)](https://github.com/MyKo101/mpipe)
  
   <!-- badges: end -->
 
