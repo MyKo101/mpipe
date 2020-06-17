@@ -5,7 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -21,7 +21,7 @@ options(crayon.enabled=NULL)
  
  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
  [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
- [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9008-orange.svg)](https://github.com/MyKo101/mpipe)
+ [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9010-orange.svg)](https://github.com/MyKo101/mpipe)
  
   <!-- badges: end -->
 
@@ -31,7 +31,7 @@ The `mpipe` package is designed to add to extra functionality to the "pipelining
 
 You can install the development version of `mpipe` from [GitHub](https://github.com/MyKo101/mpipe) with:
 
-```{r}
+```{r install_mpipe}
 # install.packages("devtools")
 # devtools::install_github("MyKo101/mpipe")
 library(mpipe)
@@ -44,27 +44,12 @@ The `mpipe` package is not currently available on CRAN.
 The `palmerpenguins` package provides data on three species of penguins (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and Torgersen). We'll use the length and breadth of their Culmens (the ridge along a bird's bill). A lot of the examples in this page are rather convoluted (and for many, there are other easier ways to get the same results, but they're here to demonstrate `mpipe` functionality)
 
 
-```{r load_packages, include=F}
-library(dplyr)
-library(magrittr)
-library(palmerpenguins)
-library(mutils)
-library(ggplot2)
-penguins <- palmerpenguins::penguins %>% 
-  select(-body_mass_g,-flipper_length_mm) %>%
-  filter_all(~!is.na(.))
-```
-```
-library(dplyr)
-library(magrittr)
-library(palmerpenguins)
-library(mutils)
-library(ggplot2)
-#palmerpenguins has other variables and missing data, so I'll start by getting rid of these
-penguins <- palmerpenguins::penguins %>% 
-  select(-body_mass_g,-flipper_length_mm) %>%
-  filter_all(~!is.na(.))
+```{r load_packages, echo=T, results='hide'}
+mutils::load_packages(dplyr, magrittr, palmerpenguins, mutils, ggplot2)
 
+penguins <- palmerpenguins::penguins %>% 
+  select(-body_mass_g,-flipper_length_mm) %>%
+  filter_all(~!is.na(.))
 ```
 
 
@@ -104,23 +89,23 @@ The `mpipe` package also includes a `length()` method for `fseq` which returns t
 
 ## Side Effects
 
-A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the `mpipe` package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. This is similar to using the `%T>%` pipe in magrittr, but cn be done with the traditional `%>%` pipe and is explicit in the name of the function.
+A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the `mpipe` package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. This is similar to using the `%T>%` pipe in magrittr, but can be done with the traditional `%>%` pipe and is explicit in the name of the function.
 
 * `pipe_qplot()` - allows the user to create `ggplot2` style plots using `qplot()` syntax (akin to the base R `plot()` syntax). This is essentially a wrapper function that also permits saving and theming of the plots.
 * `pipe_cat()` - allows the user to output information to the console (or any other sink) in the much the same way that `cat()` does. Any calls/functions will be evaluated appropriately for this output. Grouped tibbles will be parsed separately.
 
-Here we will create a plot of Culmen length against Culmen depth stratified by the three grouping variables (species, sex and island). We will then focus on the Biscoe island penguins, and output the average Culmen length, stratified by sex and species. Finally, we will return a dataset that contains the mean & sd across these groups.
+Here we will create a plot of Culmen length against Culmen depth stratified by the three grouping variables: `species`, `sex` and `island.` We'll colour-code `species` using `col = species`, and `facets = sex ~ island` will create facets based on these two variables. We will then focus on the Biscoe island penguins (using `filter()`), and output the average Culmen length, then stratify it by sex and species. Finally, we will return a dataset that contains the mean of Culmen length and depth across these groups.
 
 ```{r side_effects_example}
 penguins %>%
-  pipe_qplot(culmen_length_mm,culmen_depth_mm,col=species,
-             xlab="Culmen Length (mm)",ylab="Culmun Depth (mm)",
-             theme = "light",facets=sex~island) %>%
+  pipe_qplot(culmen_length_mm, culmen_depth_mm, col = species,
+             xlab = "Culmen Length (mm)", ylab = "Culmun Depth (mm)",
+             theme = "light", facets = sex ~ island) %>%
   filter(island == "Biscoe") %>% 
-  pipe_cat("Biscoe Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
+  pipe_cat("Biscoe Average Culmun Length (mm):", mean(culmen_length_mm), "\n\n") %>%
   group_by(species,sex) %>%
-  pipe_cat(sex, species,"Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
-  summarise_if(is.numeric,list(mean=mean,sd=sd))
+  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(culmen_length_mm), "\n") %>%
+  summarise_if(is.numeric, mean)
 
 ```
 
@@ -174,7 +159,7 @@ f(penguins)
 
 Similarly, the `switch_branch()` function allows us to expand on this by following a different path depending on the evaluation of `case`. The `case` argument will be evaluated in the context of `data` and shoudl return either a character value or a numeric value. Characters will be matched to the other arguments provided to the `switch_branch()` function and numerics will be matched by position.
 
-This time, we will do similar to the previous example except checking which island ends up on top. We can see from the below (using the `table()` function in the `mutils` package), that if Torgersen is chosen as our random island, only Adelie penguins will be in our output.
+This time, we will do similar to the previous example except checking which island ends up on top. We can see from the below (using the `table()` function overloaded by the `mutils` package), that if Torgersen is chosen as our random island, only Adelie penguins will be in our output.
 
 ```{r table_species_island}
 penguins %>%
@@ -194,7 +179,8 @@ f <- . %>%
                   pull("island") %>%
                   as.character,
                 Torgersen = . %>%
-                  pipe_cat("\t\tspecies will be dropped\n") %>%
+                  ungroup %>% 
+                  pipe_cat("\t\tSpecies will be dropped.\n") %>%
                   group_by(sex) %>%
                   select(-species)) %>%
   summarise_if(is.numeric,mean)
@@ -220,7 +206,7 @@ f(penguins)
 
 In terms of loops, we introduce the `while_pipe()` function which acts similar to a `while()` loop, but within a pipeline. It will repeatedly apply the `fun` argument to the `data` until `cond` is not `TRUE`. `cond` will be evaluated within the context of `data` at each iteration.
 
-For this example, we're simply going to shuffle until the first penguin is a female.
+For this example, we're simply going to shuffle until the first penguin is a female and then output the top 5 results.
 
 ```{r while_example1}
 penguins %>%
@@ -232,7 +218,7 @@ penguins %>%
 ```
 
 
-The `while_pipe()` function also provides a `.counter` pronoun to keep track of how many times the loop as been run. This can be used in the predicate and in the functions.
+The `while_pipe()` function also provides a `.counter` pronoun to keep track of how many times the loop as been run. This can be used within `cond` and within `fun` and even allows for simple leves of tidy evaluation.
 
 
 ```{r while_example2}
@@ -252,6 +238,7 @@ Please note that the mpipe project is released with a [Contributor Code of Condu
 
 ## References
 
-`palmerpenguins`:
+`palmerpenguins`
+
 Gorman KB, Williams TD, Fraser WR (2014) Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis). PLoS ONE 9(3): e90081. [https://doi.org/10.1371/journal.pone.0090081](https://doi.org/10.1371/journal.pone.0090081)
 

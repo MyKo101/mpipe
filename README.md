@@ -10,7 +10,7 @@ status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
 [![Version
-Badge](https://img.shields.io/badge/Version-0.0.0.9008-orange.svg)](https://github.com/MyKo101/mpipe)
+Badge](https://img.shields.io/badge/Version-0.0.0.9010-orange.svg)](https://github.com/MyKo101/mpipe)
 
 <!-- badges: end -->
 
@@ -44,15 +44,13 @@ along a bird’s bill). A lot of the examples in this page are rather
 convoluted (and for many, there are other easier ways to get the same
 results, but they’re here to demonstrate `mpipe` functionality)
 
-    library(dplyr)
-    library(magrittr)
-    library(palmerpenguins)
-    library(mutils)
-    library(ggplot2)
-    #palmerpenguins has other variables and missing data, so I'll start by getting rid of these
-    penguins <- palmerpenguins::penguins %>% 
-      select(-body_mass_g,-flipper_length_mm) %>%
-      filter_all(~!is.na(.))
+``` r
+mutils::load_packages(dplyr, magrittr, palmerpenguins, mutils, ggplot2)
+
+penguins <- palmerpenguins::penguins %>% 
+  select(-body_mass_g,-flipper_length_mm) %>%
+  filter_all(~!is.na(.))
+```
 
 ## fseq
 
@@ -155,8 +153,8 @@ two functions that are particularly useful for avoiding leaving a
 pipeline. The way this is done is that the functions side effects are
 activated, but the functions return an untouched version of the data it
 was originally provided. This is similar to using the `%T>%` pipe in
-magrittr, but cn be done with the traditional `%>%` pipe and is explicit
-in the name of the function.
+magrittr, but can be done with the traditional `%>%` pipe and is
+explicit in the name of the function.
 
   - `pipe_qplot()` - allows the user to create `ggplot2` style plots
     using `qplot()` syntax (akin to the base R `plot()` syntax). This is
@@ -168,39 +166,42 @@ in the name of the function.
     Grouped tibbles will be parsed separately.
 
 Here we will create a plot of Culmen length against Culmen depth
-stratified by the three grouping variables (species, sex and island). We
-will then focus on the Biscoe island penguins, and output the average
-Culmen length, stratified by sex and species. Finally, we will return a
-dataset that contains the mean & sd across these groups.
+stratified by the three grouping variables: `species`, `sex` and
+`island.` We’ll colour-code `species` using `col = species`, and `facets
+= sex ~ island` will create facets based on these two variables. We will
+then focus on the Biscoe island penguins (using `filter()`), and output
+the average Culmen length, then stratify it by sex and species. Finally,
+we will return a dataset that contains the mean of Culmen length and
+depth across these groups.
 
 ``` r
 penguins %>%
-  pipe_qplot(culmen_length_mm,culmen_depth_mm,col=species,
-             xlab="Culmen Length (mm)",ylab="Culmun Depth (mm)",
-             theme = "light",facets=sex~island) %>%
+  pipe_qplot(culmen_length_mm, culmen_depth_mm, col = species,
+             xlab = "Culmen Length (mm)", ylab = "Culmun Depth (mm)",
+             theme = "light", facets = sex ~ island) %>%
   filter(island == "Biscoe") %>% 
-  pipe_cat("Biscoe Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
+  pipe_cat("Biscoe Average Culmun Length (mm):", mean(culmen_length_mm), "\n\n") %>%
   group_by(species,sex) %>%
-  pipe_cat(sex, species,"Average Culmun Length (mm):",mean(culmen_length_mm),"\n") %>%
-  summarise_if(is.numeric,list(mean=mean,sd=sd))
+  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(culmen_length_mm), "\n") %>%
+  summarise_if(is.numeric, mean)
 ```
 
 <img src="man/figures/README-side_effects_example-1.png" width="100%" />
 
     #> Biscoe Average Culmun Length (mm): 45.24847 
+    #> 
     #> FEMALE Adelie Average Culmun Length (mm): 37.35909 
     #> MALE   Adelie Average Culmun Length (mm): 40.59091 
     #> FEMALE Gentoo Average Culmun Length (mm): 45.56379 
     #> MALE   Gentoo Average Culmun Length (mm): 49.47377
-    #> # A tibble: 4 x 6
+    #> # A tibble: 4 x 4
     #> # Groups:   species [2]
-    #>   species sex   culmen_length_m~ culmen_depth_mm~ culmen_length_m~
-    #>   <fct>   <fct>            <dbl>            <dbl>            <dbl>
-    #> 1 Adelie  FEMA~             37.4             17.7             1.76
-    #> 2 Adelie  MALE              40.6             19.0             2.01
-    #> 3 Gentoo  FEMA~             45.6             14.2             2.05
-    #> 4 Gentoo  MALE              49.5             15.7             2.72
-    #> # ... with 1 more variable: culmen_depth_mm_sd <dbl>
+    #>   species sex    culmen_length_mm culmen_depth_mm
+    #>   <fct>   <fct>             <dbl>           <dbl>
+    #> 1 Adelie  FEMALE             37.4            17.7
+    #> 2 Adelie  MALE               40.6            19.0
+    #> 3 Gentoo  FEMALE             45.6            14.2
+    #> 4 Gentoo  MALE               49.5            15.7
 
 ## Control Flow
 
@@ -284,8 +285,9 @@ function and numerics will be matched by position.
 
 This time, we will do similar to the previous example except checking
 which island ends up on top. We can see from the below (using the
-`table()` function in the `mutils` package), that if Torgersen is chosen
-as our random island, only Adelie penguins will be in our output.
+`table()` function overloaded by the `mutils` package), that if
+Torgersen is chosen as our random island, only Adelie penguins will be
+in our output.
 
 ``` r
 penguins %>%
@@ -313,7 +315,8 @@ f <- . %>%
                   pull("island") %>%
                   as.character,
                 Torgersen = . %>%
-                  pipe_cat("\t\tspecies will be dropped\n") %>%
+                  ungroup %>% 
+                  pipe_cat("\t\tSpecies will be dropped.\n") %>%
                   group_by(sex) %>%
                   select(-species)) %>%
   summarise_if(is.numeric,mean)
@@ -339,8 +342,7 @@ f(penguins)
 set.seed(1000)
 f(penguins)
 #> Torgersen island is on top, so it will be chosen.
-#>      species will be dropped
-#>      species will be dropped
+#>      Species will be dropped.
 #> # A tibble: 2 x 3
 #>   sex    culmen_length_mm culmen_depth_mm
 #>   <fct>             <dbl>           <dbl>
@@ -356,7 +358,7 @@ apply the `fun` argument to the `data` until `cond` is not `TRUE`.
 `cond` will be evaluated within the context of `data` at each iteration.
 
 For this example, we’re simply going to shuffle until the first penguin
-is a female.
+is a female and then output the top 5 results.
 
 ``` r
 penguins %>%
@@ -375,8 +377,9 @@ penguins %>%
 ```
 
 The `while_pipe()` function also provides a `.counter` pronoun to keep
-track of how many times the loop as been run. This can be used in the
-predicate and in the functions.
+track of how many times the loop as been run. This can be used within
+`cond` and within `fun` and even allows for simple leves of tidy
+evaluation.
 
 ``` r
 tibble(x = runif(5)) %>%
@@ -401,7 +404,9 @@ By contributing to this project, you agree to abide by its terms.
 
 ## References
 
-`palmerpenguins`: Gorman KB, Williams TD, Fraser WR (2014) Ecological
-Sexual Dimorphism and Environmental Variability within a Community of
-Antarctic Penguins (Genus Pygoscelis). PLoS ONE 9(3): e90081.
+`palmerpenguins`
+
+Gorman KB, Williams TD, Fraser WR (2014) Ecological Sexual Dimorphism
+and Environmental Variability within a Community of Antarctic Penguins
+(Genus Pygoscelis). PLoS ONE 9(3): e90081.
 <https://doi.org/10.1371/journal.pone.0090081>
