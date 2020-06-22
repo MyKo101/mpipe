@@ -86,7 +86,7 @@ to reference how many iterations have been performed so far." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -133,11 +133,11 @@ loop without breaking out of a pipeline.
 To maintain the flow of a pipeline, it is recommended
 to use [<code>fseq</code>][] style arguments (i.e. pipelines) for the
 <code>fun</code> argument.</p>
-<p>Within the <code>while_pipe()</code>, users can use the <code>.counter</code> variable
+<p>Within the <code><a href='https://michaelbarrowman.co.uk/mpipe/reference/while_pipe.html'>while_pipe()</a></code>, users can use the <code>.counter</code> variable
 to reference how many iterations have been performed so far.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>while_pipe</span>(<span class='no'>data</span>, <span class='no'>cond</span>, <span class='no'>fun</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/while_pipe.html'>while_pipe</a></span>(<span class='kw'>data</span>, <span class='kw'>cond</span>, <span class='kw'>fun</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,21 +161,21 @@ logical value or be coercible to one.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>.</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>while_pipe</span>(
-    <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>.</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>,
-    <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>() <span class='kw'>%&gt;%</span>
-      <span class='kw pkg'>magrittr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>divide_by</a></span>(<span class='fl'>2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/while_pipe.html'>while_pipe</a></span>(
+    <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>) <span class='op'>&gt;</span> <span class='fl'>1</span>,
+    <span class='kw'>.</span> <span class='op'>%&gt;%</span>
+      <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>() <span class='op'>%&gt;%</span>
+      <span class='kw'>magrittr</span>::<span class='fu'><a href='https://rdrr.io/pkg/magrittr/man/aliases.html'>divide_by</a></span>(<span class='fl'>2</span>)
   )</div><div class='output co'>#&gt; Current length:  95 </div><div class='output co'>#&gt; [1] 0.009624105</div><div class='input'>
 
-<span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>5</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>while_pipe</span>(
-    <span class='no'>.counter</span> <span class='kw'>&lt;=</span> <span class='fl'>5</span>,
-    <span class='no'>.</span> <span class='kw'>%&gt;%</span>
-      <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(!!<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"x_"</span>, <span class='no'>.counter</span>) <span class='kw'>:=</span> <span class='no'>x</span> - <span class='no'>x</span>[<span class='no'>.counter</span>])
+<span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>5</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/while_pipe.html'>while_pipe</a></span>(
+    <span class='kw'>.counter</span> <span class='op'>&lt;=</span> <span class='fl'>5</span>,
+    <span class='kw'>.</span> <span class='op'>%&gt;%</span>
+      <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"x_"</span>, <span class='kw'>.counter</span>) <span class='op'>:=</span> <span class='kw'>x</span> <span class='op'>-</span> <span class='kw'>x</span>[<span class='kw'>.counter</span>])
   )</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 6</span><span>
 #&gt;        x      x_1   x_2      x_3     x_4    x_5
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

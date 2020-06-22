@@ -82,7 +82,7 @@ of a pipeline to do so." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -124,19 +124,19 @@ of a pipeline to do so." />
     </div>
 
     <div class="ref-description">
-    <p>The <code>pipe_cat()</code> function allows messages to be output to
+    <p>The <code><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat()</a></code> function allows messages to be output to
 the console or to an external file without the need to break out
 of a pipeline to do so.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pipe_cat</span>(
-  <span class='no'>data</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>...</span>,
+  file = <span class='st'>""</span>,
+  sep = <span class='st'>" "</span>,
+  fill = <span class='fl'>FALSE</span>,
+  labels = <span class='kw'>NULL</span>,
+  append = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,23 +161,23 @@ information regarding these arguments.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Current length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>.</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Current average: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>.</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Current standard error: "</span>, <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='no'>.</span>) / <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>.</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Returning mean:\n"</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>100</span>, <span class='fl'>1</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current average: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current standard error: "</span>, <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='kw'>.</span>) <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Returning mean:\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()</div><div class='output co'>#&gt; Current length:  87 
 #&gt; Current average:  0.4873048 
 #&gt; Current standard error:  0.003279136 
 #&gt; Returning mean:</div><div class='output co'>#&gt; [1] 0.4873048</div><div class='input'>
-<span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>),
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)
-) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Average x: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Current number of rows: "</span>, <span class='no'>nrow</span>, <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='no'>y</span>)</div><div class='output co'>#&gt; Average x:  0.4680811 
+<span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
+  x = <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>),
+  y = <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)
+) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Average x: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current number of rows: "</span>, <span class='kw'>nrow</span>, <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(z = <span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>)</div><div class='output co'>#&gt; Average x:  0.4680811 
 #&gt; Current number of rows:  10 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 3</span><span>
 #&gt;        x      y     z
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -191,28 +191,28 @@ information regarding these arguments.</p></td>
 #&gt; </span><span style='color: #555555;'> 8</span><span> 0.101 0.262  0.363
 #&gt; </span><span style='color: #555555;'> 9</span><span> 0.273 0.416  0.689
 #&gt; </span><span style='color: #555555;'>10</span><span> 0.654 0.439  1.09 </div><div class='input'>
-<span class='kw pkg'>palmerpenguins</span><span class='kw ns'>::</span><span class='no'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='no'>species</span>)) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(!<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>culmen_length_mm</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='st'>"Total average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>culmen_length_mm</span>), <span class='st'>"\n"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>species</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='no'>species</span>, <span class='st'>" average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>culmen_length_mm</span>), <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Total average Culmen Length:  43.92193 
+<span class='kw'>palmerpenguins</span>::<span class='kw'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(species = <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='kw'>species</span>)) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>bill_length_mm</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Total average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>bill_length_mm</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>species</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='kw'>species</span>, <span class='st'>" average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>bill_length_mm</span>), <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Total average Culmen Length:  43.92193 
 #&gt; Adelie     average Culmen Length:  38.79139 
 #&gt; Chinstrap  average Culmen Length:  48.83382 
 #&gt; Gentoo     average Culmen Length:  47.50488 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 342 x 7</span><span>
 #&gt; </span><span style='color: #555555;'># Groups:   species [3]</span><span>
-#&gt;    species island culmen_length_mm culmen_depth_mm flipper_length_… body_mass_g
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Adelie  Torge…             39.1            18.7              181        </span><span style='text-decoration: underline;'>3</span><span>750
-#&gt; </span><span style='color: #555555;'> 2</span><span> Adelie  Torge…             39.5            17.4              186        </span><span style='text-decoration: underline;'>3</span><span>800
-#&gt; </span><span style='color: #555555;'> 3</span><span> Adelie  Torge…             40.3            18                195        </span><span style='text-decoration: underline;'>3</span><span>250
-#&gt; </span><span style='color: #555555;'> 4</span><span> Adelie  Torge…             36.7            19.3              193        </span><span style='text-decoration: underline;'>3</span><span>450
-#&gt; </span><span style='color: #555555;'> 5</span><span> Adelie  Torge…             39.3            20.6              190        </span><span style='text-decoration: underline;'>3</span><span>650
-#&gt; </span><span style='color: #555555;'> 6</span><span> Adelie  Torge…             38.9            17.8              181        </span><span style='text-decoration: underline;'>3</span><span>625
-#&gt; </span><span style='color: #555555;'> 7</span><span> Adelie  Torge…             39.2            19.6              195        </span><span style='text-decoration: underline;'>4</span><span>675
-#&gt; </span><span style='color: #555555;'> 8</span><span> Adelie  Torge…             34.1            18.1              193        </span><span style='text-decoration: underline;'>3</span><span>475
-#&gt; </span><span style='color: #555555;'> 9</span><span> Adelie  Torge…             42              20.2              190        </span><span style='text-decoration: underline;'>4</span><span>250
-#&gt; </span><span style='color: #555555;'>10</span><span> Adelie  Torge…             37.8            17.1              186        </span><span style='text-decoration: underline;'>3</span><span>300
+#&gt;    species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Adelie  Torge…           39.1          18.7              181        </span><span style='text-decoration: underline;'>3</span><span>750
+#&gt; </span><span style='color: #555555;'> 2</span><span> Adelie  Torge…           39.5          17.4              186        </span><span style='text-decoration: underline;'>3</span><span>800
+#&gt; </span><span style='color: #555555;'> 3</span><span> Adelie  Torge…           40.3          18                195        </span><span style='text-decoration: underline;'>3</span><span>250
+#&gt; </span><span style='color: #555555;'> 4</span><span> Adelie  Torge…           36.7          19.3              193        </span><span style='text-decoration: underline;'>3</span><span>450
+#&gt; </span><span style='color: #555555;'> 5</span><span> Adelie  Torge…           39.3          20.6              190        </span><span style='text-decoration: underline;'>3</span><span>650
+#&gt; </span><span style='color: #555555;'> 6</span><span> Adelie  Torge…           38.9          17.8              181        </span><span style='text-decoration: underline;'>3</span><span>625
+#&gt; </span><span style='color: #555555;'> 7</span><span> Adelie  Torge…           39.2          19.6              195        </span><span style='text-decoration: underline;'>4</span><span>675
+#&gt; </span><span style='color: #555555;'> 8</span><span> Adelie  Torge…           34.1          18.1              193        </span><span style='text-decoration: underline;'>3</span><span>475
+#&gt; </span><span style='color: #555555;'> 9</span><span> Adelie  Torge…           42            20.2              190        </span><span style='text-decoration: underline;'>4</span><span>250
+#&gt; </span><span style='color: #555555;'>10</span><span> Adelie  Torge…           37.8          17.1              186        </span><span style='text-decoration: underline;'>3</span><span>300
 #&gt; </span><span style='color: #555555;'># … with 332 more rows, and 1 more variable: sex </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

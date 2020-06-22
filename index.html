@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -86,33 +86,34 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the development version of <code>mpipe</code> from <a href="https://github.com/MyKo101/mpipe">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("devtools")</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># install.packages("devtools")</span>
 <span class="co"># devtools::install_github("MyKo101/mpipe")</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mpipe</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://michaelbarrowman.co.uk/mpipe">mpipe</a></span>)
+</pre></div>
 <p>The <code>mpipe</code> package is not currently available on CRAN.</p>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h3>
-<p>The <code>palmerpenguins</code> package provides data on three species of penguins (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and Torgersen). We’ll use the length and breadth of their Culmens (the ridge along a bird’s bill). A lot of the examples in this page are rather convoluted (and for many, there are other easier ways to get the same results, but they’re here to demonstrate <code>mpipe</code> functionality)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(magrittr)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">library</span>(palmerpenguins)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">library</span>(mutils)</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#palmerpenguins has other variables and missing data, so I'll start by getting rid of these</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>penguins &lt;-<span class="st"> </span>palmerpenguins<span class="op">::</span>penguins <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>body_mass_g,<span class="op">-</span>flipper_length_mm) <span class="op">%&gt;%</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="st">  </span><span class="kw">filter_all</span>(<span class="op">~!</span><span class="kw">is.na</span>(.))</span></code></pre></div>
+<p>The <code>palmerpenguins</code> package provides data on three species of penguins (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and Torgersen). We’ll use the length and depth of their bills. A lot of the examples in this page are rather convoluted (and for many, there are other easier ways to get the same results, but they’re here to demonstrate <code>mpipe</code> functionality)</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">mutils</span>::<span class="fu"><a href="https://michaelbarrowman.co.uk/mutils/reference/load_unload.html">load_packages</a></span>(<span class="kw">dplyr</span>, <span class="kw">magrittr</span>, <span class="kw">palmerpenguins</span>, <span class="kw">mutils</span>, <span class="kw">ggplot2</span>)
+
+<span class="kw">penguins</span> <span class="op">&lt;-</span> <span class="kw">palmerpenguins</span>::<span class="kw"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">penguins</a></span> <span class="op">%&gt;%</span> 
+  <span class="fu">select</span>(<span class="op">-</span><span class="kw">body_mass_g</span>,<span class="op">-</span><span class="kw">flipper_length_mm</span>) <span class="op">%&gt;%</span>
+  <span class="fu">filter_all</span>(<span class="op">~</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">.</span>))
+</pre></div>
 </div>
 </div>
 <div id="fseq" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fseq" class="anchor"></a>fseq</h2>
-<p>A little used feature of the <code>magrittr</code> package’s <code><a href="reference/pipe.html">%&gt;%</a></code> pipe is that is can be used to create functions. By using a <code>.</code> as the initial argument, the output will be a function and can be applied to other pieces of data. These kinds of functions are called <code>fseq</code> functions (short for functional sequences).</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="no">summarise_my_data</span> <span class="kw">&lt;-</span> <span class="no">.</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">species</span>,<span class="no">island</span>,<span class="no">sex</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarise_all</span>(<span class="no">mean</span>,<span class="kw">.groups</span><span class="kw">=</span><span class="st">"keep"</span>)
-<span class="no">summarise_my_data</span>
+<p>A little used feature of the <code>magrittr</code> package’s <code><a href="reference/%&gt;%.html">%&gt;%</a></code> pipe is that is can be used to create functions. By using a <code>.</code> as the initial argument, the output will be a function and can be applied to other pieces of data. These kinds of functions are called <code>fseq</code> functions (short for functional sequences).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">summarise_my_data</span> <span class="op">&lt;-</span> <span class="kw">.</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span>(<span class="kw">species</span>,<span class="kw">island</span>,<span class="kw">sex</span>) <span class="op">%&gt;%</span>
+  <span class="fu">summarise_all</span>(<span class="kw">mean</span>,.groups=<span class="st">"keep"</span>)
+<span class="kw">summarise_my_data</span>
 <span class="co">#&gt; Functional sequence with the following components:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  1. group_by(., species, island, sex)</span>
@@ -120,91 +121,101 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Use 'functions' to extract the individual functions.</span>
 
-<span class="fu">summarise_my_data</span>(<span class="no">penguins</span>)
+<span class="fu">summarise_my_data</span>(<span class="kw">penguins</span>)
 <span class="co">#&gt; # A tibble: 10 x 5</span>
 <span class="co">#&gt; # Groups:   species, island [5]</span>
-<span class="co">#&gt;    species   island    sex    culmen_length_mm culmen_depth_mm</span>
-<span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Adelie    Biscoe    FEMALE             37.4            17.7</span>
-<span class="co">#&gt;  2 Adelie    Biscoe    MALE               40.6            19.0</span>
-<span class="co">#&gt;  3 Adelie    Dream     FEMALE             36.9            17.6</span>
-<span class="co">#&gt;  4 Adelie    Dream     MALE               40.1            18.8</span>
-<span class="co">#&gt;  5 Adelie    Torgersen FEMALE             37.6            17.6</span>
-<span class="co">#&gt;  6 Adelie    Torgersen MALE               40.6            19.4</span>
-<span class="co">#&gt;  7 Chinstrap Dream     FEMALE             46.6            17.6</span>
-<span class="co">#&gt;  8 Chinstrap Dream     MALE               51.1            19.3</span>
-<span class="co">#&gt;  9 Gentoo    Biscoe    FEMALE             45.6            14.2</span>
-<span class="co">#&gt; 10 Gentoo    Biscoe    MALE               49.5            15.7</span></pre></div>
+<span class="co">#&gt;    species   island    sex    bill_length_mm bill_depth_mm</span>
+<span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Adelie    Biscoe    female           37.4          17.7</span>
+<span class="co">#&gt;  2 Adelie    Biscoe    male             40.6          19.0</span>
+<span class="co">#&gt;  3 Adelie    Dream     female           36.9          17.6</span>
+<span class="co">#&gt;  4 Adelie    Dream     male             40.1          18.8</span>
+<span class="co">#&gt;  5 Adelie    Torgersen female           37.6          17.6</span>
+<span class="co">#&gt;  6 Adelie    Torgersen male             40.6          19.4</span>
+<span class="co">#&gt;  7 Chinstrap Dream     female           46.6          17.6</span>
+<span class="co">#&gt;  8 Chinstrap Dream     male             51.1          19.3</span>
+<span class="co">#&gt;  9 Gentoo    Biscoe    female           45.6          14.2</span>
+<span class="co">#&gt; 10 Gentoo    Biscoe    male             49.5          15.7</span>
+</pre></div>
 <p>The <code>mpipe</code> package includes a couple of extra things that can be done to these kinds of functions, including composition of <code>fseq</code> by adding them together. We’ll define another <code>fseq</code> to filter out some penguins and variables.</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="no">filter_my_data</span> <span class="kw">&lt;-</span> <span class="no">.</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">culmen_length_mm</span> <span class="kw">&gt;</span> <span class="fl">43</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">select</span>(<span class="no">species</span>,<span class="no">island</span>,<span class="no">sex</span>,<span class="no">culmen_length_mm</span>)
-<span class="no">filter_my_data</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">filter_my_data</span> <span class="op">&lt;-</span> <span class="kw">.</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">bill_length_mm</span> <span class="op">&gt;</span> <span class="fl">43</span>) <span class="op">%&gt;%</span>
+  <span class="fu">select</span>(<span class="kw">species</span>,<span class="kw">island</span>,<span class="kw">sex</span>,<span class="kw">bill_length_mm</span>)
+<span class="kw">filter_my_data</span>
 <span class="co">#&gt; Functional sequence with the following components:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  1. filter(., culmen_length_mm &gt; 43)</span>
-<span class="co">#&gt;  2. select(., species, island, sex, culmen_length_mm)</span>
+<span class="co">#&gt;  1. filter(., bill_length_mm &gt; 43)</span>
+<span class="co">#&gt;  2. select(., species, island, sex, bill_length_mm)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Use 'functions' to extract the individual functions.</span></pre></div>
+<span class="co">#&gt; Use 'functions' to extract the individual functions.</span>
+</pre></div>
 <p>Then we can create the composite functional sequence</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">filter_my_data</span> + <span class="no">summarise_my_data</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">filter_my_data</span> <span class="op">+</span> <span class="kw">summarise_my_data</span>
 <span class="co">#&gt; Functional sequence with the following components:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  1. filter(., culmen_length_mm &gt; 43)</span>
-<span class="co">#&gt;  2. select(., species, island, sex, culmen_length_mm)</span>
+<span class="co">#&gt;  1. filter(., bill_length_mm &gt; 43)</span>
+<span class="co">#&gt;  2. select(., species, island, sex, bill_length_mm)</span>
 <span class="co">#&gt;  3. group_by(., species, island, sex)</span>
 <span class="co">#&gt;  4. summarise_all(., mean, .groups = "keep")</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Use 'functions' to extract the individual functions.</span></pre></div>
+<span class="co">#&gt; Use 'functions' to extract the individual functions.</span>
+</pre></div>
 <p>We can either assign this to a new function name, or apply it to the data implicitly (using brackets)</p>
-<div class="sourceCode" id="cb6"><pre class="r">(<span class="no">filter_my_data</span> + <span class="no">summarise_my_data</span>)(<span class="no">penguins</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+(<span class="kw">filter_my_data</span> <span class="op">+</span> <span class="kw">summarise_my_data</span>)(<span class="kw">penguins</span>)
 <span class="co">#&gt; # A tibble: 7 x 4</span>
 <span class="co">#&gt; # Groups:   species, island [5]</span>
-<span class="co">#&gt;   species   island    sex    culmen_length_mm</span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Adelie    Biscoe    MALE               44.4</span>
-<span class="co">#&gt; 2 Adelie    Dream     MALE               43.7</span>
-<span class="co">#&gt; 3 Adelie    Torgersen MALE               44.8</span>
-<span class="co">#&gt; 4 Chinstrap Dream     FEMALE             47.2</span>
-<span class="co">#&gt; 5 Chinstrap Dream     MALE               51.1</span>
-<span class="co">#&gt; 6 Gentoo    Biscoe    FEMALE             46.0</span>
-<span class="co">#&gt; 7 Gentoo    Biscoe    MALE               49.5</span></pre></div>
+<span class="co">#&gt;   species   island    sex    bill_length_mm</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Adelie    Biscoe    male             44.4</span>
+<span class="co">#&gt; 2 Adelie    Dream     male             43.7</span>
+<span class="co">#&gt; 3 Adelie    Torgersen male             44.8</span>
+<span class="co">#&gt; 4 Chinstrap Dream     female           47.2</span>
+<span class="co">#&gt; 5 Chinstrap Dream     male             51.1</span>
+<span class="co">#&gt; 6 Gentoo    Biscoe    female           46.0</span>
+<span class="co">#&gt; 7 Gentoo    Biscoe    male             49.5</span>
+</pre></div>
 <p>The <code>mpipe</code> package also includes a <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> method for <code>fseq</code> which returns the number of elements in the functional sequence, as well as a pair of functions to check whether something is an <code>fseq</code>: <code><a href="reference/fseq_methods.html">is.fseq()</a></code> and <code><a href="reference/fseq_methods.html">is_fseq()</a></code> (depending on your own preference). More functions for using <code>fseq</code> to their full potential will be added in future releases.</p>
 </div>
 <div id="side-effects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#side-effects" class="anchor"></a>Side Effects</h2>
-<p>A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the <code>mpipe</code> package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. This is similar to using the <code><a href="reference/pipe.html">%T&gt;%</a></code> pipe in magrittr, but cn be done with the traditional <code><a href="reference/pipe.html">%&gt;%</a></code> pipe and is explicit in the name of the function.</p>
+<p>A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the <code>mpipe</code> package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. This is similar to using the <code><a href="reference/%&gt;%.html">%T&gt;%</a></code> pipe in magrittr, but can be done with the traditional <code><a href="reference/%&gt;%.html">%&gt;%</a></code> pipe and is explicit in the name of the function.</p>
 <ul>
 <li>
-<code><a href="reference/pipe_qplot.html">pipe_qplot()</a></code> - allows the user to create <code>ggplot2</code> style plots using <code>qplot()</code> syntax (akin to the base R <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> syntax). This is essentially a wrapper function that also permits saving and theming of the plots.</li>
+<code><a href="reference/pipe_qplot.html">pipe_qplot()</a></code> - allows the user to create <code>ggplot2</code> style plots using <code>qplot()</code> syntax (akin to the base R <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> syntax). This is essentially a wrapper function that also permits saving and theming of the plots.</li>
 <li>
 <code><a href="reference/pipe_cat.html">pipe_cat()</a></code> - allows the user to output information to the console (or any other sink) in the much the same way that <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code> does. Any calls/functions will be evaluated appropriately for this output. Grouped tibbles will be parsed separately.</li>
 </ul>
-<p>Here we will create a plot of Culmen length against Culmen depth stratified by the three grouping variables (species, sex and island). We will then focus on the Biscoe island penguins, and output the average Culmen length, stratified by sex and species. Finally, we will return a dataset that contains the mean &amp; sd across these groups.</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="no">penguins</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/pipe_qplot.html">pipe_qplot</a></span>(<span class="no">culmen_length_mm</span>,<span class="no">culmen_depth_mm</span>,<span class="kw">col</span><span class="kw">=</span><span class="no">species</span>,
-             <span class="kw">xlab</span><span class="kw">=</span><span class="st">"Culmen Length (mm)"</span>,<span class="kw">ylab</span><span class="kw">=</span><span class="st">"Culmun Depth (mm)"</span>,
-             <span class="kw">theme</span> <span class="kw">=</span> <span class="st">"light"</span>,<span class="kw">facets</span><span class="kw">=</span><span class="no">sex</span>~<span class="no">island</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">island</span> <span class="kw">==</span> <span class="st">"Biscoe"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Biscoe Average Culmun Length (mm):"</span>,<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">culmen_length_mm</span>),<span class="st">"\n"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">species</span>,<span class="no">sex</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="no">sex</span>, <span class="no">species</span>,<span class="st">"Average Culmun Length (mm):"</span>,<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">culmen_length_mm</span>),<span class="st">"\n"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarise_if</span>(<span class="no">is.numeric</span>,<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">mean</span><span class="kw">=</span><span class="no">mean</span>,<span class="kw">sd</span><span class="kw">=</span><span class="no">sd</span>))</pre></div>
+<p>Here we will create a plot of Bill length against Bill depth stratified by the three grouping variables: <code>species</code>, <code>sex</code> and <code>island.</code> We’ll colour-code <code>species</code> using <code>col = species</code>, and <code>facets = sex ~ island</code> will create facets based on these two variables. We will then focus on the Biscoe island penguins (using <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>), and output the average Bill length, then stratify it by sex and species. Finally, we will return a dataset that contains the mean of Bill length and depth across these groups.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">penguins</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/pipe_qplot.html">pipe_qplot</a></span>(<span class="kw">bill_length_mm</span>, <span class="kw">bill_depth_mm</span>, col = <span class="kw">species</span>,
+             xlab = <span class="st">"Bill Length (mm)"</span>, ylab = <span class="st">"Culmun Depth (mm)"</span>,
+             theme = <span class="st">"light"</span>, facets = <span class="kw">sex</span> <span class="op">~</span> <span class="kw">island</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">island</span> <span class="op">==</span> <span class="st">"Biscoe"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Biscoe Average Culmun Length (mm):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">bill_length_mm</span>), <span class="st">"\n\n"</span>) <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span>(<span class="kw">species</span>,<span class="kw">sex</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="kw">sex</span>, <span class="kw">species</span>, <span class="st">"Average Culmun Length (mm):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">bill_length_mm</span>), <span class="st">"\n"</span>) <span class="op">%&gt;%</span>
+  <span class="fu">summarise_if</span>(<span class="kw">is.numeric</span>, <span class="kw">mean</span>)
+</pre></div>
 <p><img src="reference/figures/README-side_effects_example-1.png" width="100%"></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#&gt; Biscoe Average Culmun Length (mm): 45.24847 </span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; FEMALE Adelie Average Culmun Length (mm): 37.35909 </span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; MALE   Adelie Average Culmun Length (mm): 40.59091 </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; FEMALE Gentoo Average Culmun Length (mm): 45.56379 </span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; MALE   Gentoo Average Culmun Length (mm): 49.47377</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; # A tibble: 4 x 6</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; # Groups:   species [2]</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;   species sex    culmen_length_mm~ culmen_depth_mm~ culmen_length_m~ culmen_depth_mm~</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; 1 Adelie  FEMALE              37.4             17.7             1.76            1.09 </span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; 2 Adelie  MALE                40.6             19.0             2.01            0.880</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; 3 Gentoo  FEMALE              45.6             14.2             2.05            0.540</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; 4 Gentoo  MALE                49.5             15.7             2.72            0.741</span></span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; </span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; female Adelie Average Culmun Length (mm): 37.35909 </span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; male   Adelie Average Culmun Length (mm): 40.59091 </span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; female Gentoo Average Culmun Length (mm): 45.56379 </span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; male   Gentoo Average Culmun Length (mm): 49.47377</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; # A tibble: 4 x 4</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; # Groups:   species [2]</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;   species sex    bill_length_mm bill_depth_mm</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; 1 Adelie  female           37.4          17.7</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; 2 Adelie  male             40.6          19.0</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; 3 Gentoo  female           45.6          14.2</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; 4 Gentoo  male             49.5          15.7</span></span></code></pre></div>
 </div>
 <div id="control-flow" class="section level2">
 <h2 class="hasAnchor">
@@ -219,106 +230,124 @@
 <h4 class="hasAnchor">
 <a href="#if_branch" class="anchor"></a>if_branch()</h4>
 <p>The <code><a href="reference/if_branch.html">if_branch()</a></code> works similar to an <code>if</code> statement. The function chooses whether to data should proceed down the <code>fun</code> branch or the <code>elsefun</code> branch (if supplied) depending on how <code>predicate</code> is evaluated.</p>
-<p>First, we’ll define an <code>fseq</code> style function, and apply it to the data twice. The <code>fseq</code> function will first shuffle the data and then if a male penguin ends up at the top of our list, we’ll pick just the Biscoe island penguins and extract the culmen length summary statistics, if a female penguin ends up on top, we’ll pick out the Biscoe &amp; Dream island penguis and extract the culmen depth summary statistics.</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="no">f</span> <span class="kw">&lt;-</span> <span class="no">.</span> <span class="kw">%&gt;%</span>
-  <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">.</span>)) <span class="kw">%&gt;%</span> <span class="co">#Shuffle the data</span>
-  <span class="fu"><a href="reference/if_branch.html">if_branch</a></span>(<span class="no">sex</span>[<span class="fl">1</span>] <span class="kw">==</span> <span class="st">"MALE"</span>, <span class="co">#predicate: Is the top row a male penguin?</span>
-            <span class="no">.</span> <span class="kw">%&gt;%</span> <span class="co">#TRUE path</span>
-              <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Male penguin on top, extracting Culmen Length for Biscoe penguins\n"</span>) <span class="kw">%&gt;%</span>
-              <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">island</span> <span class="kw">==</span> <span class="st">"Biscoe"</span>) <span class="kw">%&gt;%</span>
-              <span class="fu">pull</span>(<span class="st">"culmen_length_mm"</span>) <span class="kw">%&gt;%</span>
+<p>First, we’ll define an <code>fseq</code> style function, and apply it to the data twice. The <code>fseq</code> function will first shuffle the data and then if a male penguin ends up at the top of our list, we’ll pick just the Biscoe island penguins and extract the bill length summary statistics, if a female penguin ends up on top, we’ll pick out the Biscoe &amp; Dream island penguis and extract the bill depth summary statistics.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">f</span> <span class="op">&lt;-</span> <span class="kw">.</span> <span class="op">%&gt;%</span>
+  <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">.</span>)) <span class="op">%&gt;%</span> <span class="co">#Shuffle the data</span>
+  <span class="fu"><a href="reference/if_branch.html">if_branch</a></span>(<span class="kw">sex</span>[<span class="fl">1</span>] <span class="op">==</span> <span class="st">"MALE"</span>, <span class="co">#predicate: Is the top row a male penguin?</span>
+            <span class="kw">.</span> <span class="op">%&gt;%</span> <span class="co">#TRUE path</span>
+              <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Male penguin on top, extracting Bill Length for Biscoe penguins\n"</span>) <span class="op">%&gt;%</span>
+              <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">island</span> <span class="op">==</span> <span class="st">"Biscoe"</span>) <span class="op">%&gt;%</span>
+              <span class="fu">pull</span>(<span class="st">"bill_length_mm"</span>) <span class="op">%&gt;%</span>
               <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(), <span class="co"># End of TRUE Path</span>
-            <span class="no">.</span> <span class="kw">%&gt;%</span> <span class="co">#FALSE path</span>
-              <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Female penguin on top, extracting Culmen Depth for Biscoe &amp; Dream penguins\n"</span>) <span class="kw">%&gt;%</span>
-              <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">island</span> <span class="kw">!=</span> <span class="st">"Torgersen"</span>) <span class="kw">%&gt;%</span>
-              <span class="fu">pull</span>(<span class="st">"culmen_length_mm"</span>) <span class="kw">%&gt;%</span>
-              <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()) <span class="co"># End of FALSE Path &amp; end of if_branch()</span></pre></div>
-<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="fu">f</span>(<span class="no">penguins</span>)
-<span class="co">#&gt; Male penguin on top, extracting Culmen Length for Biscoe penguins</span>
+            <span class="kw">.</span> <span class="op">%&gt;%</span> <span class="co">#FALSE path</span>
+              <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"Female penguin on top, extracting Bill Depth for Biscoe &amp; Dream penguins\n"</span>) <span class="op">%&gt;%</span>
+              <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">island</span> != <span class="st">"Torgersen"</span>) <span class="op">%&gt;%</span>
+              <span class="fu">pull</span>(<span class="st">"bill_length_mm"</span>) <span class="op">%&gt;%</span>
+              <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()) <span class="co"># End of FALSE Path &amp; end of if_branch()</span>
+              
+</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
+<span class="fu">f</span>(<span class="kw">penguins</span>)
+<span class="co">#&gt; Female penguin on top, extracting Bill Depth for Biscoe &amp; Dream penguins</span>
 <span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;   34.50   41.85   45.80   45.25   48.75   59.60</span></pre></div>
-<div class="sourceCode" id="cb11"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">2</span>)
-<span class="fu">f</span>(<span class="no">penguins</span>)
-<span class="co">#&gt; Female penguin on top, extracting Culmen Depth for Biscoe &amp; Dream penguins</span>
+<span class="co">#&gt;   32.10   40.52   45.55   44.81   49.20   59.60</span>
+</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">2</span>)
+<span class="fu">f</span>(<span class="kw">penguins</span>)
+<span class="co">#&gt; Female penguin on top, extracting Bill Depth for Biscoe &amp; Dream penguins</span>
 <span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;   32.10   40.52   45.55   44.81   49.20   59.60</span></pre></div>
+<span class="co">#&gt;   32.10   40.52   45.55   44.81   49.20   59.60</span>
+</pre></div>
 </div>
 <div id="switch_branch" class="section level4">
 <h4 class="hasAnchor">
 <a href="#switch_branch" class="anchor"></a>switch_branch()</h4>
 <p>Similarly, the <code><a href="reference/switch_branch.html">switch_branch()</a></code> function allows us to expand on this by following a different path depending on the evaluation of <code>case</code>. The <code>case</code> argument will be evaluated in the context of <code>data</code> and shoudl return either a character value or a numeric value. Characters will be matched to the other arguments provided to the <code><a href="reference/switch_branch.html">switch_branch()</a></code> function and numerics will be matched by position.</p>
-<p>This time, we will do similar to the previous example except checking which island ends up on top. We can see from the below (using the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function in the <code>mutils</code> package), that if Torgersen is chosen as our random island, only Adelie penguins will be in our output.</p>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="no">penguins</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">species</span>,<span class="no">island</span>)
+<p>This time, we will do similar to the previous example except checking which island ends up on top. We can see from the below (using the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function overloaded by the <code>mutils</code> package), that if Torgersen is chosen as our random island, only Adelie penguins will be in our output.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="kw">penguins</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw">species</span>,<span class="kw">island</span>)
 <span class="co">#&gt;            island</span>
 <span class="co">#&gt; species     Biscoe Dream Torgersen</span>
 <span class="co">#&gt;   Adelie        44    55        47</span>
 <span class="co">#&gt;   Chinstrap      0    68         0</span>
-<span class="co">#&gt;   Gentoo       119     0         0</span></pre></div>
+<span class="co">#&gt;   Gentoo       119     0         0</span>
+</pre></div>
 <p>This means we can drop this level and output only based on sex. <code><a href="reference/switch_branch.html">switch_branch()</a></code> will output the data untouched if <code>case</code> doesn’t match any of the other arguments supplied. So we will adapt our function for this:</p>
-<div class="sourceCode" id="cb13"><pre class="r"><span class="no">f</span> <span class="kw">&lt;-</span> <span class="no">.</span> <span class="kw">%&gt;%</span>
-  <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">.</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="no">island</span>[<span class="fl">1</span>]),<span class="st">"island is on top, so it will be chosen.\n"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">island</span> <span class="kw">==</span> <span class="no">island</span>[<span class="fl">1</span>]) <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">species</span>,<span class="no">sex</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/switch_branch.html">switch_branch</a></span>(<span class="no">.</span> <span class="kw">%&gt;%</span> <span class="co"># What island ends up at the top row?</span>
-                  <span class="fu">slice</span>(<span class="fl">1</span>) <span class="kw">%&gt;%</span> <span class="co">#This time, we write case as an `fseq` as well.</span>
-                  <span class="fu">pull</span>(<span class="st">"island"</span>) <span class="kw">%&gt;%</span>
-                  <span class="no">as.character</span>,
-                <span class="kw">Torgersen</span> <span class="kw">=</span> <span class="no">.</span> <span class="kw">%&gt;%</span>
-                  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"\t\tspecies will be dropped\n"</span>) <span class="kw">%&gt;%</span>
-                  <span class="fu">group_by</span>(<span class="no">sex</span>) <span class="kw">%&gt;%</span>
-                  <span class="fu">select</span>(-<span class="no">species</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu">summarise_if</span>(<span class="no">is.numeric</span>,<span class="no">mean</span>)</pre></div>
-<div class="sourceCode" id="cb14"><pre class="r"><span class="co">## Force the "random" shuffle to put a "Biscoe" species is at the top</span>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">f</span> <span class="op">&lt;-</span> <span class="kw">.</span> <span class="op">%&gt;%</span>
+  <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">.</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw">island</span>[<span class="fl">1</span>]),<span class="st">"island is on top, so it will be chosen.\n"</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">island</span> <span class="op">==</span> <span class="kw">island</span>[<span class="fl">1</span>]) <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span>(<span class="kw">species</span>,<span class="kw">sex</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/switch_branch.html">switch_branch</a></span>(<span class="kw">.</span> <span class="op">%&gt;%</span> <span class="co"># What island ends up at the top row?</span>
+                  <span class="fu">slice</span>(<span class="fl">1</span>) <span class="op">%&gt;%</span> <span class="co">#This time, we write case as an `fseq` as well.</span>
+                  <span class="fu">pull</span>(<span class="st">"island"</span>) <span class="op">%&gt;%</span>
+                  <span class="kw">as.character</span>,
+                Torgersen = <span class="kw">.</span> <span class="op">%&gt;%</span>
+                  <span class="kw">ungroup</span> <span class="op">%&gt;%</span> 
+                  <span class="fu"><a href="reference/pipe_cat.html">pipe_cat</a></span>(<span class="st">"\t\tSpecies will be dropped.\n"</span>) <span class="op">%&gt;%</span>
+                  <span class="fu">group_by</span>(<span class="kw">sex</span>) <span class="op">%&gt;%</span>
+                  <span class="fu">select</span>(<span class="op">-</span><span class="kw">species</span>)) <span class="op">%&gt;%</span>
+  <span class="fu">summarise_if</span>(<span class="kw">is.numeric</span>,<span class="kw">mean</span>)
+</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="co">## Force the "random" shuffle to put a "Biscoe" species is at the top</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="fu">f</span>(<span class="no">penguins</span>)
+<span class="fu">f</span>(<span class="kw">penguins</span>)
 <span class="co">#&gt; Biscoe island is on top, so it will be chosen.</span>
 <span class="co">#&gt; # A tibble: 4 x 4</span>
 <span class="co">#&gt; # Groups:   species [2]</span>
-<span class="co">#&gt;   species sex    culmen_length_mm culmen_depth_mm</span>
-<span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Adelie  FEMALE             37.4            17.7</span>
-<span class="co">#&gt; 2 Adelie  MALE               40.6            19.0</span>
-<span class="co">#&gt; 3 Gentoo  FEMALE             45.6            14.2</span>
-<span class="co">#&gt; 4 Gentoo  MALE               49.5            15.7</span></pre></div>
-<div class="sourceCode" id="cb15"><pre class="r"><span class="co">## Force the "random" shuffle to put a "Torgersen" species is at the top</span>
+<span class="co">#&gt;   species sex    bill_length_mm bill_depth_mm</span>
+<span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Adelie  female           37.4          17.7</span>
+<span class="co">#&gt; 2 Adelie  male             40.6          19.0</span>
+<span class="co">#&gt; 3 Gentoo  female           45.6          14.2</span>
+<span class="co">#&gt; 4 Gentoo  male             49.5          15.7</span>
+</pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="co">## Force the "random" shuffle to put a "Torgersen" species is at the top</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1000</span>)
-<span class="fu">f</span>(<span class="no">penguins</span>)
+<span class="fu">f</span>(<span class="kw">penguins</span>)
 <span class="co">#&gt; Torgersen island is on top, so it will be chosen.</span>
-<span class="co">#&gt;      species will be dropped</span>
-<span class="co">#&gt;      species will be dropped</span>
+<span class="co">#&gt;      Species will be dropped.</span>
 <span class="co">#&gt; # A tibble: 2 x 3</span>
-<span class="co">#&gt;   sex    culmen_length_mm culmen_depth_mm</span>
-<span class="co">#&gt;   &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 FEMALE             37.6            17.6</span>
-<span class="co">#&gt; 2 MALE               40.6            19.4</span></pre></div>
+<span class="co">#&gt;   sex    bill_length_mm bill_depth_mm</span>
+<span class="co">#&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 female           37.6          17.6</span>
+<span class="co">#&gt; 2 male             40.6          19.4</span>
+</pre></div>
 </div>
 </div>
 <div id="loops" class="section level3">
 <h3 class="hasAnchor">
 <a href="#loops" class="anchor"></a>Loops</h3>
 <p>In terms of loops, we introduce the <code><a href="reference/while_pipe.html">while_pipe()</a></code> function which acts similar to a <code>while()</code> loop, but within a pipeline. It will repeatedly apply the <code>fun</code> argument to the <code>data</code> until <code>cond</code> is not <code>TRUE</code>. <code>cond</code> will be evaluated within the context of <code>data</code> at each iteration.</p>
-<p>For this example, we’re simply going to shuffle until the first penguin is a female.</p>
-<div class="sourceCode" id="cb16"><pre class="r"><span class="no">penguins</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/while_pipe.html">while_pipe</a></span>(<span class="no">sex</span>[<span class="fl">1</span>] <span class="kw">!=</span> <span class="st">"FEMALE"</span>,
-             <span class="no">.</span> <span class="kw">%&gt;%</span>
-               <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">.</span>))) <span class="kw">%&gt;%</span>
-  <span class="fu">slice</span>(<span class="fl">1</span>:<span class="fl">5</span>)
+<p>For this example, we’re simply going to shuffle until the first penguin is a female and then output the top 5 results.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="kw">penguins</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/while_pipe.html">while_pipe</a></span>(<span class="kw">sex</span>[<span class="fl">1</span>] != <span class="st">"female"</span>,
+             <span class="kw">.</span> <span class="op">%&gt;%</span>
+               <span class="fu">sample_n</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">.</span>))) <span class="op">%&gt;%</span>
+  <span class="fu">slice</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>)
 <span class="co">#&gt; # A tibble: 5 x 5</span>
-<span class="co">#&gt;   species   island culmen_length_mm culmen_depth_mm sex   </span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt; &lt;fct&gt; </span>
-<span class="co">#&gt; 1 Adelie    Biscoe             35              17.9 FEMALE</span>
-<span class="co">#&gt; 2 Adelie    Dream              40.9            18.9 MALE  </span>
-<span class="co">#&gt; 3 Chinstrap Dream              51.3            19.9 MALE  </span>
-<span class="co">#&gt; 4 Gentoo    Biscoe             50.5            15.9 MALE  </span>
-<span class="co">#&gt; 5 Adelie    Biscoe             39              17.5 FEMALE</span></pre></div>
-<p>The <code><a href="reference/while_pipe.html">while_pipe()</a></code> function also provides a <code>.counter</code> pronoun to keep track of how many times the loop as been run. This can be used in the predicate and in the functions.</p>
-<div class="sourceCode" id="cb17"><pre class="r"><span class="fu">tibble</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">5</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/while_pipe.html">while_pipe</a></span>(<span class="no">.counter</span> <span class="kw">&lt;=</span> <span class="fl">5</span>,
-             <span class="no">.</span> <span class="kw">%&gt;%</span>
-               <span class="fu">mutate</span>(!!<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"x_"</span>,<span class="no">.counter</span>) <span class="kw">:=</span> <span class="no">x</span> - <span class="no">x</span>[<span class="no">.counter</span>]))
+<span class="co">#&gt;   species   island bill_length_mm bill_depth_mm sex   </span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt; </span>
+<span class="co">#&gt; 1 Adelie    Biscoe           35            17.9 female</span>
+<span class="co">#&gt; 2 Adelie    Dream            40.9          18.9 male  </span>
+<span class="co">#&gt; 3 Chinstrap Dream            51.3          19.9 male  </span>
+<span class="co">#&gt; 4 Gentoo    Biscoe           50.5          15.9 male  </span>
+<span class="co">#&gt; 5 Adelie    Biscoe           39            17.5 female</span>
+</pre></div>
+<p>The <code><a href="reference/while_pipe.html">while_pipe()</a></code> function also provides a <code>.counter</code> pronoun to keep track of how many times the loop as been run. This can be used within <code>cond</code> and within <code>fun</code> and even allows for simple leves of tidy evaluation.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="fu">tibble</span>(x = <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">5</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/while_pipe.html">while_pipe</a></span>(<span class="kw">.counter</span> <span class="op">&lt;=</span> <span class="fl">5</span>,
+             <span class="kw">.</span> <span class="op">%&gt;%</span>
+               <span class="fu">mutate</span>(<span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"x_"</span>,<span class="kw">.counter</span>) <span class="op">:=</span> <span class="kw">x</span> <span class="op">-</span> <span class="kw">x</span>[<span class="kw">.counter</span>]))
 <span class="co">#&gt; # A tibble: 5 x 6</span>
 <span class="co">#&gt;        x   x_1    x_2     x_3     x_4     x_5</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
@@ -326,7 +355,8 @@
 <span class="co">#&gt; 2 0.663  0.578  0      0.359   0.427   0.277 </span>
 <span class="co">#&gt; 3 0.304  0.219 -0.359  0       0.0682 -0.0815</span>
 <span class="co">#&gt; 4 0.236  0.151 -0.427 -0.0682  0      -0.150 </span>
-<span class="co">#&gt; 5 0.386  0.301 -0.277  0.0815  0.150   0</span></pre></div>
+<span class="co">#&gt; 5 0.386  0.301 -0.277  0.0815  0.150   0</span>
+</pre></div>
 </div>
 </div>
 <div id="code-of-conduct" class="section level2">
@@ -337,7 +367,8 @@
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p><code>palmerpenguins</code>: Gorman KB, Williams TD, Fraser WR (2014) Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis). PLoS ONE 9(3): e90081. <a href="https://doi.org/10.1371/journal.pone.0090081" class="uri">https://doi.org/10.1371/journal.pone.0090081</a></p>
+<p><code>palmerpenguins</code></p>
+<p>Gorman KB, Williams TD, Fraser WR (2014) Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis). PLoS ONE 9(3): e90081. <a href="https://doi.org/10.1371/journal.pone.0090081" class="uri">https://doi.org/10.1371/journal.pone.0090081</a></p>
 </div>
 </div>
   </div>
@@ -375,8 +406,8 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/MyKo101/mpipe/actions"><img src="https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/MyKo101/mpipe?branch=master"><img src="https://codecov.io/gh/MyKo101/mpipe/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/MyKo101/mpipe"><img src="https://img.shields.io/badge/Version-0.0.0.9007-orange.svg" alt="Version Badge"></a></li>
+<li><a href="https://codecov.io/gh/MyKo101/mpipe?branch=main"><img src="https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/MyKo101/mpipe"><img src="https://img.shields.io/badge/Version-0.0.0.9014-orange.svg" alt="Version Badge"></a></li>
 </ul>
 </div>
 </div>
