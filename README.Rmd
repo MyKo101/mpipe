@@ -21,7 +21,7 @@ options(crayon.enabled=NULL)
  
  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
  [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
- [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9013-orange.svg)](https://github.com/MyKo101/mpipe)
+ [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9014-orange.svg)](https://github.com/MyKo101/mpipe)
  
   <!-- badges: end -->
 
