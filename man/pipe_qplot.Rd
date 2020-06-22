@@ -68,12 +68,12 @@ if needed.
 
 palmerpenguins::penguins \%>\%
   dplyr::group_by(species) \%>\%
-  pipe_qplot(culmen_length_mm,
+  pipe_qplot(bill_length_mm,
     fill = species,
     theme = "light",
     geom = "density",
     alpha = 0.5,
     binwidth = 0.1
   ) \%>\%
-  dplyr::summarise(mean = mean(culmen_length_mm))
+  dplyr::summarise(mean = mean(bill_length_mm))
 }

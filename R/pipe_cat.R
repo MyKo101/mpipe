@@ -42,10 +42,10 @@
 #'
 #' palmerpenguins::penguins %>%
 #'   dplyr::mutate(species = as.character(species)) %>%
-#'   dplyr::filter(!is.na(culmen_length_mm)) %>%
-#'   pipe_cat("Total average Culmen Length: ", mean(culmen_length_mm), "\n") %>%
+#'   dplyr::filter(!is.na(bill_length_mm)) %>%
+#'   pipe_cat("Total average Culmen Length: ", mean(bill_length_mm), "\n") %>%
 #'   dplyr::group_by(species) %>%
-#'   pipe_cat(species, " average Culmen Length: ", mean(culmen_length_mm), "\n")
+#'   pipe_cat(species, " average Culmen Length: ", mean(bill_length_mm), "\n")
 pipe_cat <- function(data, ..., file = "", sep = " ", fill = FALSE,
                      labels = NULL, append = FALSE) {
   if (dplyr::is_grouped_df(data)) {

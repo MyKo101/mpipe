@@ -12,9 +12,9 @@ test_that("predicate works implicitly", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -26,9 +26,9 @@ test_that("predicate works implicitly", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
+    mean(penguins$bill_length[penguins$species == "Chinstrap"])
   )
 
   expect_equal(
@@ -38,9 +38,9 @@ test_that("predicate works implicitly", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
   f <- function(x) {
@@ -52,11 +52,11 @@ test_that("predicate works implicitly", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("predicate works for external variable", {
@@ -70,9 +70,9 @@ test_that("predicate works for external variable", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   f <- function(x) {
@@ -86,11 +86,11 @@ test_that("predicate works for external variable", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Chinstrap"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Chinstrap"]))
 })
 
 test_that("predicate statement is evaluated within data (uses eval_expr)", {
@@ -103,9 +103,9 @@ test_that("predicate statement is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -117,9 +117,9 @@ test_that("predicate statement is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
+    mean(penguins$bill_length[penguins$species == "Chinstrap"])
   )
 
   f <- function(x) {
@@ -131,11 +131,11 @@ test_that("predicate statement is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Chinstrap"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Chinstrap"]))
 })
 
 test_that("predicate function is evaluated within data (uses eval_expr)", {
@@ -150,9 +150,9 @@ test_that("predicate function is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -166,9 +166,9 @@ test_that("predicate function is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
+    mean(penguins$bill_length[penguins$species == "Chinstrap"])
   )
 
   f <- function(x) {
@@ -182,11 +182,11 @@ test_that("predicate function is evaluated within data (uses eval_expr)", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("works with enquo-ing of cond", {
@@ -199,12 +199,12 @@ test_that("works with enquo-ing of cond", {
         . %>%
           filter(species == "Chinstrap")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
   expect_equal(
     f(penguins, nrow(.) < 100),
-    mean(penguins$culmen_length[penguins$species == "Chinstrap"])
+    mean(penguins$bill_length[penguins$species == "Chinstrap"])
   )
 })

@@ -10,7 +10,7 @@ status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
 [![Version
-Badge](https://img.shields.io/badge/Version-0.0.0.9011-orange.svg)](https://github.com/MyKo101/mpipe)
+Badge](https://img.shields.io/badge/Version-0.0.0.9012-orange.svg)](https://github.com/MyKo101/mpipe)
 
 <!-- badges: end -->
 
@@ -39,10 +39,10 @@ The `mpipe` package is not currently available on CRAN.
 
 The `palmerpenguins` package provides data on three species of penguins
 (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and
-Torgersen). We’ll use the length and breadth of their Culmens (the ridge
-along a bird’s bill). A lot of the examples in this page are rather
-convoluted (and for many, there are other easier ways to get the same
-results, but they’re here to demonstrate `mpipe` functionality)
+Torgersen). We’ll use the length and depth of their bills. A lot of the
+examples in this page are rather convoluted (and for many, there are
+other easier ways to get the same results, but they’re here to
+demonstrate `mpipe` functionality)
 
 ``` r
 mutils::load_packages(dplyr, magrittr, palmerpenguins, mutils, ggplot2)
@@ -75,18 +75,18 @@ summarise_my_data
 summarise_my_data(penguins)
 #> # A tibble: 10 x 5
 #> # Groups:   species, island [5]
-#>    species   island    sex    culmen_length_mm culmen_depth_mm
-#>    <fct>     <fct>     <fct>             <dbl>           <dbl>
-#>  1 Adelie    Biscoe    FEMALE             37.4            17.7
-#>  2 Adelie    Biscoe    MALE               40.6            19.0
-#>  3 Adelie    Dream     FEMALE             36.9            17.6
-#>  4 Adelie    Dream     MALE               40.1            18.8
-#>  5 Adelie    Torgersen FEMALE             37.6            17.6
-#>  6 Adelie    Torgersen MALE               40.6            19.4
-#>  7 Chinstrap Dream     FEMALE             46.6            17.6
-#>  8 Chinstrap Dream     MALE               51.1            19.3
-#>  9 Gentoo    Biscoe    FEMALE             45.6            14.2
-#> 10 Gentoo    Biscoe    MALE               49.5            15.7
+#>    species   island    sex    bill_length_mm bill_depth_mm
+#>    <fct>     <fct>     <fct>           <dbl>         <dbl>
+#>  1 Adelie    Biscoe    female           37.4          17.7
+#>  2 Adelie    Biscoe    male             40.6          19.0
+#>  3 Adelie    Dream     female           36.9          17.6
+#>  4 Adelie    Dream     male             40.1          18.8
+#>  5 Adelie    Torgersen female           37.6          17.6
+#>  6 Adelie    Torgersen male             40.6          19.4
+#>  7 Chinstrap Dream     female           46.6          17.6
+#>  8 Chinstrap Dream     male             51.1          19.3
+#>  9 Gentoo    Biscoe    female           45.6          14.2
+#> 10 Gentoo    Biscoe    male             49.5          15.7
 ```
 
 The `mpipe` package includes a couple of extra things that can be done
@@ -96,13 +96,13 @@ and variables.
 
 ``` r
 filter_my_data <- . %>%
-  filter(culmen_length_mm > 43) %>%
-  select(species,island,sex,culmen_length_mm)
+  filter(bill_length_mm > 43) %>%
+  select(species,island,sex,bill_length_mm)
 filter_my_data
 #> Functional sequence with the following components:
 #> 
-#>  1. filter(., culmen_length_mm > 43)
-#>  2. select(., species, island, sex, culmen_length_mm)
+#>  1. filter(., bill_length_mm > 43)
+#>  2. select(., species, island, sex, bill_length_mm)
 #> 
 #> Use 'functions' to extract the individual functions.
 ```
@@ -113,8 +113,8 @@ Then we can create the composite functional sequence
 filter_my_data + summarise_my_data
 #> Functional sequence with the following components:
 #> 
-#>  1. filter(., culmen_length_mm > 43)
-#>  2. select(., species, island, sex, culmen_length_mm)
+#>  1. filter(., bill_length_mm > 43)
+#>  2. select(., species, island, sex, bill_length_mm)
 #>  3. group_by(., species, island, sex)
 #>  4. summarise_all(., mean, .groups = "keep")
 #> 
@@ -128,15 +128,15 @@ data implicitly (using brackets)
 (filter_my_data + summarise_my_data)(penguins)
 #> # A tibble: 7 x 4
 #> # Groups:   species, island [5]
-#>   species   island    sex    culmen_length_mm
-#>   <fct>     <fct>     <fct>             <dbl>
-#> 1 Adelie    Biscoe    MALE               44.4
-#> 2 Adelie    Dream     MALE               43.7
-#> 3 Adelie    Torgersen MALE               44.8
-#> 4 Chinstrap Dream     FEMALE             47.2
-#> 5 Chinstrap Dream     MALE               51.1
-#> 6 Gentoo    Biscoe    FEMALE             46.0
-#> 7 Gentoo    Biscoe    MALE               49.5
+#>   species   island    sex    bill_length_mm
+#>   <fct>     <fct>     <fct>           <dbl>
+#> 1 Adelie    Biscoe    male             44.4
+#> 2 Adelie    Dream     male             43.7
+#> 3 Adelie    Torgersen male             44.8
+#> 4 Chinstrap Dream     female           47.2
+#> 5 Chinstrap Dream     male             51.1
+#> 6 Gentoo    Biscoe    female           46.0
+#> 7 Gentoo    Biscoe    male             49.5
 ```
 
 The `mpipe` package also includes a `length()` method for `fseq` which
@@ -165,24 +165,24 @@ explicit in the name of the function.
     calls/functions will be evaluated appropriately for this output.
     Grouped tibbles will be parsed separately.
 
-Here we will create a plot of Culmen length against Culmen depth
-stratified by the three grouping variables: `species`, `sex` and
-`island.` We’ll colour-code `species` using `col = species`, and `facets
-= sex ~ island` will create facets based on these two variables. We will
-then focus on the Biscoe island penguins (using `filter()`), and output
-the average Culmen length, then stratify it by sex and species. Finally,
-we will return a dataset that contains the mean of Culmen length and
-depth across these groups.
+Here we will create a plot of Bill length against Bill depth stratified
+by the three grouping variables: `species`, `sex` and `island.` We’ll
+colour-code `species` using `col = species`, and `facets = sex ~ island`
+will create facets based on these two variables. We will then focus on
+the Biscoe island penguins (using `filter()`), and output the average
+Bill length, then stratify it by sex and species. Finally, we will
+return a dataset that contains the mean of Bill length and depth across
+these groups.
 
 ``` r
 penguins %>%
-  pipe_qplot(culmen_length_mm, culmen_depth_mm, col = species,
-             xlab = "Culmen Length (mm)", ylab = "Culmun Depth (mm)",
+  pipe_qplot(bill_length_mm, bill_depth_mm, col = species,
+             xlab = "Bill Length (mm)", ylab = "Culmun Depth (mm)",
              theme = "light", facets = sex ~ island) %>%
   filter(island == "Biscoe") %>% 
-  pipe_cat("Biscoe Average Culmun Length (mm):", mean(culmen_length_mm), "\n\n") %>%
+  pipe_cat("Biscoe Average Culmun Length (mm):", mean(bill_length_mm), "\n\n") %>%
   group_by(species,sex) %>%
-  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(culmen_length_mm), "\n") %>%
+  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(bill_length_mm), "\n") %>%
   summarise_if(is.numeric, mean)
 ```
 
@@ -190,18 +190,18 @@ penguins %>%
 
     #> Biscoe Average Culmun Length (mm): 45.24847 
     #> 
-    #> FEMALE Adelie Average Culmun Length (mm): 37.35909 
-    #> MALE   Adelie Average Culmun Length (mm): 40.59091 
-    #> FEMALE Gentoo Average Culmun Length (mm): 45.56379 
-    #> MALE   Gentoo Average Culmun Length (mm): 49.47377
+    #> female Adelie Average Culmun Length (mm): 37.35909 
+    #> male   Adelie Average Culmun Length (mm): 40.59091 
+    #> female Gentoo Average Culmun Length (mm): 45.56379 
+    #> male   Gentoo Average Culmun Length (mm): 49.47377
     #> # A tibble: 4 x 4
     #> # Groups:   species [2]
-    #>   species sex    culmen_length_mm culmen_depth_mm
-    #>   <fct>   <fct>             <dbl>           <dbl>
-    #> 1 Adelie  FEMALE             37.4            17.7
-    #> 2 Adelie  MALE               40.6            19.0
-    #> 3 Gentoo  FEMALE             45.6            14.2
-    #> 4 Gentoo  MALE               49.5            15.7
+    #>   species sex    bill_length_mm bill_depth_mm
+    #>   <fct>   <fct>           <dbl>         <dbl>
+    #> 1 Adelie  female           37.4          17.7
+    #> 2 Adelie  male             40.6          19.0
+    #> 3 Gentoo  female           45.6          14.2
+    #> 4 Gentoo  male             49.5          15.7
 
 ## Control Flow
 
@@ -237,23 +237,23 @@ evaluated.
 First, we’ll define an `fseq` style function, and apply it to the data
 twice. The `fseq` function will first shuffle the data and then if a
 male penguin ends up at the top of our list, we’ll pick just the Biscoe
-island penguins and extract the culmen length summary statistics, if a
+island penguins and extract the bill length summary statistics, if a
 female penguin ends up on top, we’ll pick out the Biscoe & Dream island
-penguis and extract the culmen depth summary statistics.
+penguis and extract the bill depth summary statistics.
 
 ``` r
 f <- . %>%
   sample_n(nrow(.)) %>% #Shuffle the data
   if_branch(sex[1] == "MALE", #predicate: Is the top row a male penguin?
             . %>% #TRUE path
-              pipe_cat("Male penguin on top, extracting Culmen Length for Biscoe penguins\n") %>%
+              pipe_cat("Male penguin on top, extracting Bill Length for Biscoe penguins\n") %>%
               filter(island == "Biscoe") %>%
-              pull("culmen_length_mm") %>%
+              pull("bill_length_mm") %>%
               summary(), # End of TRUE Path
             . %>% #FALSE path
-              pipe_cat("Female penguin on top, extracting Culmen Depth for Biscoe & Dream penguins\n") %>%
+              pipe_cat("Female penguin on top, extracting Bill Depth for Biscoe & Dream penguins\n") %>%
               filter(island != "Torgersen") %>%
-              pull("culmen_length_mm") %>%
+              pull("bill_length_mm") %>%
               summary()) # End of FALSE Path & end of if_branch()
               
 ```
@@ -261,15 +261,15 @@ f <- . %>%
 ``` r
 set.seed(1)
 f(penguins)
-#> Male penguin on top, extracting Culmen Length for Biscoe penguins
+#> Female penguin on top, extracting Bill Depth for Biscoe & Dream penguins
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   34.50   41.85   45.80   45.25   48.75   59.60
+#>   32.10   40.52   45.55   44.81   49.20   59.60
 ```
 
 ``` r
 set.seed(2)
 f(penguins)
-#> Female penguin on top, extracting Culmen Depth for Biscoe & Dream penguins
+#> Female penguin on top, extracting Bill Depth for Biscoe & Dream penguins
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>   32.10   40.52   45.55   44.81   49.20   59.60
 ```
@@ -329,12 +329,12 @@ f(penguins)
 #> Biscoe island is on top, so it will be chosen.
 #> # A tibble: 4 x 4
 #> # Groups:   species [2]
-#>   species sex    culmen_length_mm culmen_depth_mm
-#>   <fct>   <fct>             <dbl>           <dbl>
-#> 1 Adelie  FEMALE             37.4            17.7
-#> 2 Adelie  MALE               40.6            19.0
-#> 3 Gentoo  FEMALE             45.6            14.2
-#> 4 Gentoo  MALE               49.5            15.7
+#>   species sex    bill_length_mm bill_depth_mm
+#>   <fct>   <fct>           <dbl>         <dbl>
+#> 1 Adelie  female           37.4          17.7
+#> 2 Adelie  male             40.6          19.0
+#> 3 Gentoo  female           45.6          14.2
+#> 4 Gentoo  male             49.5          15.7
 ```
 
 ``` r
@@ -344,10 +344,10 @@ f(penguins)
 #> Torgersen island is on top, so it will be chosen.
 #>      Species will be dropped.
 #> # A tibble: 2 x 3
-#>   sex    culmen_length_mm culmen_depth_mm
-#>   <fct>             <dbl>           <dbl>
-#> 1 FEMALE             37.6            17.6
-#> 2 MALE               40.6            19.4
+#>   sex    bill_length_mm bill_depth_mm
+#>   <fct>           <dbl>         <dbl>
+#> 1 female           37.6          17.6
+#> 2 male             40.6          19.4
 ```
 
 ### Loops
@@ -362,18 +362,18 @@ is a female and then output the top 5 results.
 
 ``` r
 penguins %>%
-  while_pipe(sex[1] != "FEMALE",
+  while_pipe(sex[1] != "female",
              . %>%
                sample_n(nrow(.))) %>%
   slice(1:5)
 #> # A tibble: 5 x 5
-#>   species   island culmen_length_mm culmen_depth_mm sex   
-#>   <fct>     <fct>             <dbl>           <dbl> <fct> 
-#> 1 Adelie    Biscoe             35              17.9 FEMALE
-#> 2 Adelie    Dream              40.9            18.9 MALE  
-#> 3 Chinstrap Dream              51.3            19.9 MALE  
-#> 4 Gentoo    Biscoe             50.5            15.9 MALE  
-#> 5 Adelie    Biscoe             39              17.5 FEMALE
+#>   species   island bill_length_mm bill_depth_mm sex   
+#>   <fct>     <fct>           <dbl>         <dbl> <fct> 
+#> 1 Adelie    Biscoe           35            17.9 female
+#> 2 Adelie    Dream            40.9          18.9 male  
+#> 3 Chinstrap Dream            51.3          19.9 male  
+#> 4 Gentoo    Biscoe           50.5          15.9 male  
+#> 5 Adelie    Biscoe           39            17.5 female
 ```
 
 The `while_pipe()` function also provides a `.counter` pronoun to keep

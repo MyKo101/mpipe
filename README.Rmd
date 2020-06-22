@@ -21,7 +21,7 @@ options(crayon.enabled=NULL)
  
  [![R build status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https://github.com/MyKo101/mpipe/actions)
  [![Codecov test coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
- [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9011-orange.svg)](https://github.com/MyKo101/mpipe)
+ [![Version Badge](https://img.shields.io/badge/Version-0.0.0.9012-orange.svg)](https://github.com/MyKo101/mpipe)
  
   <!-- badges: end -->
 
@@ -41,7 +41,7 @@ The `mpipe` package is not currently available on CRAN.
 
 ### Examples
 
-The `palmerpenguins` package provides data on three species of penguins (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and Torgersen). We'll use the length and breadth of their Culmens (the ridge along a bird's bill). A lot of the examples in this page are rather convoluted (and for many, there are other easier ways to get the same results, but they're here to demonstrate `mpipe` functionality)
+The `palmerpenguins` package provides data on three species of penguins (Gentoo, Adelie and Chinstrap) over three islands (Biscoe, Dream and Torgersen). We'll use the length and depth of their bills. A lot of the examples in this page are rather convoluted (and for many, there are other easier ways to get the same results, but they're here to demonstrate `mpipe` functionality)
 
 
 ```{r load_packages, echo=T, results='hide'}
@@ -69,8 +69,8 @@ The `mpipe` package includes a couple of extra things that can be done to these 
 
 ```{r fseq_define_g}
 filter_my_data <- . %>%
-  filter(culmen_length_mm > 43) %>%
-  select(species,island,sex,culmen_length_mm)
+  filter(bill_length_mm > 43) %>%
+  select(species,island,sex,bill_length_mm)
 filter_my_data
 ```
 
@@ -94,17 +94,17 @@ A large reason for breaking out of a pipeline is to do actions such as plotting 
 * `pipe_qplot()` - allows the user to create `ggplot2` style plots using `qplot()` syntax (akin to the base R `plot()` syntax). This is essentially a wrapper function that also permits saving and theming of the plots.
 * `pipe_cat()` - allows the user to output information to the console (or any other sink) in the much the same way that `cat()` does. Any calls/functions will be evaluated appropriately for this output. Grouped tibbles will be parsed separately.
 
-Here we will create a plot of Culmen length against Culmen depth stratified by the three grouping variables: `species`, `sex` and `island.` We'll colour-code `species` using `col = species`, and `facets = sex ~ island` will create facets based on these two variables. We will then focus on the Biscoe island penguins (using `filter()`), and output the average Culmen length, then stratify it by sex and species. Finally, we will return a dataset that contains the mean of Culmen length and depth across these groups.
+Here we will create a plot of Bill length against Bill depth stratified by the three grouping variables: `species`, `sex` and `island.` We'll colour-code `species` using `col = species`, and `facets = sex ~ island` will create facets based on these two variables. We will then focus on the Biscoe island penguins (using `filter()`), and output the average Bill length, then stratify it by sex and species. Finally, we will return a dataset that contains the mean of Bill length and depth across these groups.
 
 ```{r side_effects_example}
 penguins %>%
-  pipe_qplot(culmen_length_mm, culmen_depth_mm, col = species,
-             xlab = "Culmen Length (mm)", ylab = "Culmun Depth (mm)",
+  pipe_qplot(bill_length_mm, bill_depth_mm, col = species,
+             xlab = "Bill Length (mm)", ylab = "Culmun Depth (mm)",
              theme = "light", facets = sex ~ island) %>%
   filter(island == "Biscoe") %>% 
-  pipe_cat("Biscoe Average Culmun Length (mm):", mean(culmen_length_mm), "\n\n") %>%
+  pipe_cat("Biscoe Average Culmun Length (mm):", mean(bill_length_mm), "\n\n") %>%
   group_by(species,sex) %>%
-  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(culmen_length_mm), "\n") %>%
+  pipe_cat(sex, species, "Average Culmun Length (mm):", mean(bill_length_mm), "\n") %>%
   summarise_if(is.numeric, mean)
 
 ```
@@ -124,7 +124,7 @@ the `mpipe` package allows us to integrate this kind of control flow into a pipe
 
 The `if_branch()` works similar to an `if` statement. The function chooses whether to data should proceed down the `fun` branch or the `elsefun` branch (if supplied) depending on how `predicate` is evaluated.
 
-First, we'll define an `fseq` style function, and apply it to the data twice. The `fseq` function will first shuffle the data and then if a male penguin ends up at the top of our list, we'll pick just the Biscoe island penguins and extract the culmen length summary statistics, if a female penguin ends up on top, we'll pick out the Biscoe & Dream island penguis and extract the culmen depth summary statistics.
+First, we'll define an `fseq` style function, and apply it to the data twice. The `fseq` function will first shuffle the data and then if a male penguin ends up at the top of our list, we'll pick just the Biscoe island penguins and extract the bill length summary statistics, if a female penguin ends up on top, we'll pick out the Biscoe & Dream island penguis and extract the bill depth summary statistics.
 
 
 
@@ -133,14 +133,14 @@ f <- . %>%
   sample_n(nrow(.)) %>% #Shuffle the data
   if_branch(sex[1] == "MALE", #predicate: Is the top row a male penguin?
             . %>% #TRUE path
-              pipe_cat("Male penguin on top, extracting Culmen Length for Biscoe penguins\n") %>%
+              pipe_cat("Male penguin on top, extracting Bill Length for Biscoe penguins\n") %>%
               filter(island == "Biscoe") %>%
-              pull("culmen_length_mm") %>%
+              pull("bill_length_mm") %>%
               summary(), # End of TRUE Path
             . %>% #FALSE path
-              pipe_cat("Female penguin on top, extracting Culmen Depth for Biscoe & Dream penguins\n") %>%
+              pipe_cat("Female penguin on top, extracting Bill Depth for Biscoe & Dream penguins\n") %>%
               filter(island != "Torgersen") %>%
-              pull("culmen_length_mm") %>%
+              pull("bill_length_mm") %>%
               summary()) # End of FALSE Path & end of if_branch()
               
 ```
@@ -210,7 +210,7 @@ For this example, we're simply going to shuffle until the first penguin is a fem
 
 ```{r while_example1}
 penguins %>%
-  while_pipe(sex[1] != "FEMALE",
+  while_pipe(sex[1] != "female",
              . %>%
                sample_n(nrow(.))) %>%
   slice(1:5)

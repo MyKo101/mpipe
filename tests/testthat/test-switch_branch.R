@@ -11,9 +11,9 @@ test_that("case works implicitly with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
@@ -25,9 +25,9 @@ test_that("case works implicitly with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
@@ -38,9 +38,9 @@ test_that("case works implicitly with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -51,9 +51,9 @@ test_that("case works implicitly with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
   f <- function(x) {
@@ -64,11 +64,11 @@ test_that("case works implicitly with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Gentoo"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Gentoo"]))
 })
 
 test_that("case works implicitly with numbers", {
@@ -81,9 +81,9 @@ test_that("case works implicitly with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
@@ -95,9 +95,9 @@ test_that("case works implicitly with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -109,9 +109,9 @@ test_that("case works implicitly with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
   f <- function(x) {
@@ -123,11 +123,11 @@ test_that("case works implicitly with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Gentoo"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Gentoo"]))
 })
 
 test_that("case works for external variable with characters", {
@@ -140,9 +140,9 @@ test_that("case works for external variable with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
 
@@ -155,11 +155,11 @@ test_that("case works for external variable with characters", {
         Adelie = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("case works for external variable with numbers", {
@@ -173,9 +173,9 @@ test_that("case works for external variable with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
 
@@ -189,98 +189,98 @@ test_that("case works for external variable with numbers", {
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("case statement is evaluated within data (uses eval_expr) with characters", {
   expect_equal(
     penguins %>%
       switch_branch(names(.)[4],
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
-        culmen_depth = . %>%
+        bill_depth = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
     penguins %>%
       switch_branch(names(.)[5],
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
-        culmen_depth = . %>%
+        bill_depth = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
     penguins %>%
       switch_branch(names(.)[1],
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
-        culmen_depth = . %>%
+        bill_depth = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
 
   f <- function(x) {
     x %>%
       switch_branch(names(.)[4],
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
-        culmen_depth = . %>%
+        bill_depth = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Gentoo"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Gentoo"]))
 })
 
 test_that("case statement is evaluated within data (uses eval_expr) with numbers", {
   expect_equal(
     penguins %>%
       switch_branch(
-        floor(mean(culmen_length) - 42),
+        floor(mean(bill_length) - 42),
         . %>%
           filter(species == "Gentoo"),
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
 
   f <- function(x) {
     x %>%
-      switch_branch(floor(mean(culmen_length) - 41),
-        culmen_length = . %>%
+      switch_branch(floor(mean(bill_length) - 41),
+        bill_length = . %>%
           filter(species == "Gentoo"),
         Petal.Width = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("case function is evaluated within data (uses eval_expr) with characters", {
@@ -296,9 +296,9 @@ test_that("case function is evaluated within data (uses eval_expr) with characte
       Adelie = . %>%
         filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
   expect_equal(
@@ -313,9 +313,9 @@ test_that("case function is evaluated within data (uses eval_expr) with characte
       Adelie = . %>%
         filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
@@ -330,9 +330,9 @@ test_that("case function is evaluated within data (uses eval_expr) with characte
       Adelie = . %>%
         filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
 
@@ -348,11 +348,11 @@ test_that("case function is evaluated within data (uses eval_expr) with characte
       Adelie = . %>%
         filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Adelie"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Adelie"]))
 })
 
 test_that("case function is evaluated within data (uses eval_expr) with numbers", {
@@ -369,9 +369,9 @@ test_that("case function is evaluated within data (uses eval_expr) with numbers"
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 
   expect_equal(
@@ -387,9 +387,9 @@ test_that("case function is evaluated within data (uses eval_expr) with numbers"
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length)
+    mean(penguins$bill_length)
   )
 
   expect_equal(
@@ -405,9 +405,9 @@ test_that("case function is evaluated within data (uses eval_expr) with numbers"
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean(),
-    mean(penguins$culmen_length[penguins$species == "Adelie"])
+    mean(penguins$bill_length[penguins$species == "Adelie"])
   )
 
 
@@ -424,29 +424,29 @@ test_that("case function is evaluated within data (uses eval_expr) with numbers"
         . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
-  expect_equal(f(penguins), mean(penguins$culmen_length[penguins$species == "Gentoo"]))
+  expect_equal(f(penguins), mean(penguins$bill_length[penguins$species == "Gentoo"]))
 })
 
 test_that("works with enquo-ing of case with characters", {
   f <- function(x, cond) {
     x %>%
       switch_branch(!!enquo(cond),
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
-        culmen_depth = . %>%
+        bill_depth = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
   expect_equal(
     f(penguins, names(.)[4]),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 })
 
@@ -454,18 +454,18 @@ test_that("works with enquo-ing of case with numbers", {
   f <- function(x, cond) {
     x %>%
       switch_branch(!!enquo(cond),
-        culmen_length = . %>%
+        bill_length = . %>%
           filter(species == "Gentoo"),
         Petal.Width = . %>%
           filter(species == "Adelie")
       ) %>%
-      pull(culmen_length) %>%
+      pull(bill_length) %>%
       mean()
   }
 
   expect_equal(
-    f(penguins, floor(mean(penguins$culmen_length) - 42)),
-    mean(penguins$culmen_length[penguins$species == "Gentoo"])
+    f(penguins, floor(mean(penguins$bill_length) - 42)),
+    mean(penguins$bill_length[penguins$species == "Gentoo"])
   )
 })
 

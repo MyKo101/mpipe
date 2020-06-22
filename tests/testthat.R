@@ -31,8 +31,8 @@ expect_file_created <- function(object, filename) {
 
 penguins <- palmerpenguins::penguins %>%
   transmute(species, sex, island,
-    culmen_length = culmen_length_mm,
-    culmen_depth = culmen_depth_mm
+    bill_length = bill_length_mm,
+    bill_depth = bill_depth_mm
   ) %>%
   filter_all(~ !is.na(.))
 

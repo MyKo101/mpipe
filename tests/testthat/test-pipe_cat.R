@@ -13,13 +13,13 @@ test_that("plain text is output", {
 test_that("evaluated text is output", {
   expect_output(
     penguins %>%
-      pipe_cat("Average culmen_length:", round(mean(culmen_length), 3)),
-    paste("Average culmen_length:", round(mean(penguins$culmen_length), 3))
+      pipe_cat("Average bill_length:", round(mean(bill_length), 3)),
+    paste("Average bill_length:", round(mean(penguins$bill_length), 3))
   )
   expect_output(
     penguins %>%
-      pipe_cat("Average Sepal.Width:", round(mean(culmen_length), 3)),
-    paste("Average Sepal.Width:", round(mean(penguins$culmen_length), 3))
+      pipe_cat("Average Sepal.Width:", round(mean(bill_length), 3)),
+    paste("Average Sepal.Width:", round(mean(penguins$bill_length), 3))
   )
   expect_output(
     penguins %>%
@@ -31,8 +31,8 @@ test_that("evaluated text is output", {
 test_that("grouped tibbles are printed separately", {
   grouped_out <- penguins %>%
     group_by(species) %>%
-    summarise(mean_CL = round(mean(culmen_length), 3)) %>%
-    mutate(output = paste(as.character(species), "Average culmen_length:", mean_CL)) %>%
+    summarise(mean_CL = round(mean(bill_length), 3)) %>%
+    mutate(output = paste(as.character(species), "Average bill_length:", mean_CL)) %>%
     pull(output) %>%
     paste0(collapse = "\\n") %>%
     gsub(".", "\\.", fixed = T)
@@ -40,7 +40,7 @@ test_that("grouped tibbles are printed separately", {
   expect_output(
     penguins %>%
       group_by(species) %>%
-      pipe_cat(as.character(species), "Average culmen_length:", round(mean(culmen_length), 3), "\n"),
+      pipe_cat(as.character(species), "Average bill_length:", round(mean(bill_length), 3), "\n"),
     grouped_out
   )
 })
