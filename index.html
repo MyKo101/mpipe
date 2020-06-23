@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9017</span>
       </span>
     </div>
 
@@ -359,6 +359,38 @@
 </pre></div>
 </div>
 </div>
+<div id="noisy-pipe" class="section level2">
+<h2 class="hasAnchor">
+<a href="#noisy-pipe" class="anchor"></a>Noisy pipe</h2>
+<p>We also introduce a function to alter the way that the pipe works, in that it will become much “chattier” using the <code><a href="reference/noisy_pipe.html">noisy_pipe()</a></code> function will activate this chattiness. The <code><a href="reference/noisy_pipe.html">quiet_pipe()</a></code> function turns this off and returns to normal:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="reference/noisy_pipe.html">noisy_pipe</a></span>()
+<span class="fl">10</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu">add</span>(<span class="fl">3</span>)
+<span class="co">#&gt; Starting value:</span>
+<span class="co">#&gt; [1] 10</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Pipe number 1: runif(.)</span>
+<span class="co">#&gt;  [1] 0.66568435 0.72763459 0.49360966 0.82811205 0.30881281 0.60396357</span>
+<span class="co">#&gt;  [7] 0.05540833 0.87339870 0.94519990 0.96789903</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Pipe number 2: mean(.)</span>
+<span class="co">#&gt; [1] 0.6469723</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Last Pipe: add(., 3)</span>
+<span class="co">#&gt; [1] 3.646972</span>
+<span class="co">#&gt; [1] 3.646972</span>
+
+<span class="fu"><a href="reference/noisy_pipe.html">quiet_pipe</a></span>()
+<span class="fl">10</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu">add</span>(<span class="fl">3</span>)
+<span class="co">#&gt; [1] 3.501268</span>
+</pre></div>
+</div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
@@ -407,7 +439,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/MyKo101/mpipe/actions"><img src="https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/gh/MyKo101/mpipe?branch=main"><img src="https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/MyKo101/mpipe"><img src="https://img.shields.io/badge/Version-0.0.0.9016-orange.svg" alt="Version Badge"></a></li>
+<li><a href="https://github.com/MyKo101/mpipe"><img src="https://img.shields.io/badge/Version-0.0.0.9017-orange.svg" alt="Version Badge"></a></li>
 </ul>
 </div>
 </div>

@@ -82,7 +82,7 @@ of a pipeline to do so." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9017</span>
       </span>
     </div>
 
@@ -167,30 +167,30 @@ information regarding these arguments.</p></td>
   <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current average: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current standard error: "</span>, <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='kw'>.</span>) <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Returning mean:\n"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()</div><div class='output co'>#&gt; Current length:  10 
-#&gt; Current average:  0.4600681 
-#&gt; Current standard error:  0.02324129 
-#&gt; Returning mean:</div><div class='output co'>#&gt; [1] 0.4600681</div><div class='input'>
+  <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()</div><div class='output co'>#&gt; Current length:  44 
+#&gt; Current average:  0.4773244 
+#&gt; Current standard error:  0.00665264 
+#&gt; Returning mean:</div><div class='output co'>#&gt; [1] 0.4773244</div><div class='input'>
 <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
   x = <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>),
   y = <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)
 ) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Average x: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_cat.html'>pipe_cat</a></span>(<span class='st'>"Current number of rows: "</span>, <span class='kw'>nrow</span>, <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
-  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(z = <span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>)</div><div class='output co'>#&gt; Average x:  0.3830736 
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(z = <span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>)</div><div class='output co'>#&gt; Average x:  0.4432735 
 #&gt; Current number of rows:  10 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 3</span><span>
-#&gt;         x      y     z
-#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 0.588  0.298  0.886
-#&gt; </span><span style='color: #555555;'> 2</span><span> 0.633  0.094</span><span style='text-decoration: underline;'>6</span><span> 0.728
-#&gt; </span><span style='color: #555555;'> 3</span><span> 0.260  0.761  1.02 
-#&gt; </span><span style='color: #555555;'> 4</span><span> 0.318  0.772  1.09 
-#&gt; </span><span style='color: #555555;'> 5</span><span> 0.339  0.402  0.741
-#&gt; </span><span style='color: #555555;'> 6</span><span> 0.761  0.059</span><span style='text-decoration: underline;'>1</span><span> 0.820
-#&gt; </span><span style='color: #555555;'> 7</span><span> 0.010</span><span style='text-decoration: underline;'>9</span><span> 0.750  0.761
-#&gt; </span><span style='color: #555555;'> 8</span><span> 0.063</span><span style='text-decoration: underline;'>1</span><span> 0.528  0.591
-#&gt; </span><span style='color: #555555;'> 9</span><span> 0.264  0.276  0.540
-#&gt; </span><span style='color: #555555;'>10</span><span> 0.594  0.261  0.855</div><div class='input'>
+#&gt;         x     y     z
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 0.886  0.715 1.60 
+#&gt; </span><span style='color: #555555;'> 2</span><span> 0.671  0.226 0.897
+#&gt; </span><span style='color: #555555;'> 3</span><span> 0.394  0.133 0.527
+#&gt; </span><span style='color: #555555;'> 4</span><span> 0.551  0.927 1.48 
+#&gt; </span><span style='color: #555555;'> 5</span><span> 0.242  0.894 1.14 
+#&gt; </span><span style='color: #555555;'> 6</span><span> 0.203  0.204 0.407
+#&gt; </span><span style='color: #555555;'> 7</span><span> 0.068</span><span style='text-decoration: underline;'>3</span><span> 0.257 0.325
+#&gt; </span><span style='color: #555555;'> 8</span><span> 0.307  0.614 0.921
+#&gt; </span><span style='color: #555555;'> 9</span><span> 0.993  0.441 1.43 
+#&gt; </span><span style='color: #555555;'>10</span><span> 0.116  0.316 0.432</div><div class='input'>
 <span class='kw'>palmerpenguins</span>::<span class='kw'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='op'>%&gt;%</span>
   <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(species = <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='kw'>species</span>)) <span class='op'>%&gt;%</span>
   <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>bill_length_mm</span>)) <span class='op'>%&gt;%</span>
