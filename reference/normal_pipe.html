@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Alter the environments of fseq functions — fseq_env • mpipe</title>
+<title>Returns the pipe to normal — normal_pipe • mpipe</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,22 +46,9 @@
 
 
 
-<meta property="og:title" content="Alter the environments of fseq functions — fseq_env" />
-<meta property="og:description" content="These functions allows access to the environments contained
-within fseq objects. fseq objects are functions that have been
-created using the pipeline with a . as the left-hand side.
-fseq functions contain a major environment for the overall
-function (i.e the environment of fn_fseq) and multiple
-minor environments. The minor environments are the
-function-environments of each of functions that make up the
-functional sequence.
-For example, if we define a &amp;lt;- . %&amp;gt;% add(2) %&amp;gt;% multiply_by(3),
-then a() will be a function that has an environment, this is the
-major environment. Within a(), there is a list of functions that
-make up the function sequence, add(.,2) and multiply_by(.,3).
-Each of these will also have their own environment, the minor
-environments. Therefore, a() will have 3 environments associated
-with it." />
+<meta property="og:title" content="Returns the pipe to normal — normal_pipe" />
+<meta property="og:description" content="The pipe can be altered by numerous functions in the mpipe
+package. This returns it to normal." />
 <meta property="og:image" content="https://michaelbarrowman.co.uk/mpipe/logo.png" />
 
 
@@ -130,73 +117,25 @@ with it." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Alter the environments of fseq functions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MyKo101/mpipe/blob/master/R/fseq_env.R'><code>R/fseq_env.R</code></a></small>
-    <div class="hidden name"><code>fseq_env.Rd</code></div>
+    <h1>Returns the pipe to normal</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MyKo101/mpipe/blob/master/R/normal_pipe.R'><code>R/normal_pipe.R</code></a></small>
+    <div class="hidden name"><code>normal_pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions allows access to the environments contained
-within <code>fseq</code> objects. <code>fseq</code> objects are functions that have been
-created using the pipeline with a <code>.</code> as the left-hand side.</p>
-<p><code>fseq</code> functions contain a major environment for the overall
-function (i.e the environment of <code>fn_fseq</code>) and multiple
-minor environments. The minor environments are the
-function-environments of each of functions that make up the
-functional sequence.</p>
-<p>For example, if we define <code>a &lt;- . %&gt;% add(2) %&gt;% multiply_by(3)</code>,
-then <code>a()</code> will be a function that has an environment, this is the
-major environment. Within <code>a()</code>, there is a list of functions that
-make up the function sequence, <code>add(.,2)</code> and <code>multiply_by(.,3)</code>.
-Each of these will also have their own environment, the minor
-environments. Therefore, <code>a()</code> will have 3 environments associated
-with it.</p>
+    <p>The pipe can be altered by numerous functions in the <code>mpipe</code>
+package. This returns it to normal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fseq_get_env</a></span>(<span class='kw'>fn_fseq</span>, <span class='kw'>i</span>)
-
-<span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fseq_print_env</a></span>(<span class='kw'>fn_fseq</span>, <span class='kw'>i</span>)
-
-<span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fseq_set_env</a></span>(<span class='kw'>fn_fseq</span>, <span class='kw'>i</span>, <span class='kw'>new_env</span>)
-
-<span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fseq_check_env</a></span>(<span class='kw'>new_env</span>)
-
-<span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fseq_copy_fun</a></span>(<span class='kw'>fn_fseq</span>)
-
-<span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/fseq_env.html'>fun_var_env</a></span>(<span class='kw'>fun</span>, <span class='kw'>variable</span>, <span class='kw'>value</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>fn_fseq</th>
-      <td><p>a function of class <code>fseq</code> (with an appropriate environment).</p></td>
-    </tr>
-    <tr>
-      <th>i</th>
-      <td><p>a numeric indicating which function in the <code>fseq</code> to refer to. If
-0, then the parent <code>fseq</code> environment will be used.</p></td>
-    </tr>
-    <tr>
-      <th>new_env</th>
-      <td><p>environment to be assigned to the relevant environment in <code>fn_fseq</code>.</p></td>
-    </tr>
-    <tr>
-      <th>fun</th>
-      <td><p>function to edit the environment of.</p></td>
-    </tr>
-    <tr>
-      <th>variable</th>
-      <td><p>name of variable (as string) to assign value to within all
-environments in <code>fun</code>.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>value to be assigned to <code>variable</code> in all environments in <code>fun</code></p></td>
-    </tr>
-    </table>
+    <pre class="usage"><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/normal_pipe.html'>normal_pipe</a></span>()</pre>
 
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/normal_pipe.html'>normal_pipe</a></span>()
+<span class='fl'>10</span> <span class='op'>%&gt;%</span>
+ <span class='kw'>runif</span> <span class='op'>%&gt;%</span>
+ <span class='kw'>mean</span></div><div class='output co'>#&gt; [1] 0.6436322</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

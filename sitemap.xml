@@ -25,6 +25,9 @@
     <loc>https://michaelbarrowman.co.uk/mpipe/reference/noisy_pipe.html</loc>
   </url>
   <url>
+    <loc>https://michaelbarrowman.co.uk/mpipe/reference/normal_pipe.html</loc>
+  </url>
+  <url>
     <loc>https://michaelbarrowman.co.uk/mpipe/reference/pipe.html</loc>
   </url>
   <url>
@@ -32,6 +35,9 @@
   </url>
   <url>
     <loc>https://michaelbarrowman.co.uk/mpipe/reference/pipe_qplot.html</loc>
+  </url>
+  <url>
+    <loc>https://michaelbarrowman.co.uk/mpipe/reference/save_pipe.html</loc>
   </url>
   <url>
     <loc>https://michaelbarrowman.co.uk/mpipe/reference/switch_branch.html</loc>
