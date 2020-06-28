@@ -185,7 +185,7 @@
 <p>A large reason for breaking out of a pipeline is to do actions such as plotting or providing feedback to the user. the <code>mpipe</code> package provides two functions that are particularly useful for avoiding leaving a pipeline. The way this is done is that the functions side effects are activated, but the functions return an untouched version of the data it was originally provided. This is similar to using the <code><a href="reference/%&gt;%.html">%T&gt;%</a></code> pipe in magrittr, but can be done with the traditional <code><a href="reference/%&gt;%.html">%&gt;%</a></code> pipe and is explicit in the name of the function.</p>
 <ul>
 <li>
-<code><a href="reference/pipe_qplot.html">pipe_qplot()</a></code> - allows the user to create <code>ggplot2</code> style plots using <code>qplot()</code> syntax (akin to the base R <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> syntax). This is essentially a wrapper function that also permits saving and theming of the plots.</li>
+<code><a href="reference/pipe_qplot.html">pipe_qplot()</a></code> - allows the user to create <code>ggplot2</code> style plots using <code>qplot()</code> syntax (akin to the base R <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> syntax). This is essentially a wrapper function that also permits saving and theming of the plots.</li>
 <li>
 <code><a href="reference/pipe_cat.html">pipe_cat()</a></code> - allows the user to output information to the console (or any other sink) in the much the same way that <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code> does. Any calls/functions will be evaluated appropriately for this output. Grouped tibbles will be parsed separately.</li>
 </ul>
