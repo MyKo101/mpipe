@@ -10,7 +10,7 @@ status](https://github.com/MyKo101/mpipe/workflows/R-CMD-check/badge.svg)](https
 [![Codecov test
 coverage](https://codecov.io/gh/MyKo101/mpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/MyKo101/mpipe?branch=main)
 [![Version
-Badge](https://img.shields.io/badge/Version-0.0.0.9015-orange.svg)](https://github.com/MyKo101/mpipe)
+Badge](https://img.shields.io/badge/Version-0.0.0.9016-orange.svg)](https://github.com/MyKo101/mpipe)
 
 <!-- badges: end -->
 
@@ -73,20 +73,20 @@ summarise_my_data
 #> Use 'functions' to extract the individual functions.
 
 summarise_my_data(penguins)
-#> # A tibble: 10 x 5
+#> # A tibble: 10 x 6
 #> # Groups:   species, island [5]
-#>    species   island    sex    bill_length_mm bill_depth_mm
-#>    <fct>     <fct>     <fct>           <dbl>         <dbl>
-#>  1 Adelie    Biscoe    female           37.4          17.7
-#>  2 Adelie    Biscoe    male             40.6          19.0
-#>  3 Adelie    Dream     female           36.9          17.6
-#>  4 Adelie    Dream     male             40.1          18.8
-#>  5 Adelie    Torgersen female           37.6          17.6
-#>  6 Adelie    Torgersen male             40.6          19.4
-#>  7 Chinstrap Dream     female           46.6          17.6
-#>  8 Chinstrap Dream     male             51.1          19.3
-#>  9 Gentoo    Biscoe    female           45.6          14.2
-#> 10 Gentoo    Biscoe    male             49.5          15.7
+#>    species   island    sex    bill_length_mm bill_depth_mm  year
+#>    <fct>     <fct>     <fct>           <dbl>         <dbl> <dbl>
+#>  1 Adelie    Biscoe    female           37.4          17.7 2008.
+#>  2 Adelie    Biscoe    male             40.6          19.0 2008.
+#>  3 Adelie    Dream     female           36.9          17.6 2008.
+#>  4 Adelie    Dream     male             40.1          18.8 2008 
+#>  5 Adelie    Torgersen female           37.6          17.6 2008 
+#>  6 Adelie    Torgersen male             40.6          19.4 2008.
+#>  7 Chinstrap Dream     female           46.6          17.6 2008.
+#>  8 Chinstrap Dream     male             51.1          19.3 2008.
+#>  9 Gentoo    Biscoe    female           45.6          14.2 2008.
+#> 10 Gentoo    Biscoe    male             49.5          15.7 2008.
 ```
 
 The `mpipe` package includes a couple of extra things that can be done
@@ -194,14 +194,14 @@ penguins %>%
     #> male   Adelie Average Culmun Length (mm): 40.59091 
     #> female Gentoo Average Culmun Length (mm): 45.56379 
     #> male   Gentoo Average Culmun Length (mm): 49.47377
-    #> # A tibble: 4 x 4
+    #> # A tibble: 4 x 5
     #> # Groups:   species [2]
-    #>   species sex    bill_length_mm bill_depth_mm
-    #>   <fct>   <fct>           <dbl>         <dbl>
-    #> 1 Adelie  female           37.4          17.7
-    #> 2 Adelie  male             40.6          19.0
-    #> 3 Gentoo  female           45.6          14.2
-    #> 4 Gentoo  male             49.5          15.7
+    #>   species sex    bill_length_mm bill_depth_mm  year
+    #>   <fct>   <fct>           <dbl>         <dbl> <dbl>
+    #> 1 Adelie  female           37.4          17.7 2008.
+    #> 2 Adelie  male             40.6          19.0 2008.
+    #> 3 Gentoo  female           45.6          14.2 2008.
+    #> 4 Gentoo  male             49.5          15.7 2008.
 
 ## Control Flow
 
@@ -327,14 +327,14 @@ f <- . %>%
 set.seed(100)
 f(penguins)
 #> Biscoe island is on top, so it will be chosen.
-#> # A tibble: 4 x 4
+#> # A tibble: 4 x 5
 #> # Groups:   species [2]
-#>   species sex    bill_length_mm bill_depth_mm
-#>   <fct>   <fct>           <dbl>         <dbl>
-#> 1 Adelie  female           37.4          17.7
-#> 2 Adelie  male             40.6          19.0
-#> 3 Gentoo  female           45.6          14.2
-#> 4 Gentoo  male             49.5          15.7
+#>   species sex    bill_length_mm bill_depth_mm  year
+#>   <fct>   <fct>           <dbl>         <dbl> <dbl>
+#> 1 Adelie  female           37.4          17.7 2008.
+#> 2 Adelie  male             40.6          19.0 2008.
+#> 3 Gentoo  female           45.6          14.2 2008.
+#> 4 Gentoo  male             49.5          15.7 2008.
 ```
 
 ``` r
@@ -343,11 +343,11 @@ set.seed(1000)
 f(penguins)
 #> Torgersen island is on top, so it will be chosen.
 #>      Species will be dropped.
-#> # A tibble: 2 x 3
-#>   sex    bill_length_mm bill_depth_mm
-#>   <fct>           <dbl>         <dbl>
-#> 1 female           37.6          17.6
-#> 2 male             40.6          19.4
+#> # A tibble: 2 x 4
+#>   sex    bill_length_mm bill_depth_mm  year
+#>   <fct>           <dbl>         <dbl> <dbl>
+#> 1 female           37.6          17.6 2008 
+#> 2 male             40.6          19.4 2008.
 ```
 
 ### Loops
@@ -366,14 +366,14 @@ penguins %>%
              . %>%
                sample_n(nrow(.))) %>%
   slice(1:5)
-#> # A tibble: 5 x 5
-#>   species   island bill_length_mm bill_depth_mm sex   
-#>   <fct>     <fct>           <dbl>         <dbl> <fct> 
-#> 1 Adelie    Biscoe           35            17.9 female
-#> 2 Adelie    Dream            40.9          18.9 male  
-#> 3 Chinstrap Dream            51.3          19.9 male  
-#> 4 Gentoo    Biscoe           50.5          15.9 male  
-#> 5 Adelie    Biscoe           39            17.5 female
+#> # A tibble: 5 x 6
+#>   species   island bill_length_mm bill_depth_mm sex     year
+#>   <fct>     <fct>           <dbl>         <dbl> <fct>  <int>
+#> 1 Adelie    Biscoe           35            17.9 female  2009
+#> 2 Adelie    Dream            40.9          18.9 male    2007
+#> 3 Chinstrap Dream            51.3          19.9 male    2007
+#> 4 Gentoo    Biscoe           50.5          15.9 male    2008
+#> 5 Adelie    Biscoe           39            17.5 female  2008
 ```
 
 The `while_pipe()` function also provides a `.counter` pronoun to keep

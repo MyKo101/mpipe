@@ -1,8 +1,8 @@
 Type: Package
 Package: mpipe
 Title: Adds extra functionality to pipelines
-Version: 0.0.0.9015
-Date: 2020-06-22
+Version: 0.0.0.9016
+Date: 2020-07-23
 Authors@R:
     person(given = "Michael",
            family = "Barrowman",
