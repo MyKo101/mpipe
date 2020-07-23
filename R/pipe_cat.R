@@ -55,10 +55,6 @@ pipe_cat <- function(data, ..., file = "", sep = " ", fill = FALSE,
 
     data_split <- dplyr::group_split(data, .keep = F)
 
-    if (length(data_split) != nrow(grp_tbl)) {
-      rlang::abort("groups returned are inconsistent in pipe_cat")
-    }
-
     for (i in 1:length(data_split))
     {
       c_grp <- as.list(grp_tbl[i, ])

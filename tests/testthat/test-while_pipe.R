@@ -1,4 +1,4 @@
-
+library(magrittr)
 
 x <- runif(20)
 

@@ -36,6 +36,7 @@ jobs:
         run: |
           install.packages("remotes")
           install.packages("rmarkdown")
+          install.packages("usethis")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
@@ -45,6 +46,11 @@ jobs:
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd")'
+
+      - name: Setup git credentials
+        run: |
+          usethis::use_git_config(user.name = "Michael Barrowman", user.email = "myko101ab@gmail.com")
+        shell: Rscript {0}
 
       - name: Commit results
         run: |

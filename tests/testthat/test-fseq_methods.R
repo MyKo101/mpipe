@@ -1,3 +1,4 @@
+library(magrittr)
 
 f1 <- . %>%
   add(1) %>%

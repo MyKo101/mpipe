@@ -159,8 +159,8 @@ test_that("names functions evaluation happens on data.frame with extra variable"
 
 test_that("pipes evaluation hapens on data.frames with extra variable", {
   expect_equal(
-    eval_expr(tbl, . %>% mutate(w = x + z), z = 1),
-    mutate(tbl, w = x + 1)
+    eval_expr(tbl, . %>% dplyr::mutate(w = x + z), z = 1),
+    dplyr::mutate(tbl, w = x + 1)
   )
 })
 
@@ -200,8 +200,8 @@ test_that("names functions evaluation happens on data.frame with extra variable 
 
 test_that("pipes evaluation hapens on data.frames with extra variable & environment", {
   expect_equal(
-    eval_expr(tbl, . %>% mutate(w = x + z), z = 1, env = e1),
-    mutate(tbl, w = x + 1)
+    eval_expr(tbl, . %>% dplyr::mutate(w = x + z), z = 1, env = e1),
+    dplyr::mutate(tbl, w = x + 1)
   )
 })
 

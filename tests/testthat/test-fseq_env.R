@@ -1,4 +1,5 @@
 library(rlang)
+library(magrittr)
 
 f1 <- . %>%
   add(1) %>%
@@ -27,9 +28,9 @@ test_that("fseq_print_env prints correctly", {
     "<environment: [A-Za-z0-9]*?>\\n",
     "parent: <environment: [A-Za-z0-9]*?>\\n",
     "bindings:\\n",
-    " \\* freduce: <fn>\\n",
-    " \\* `_fseq`: <S3: fseq>\\n",
-    " \\* `_function_list`: <list>"
+    " [*] freduce: <fn>\\n",
+    " [*] `_fseq`: <fseq>\\n",
+    " [*] `_function_list`: <list>"
   )
 
   expect_output(fseq_print_env(f1), regexp = print_expected)

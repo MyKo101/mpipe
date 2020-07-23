@@ -92,16 +92,10 @@ pipe_qplot <- function(data, x, y, ..., facets = NULL, margins = FALSE, geom = "
     p <- eval(.call, env)
 
     if (!is.null(theme)) {
-      theme_func_search <- tryCatch(match.fun(paste0("theme_", theme)),
-        error = function(e) NULL
-      )
-      if (is.null(theme_func_search)) {
-        theme_func_search <- tryCatch(match.fun(paste0("ggplot2::theme_", theme)),
-          error = function(e) NULL
-        )
-      }
-      if (!is.null(theme_func_search)) {
-        p <- p + theme_func_search()
+      theme_fun <- get_theme(theme, parent.frame())
+
+      if (!is.null(theme_fun)) {
+        p <- p + theme_fun()
       }
     }
 
@@ -114,9 +108,28 @@ pipe_qplot <- function(data, x, y, ..., facets = NULL, margins = FALSE, geom = "
         save.options <- save.options[-which(names(save.options) == "plot")]
       }
 
-      save.call <- as.call(c(quote(ggsave), save.options, plot = quote(p)))
+      save.call <- as.call(c(quote(ggplot2::ggsave), save.options, plot = quote(p)))
       eval(save.call)
     }
   }
   return(data)
+}
+
+get_theme <- function(theme, env = parent.frame()) {
+  theme_fun_name <- paste0("theme_", theme)
+  theme_fun <- tryCatch(
+    get(theme_fun_name, mode = "function", envir = env),
+    error = function(e) NULL
+  )
+  if (is.null(theme_fun)) {
+    ggplot_env <- environment(ggplot2::ggplot)
+    theme_fun <- tryCatch(
+      get(theme_fun_name, mode = "function", envir = ggplot_env),
+      error = function(e) NULL
+    )
+  }
+  if (is.null(theme_fun)) {
+    mutils::glue_warn("{theme_fun_name}() not found", sub = F)
+  }
+  theme_fun
 }

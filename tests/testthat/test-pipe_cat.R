@@ -1,4 +1,6 @@
 
+penguins <- mutils::clean_penguins()
+
 test_that("return is same as input", {
   expect_equal(penguins %>% pipe_cat(""), penguins)
 })
