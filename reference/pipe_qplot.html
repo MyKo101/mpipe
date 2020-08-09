@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe-able version of the <code>qplot()</code> — pipe_qplot • mpipe</title>
+<title>Pipe-able version of the qplot() — pipe_qplot • mpipe</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Pipe-able version of the <code>qplot()</code> — pipe_qplot" />
+<meta property="og:title" content="Pipe-able version of the qplot() — pipe_qplot" />
 <meta property="og:description" content="The qplot() function is traditionally used
 when your data is not stored in a data.frame/tibble and are
 &quot;loose&quot; within your environment and can be convenient if you are
@@ -96,7 +96,7 @@ if needed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpipe</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9018</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
       </span>
     </div>
 
@@ -151,13 +151,13 @@ complex and inconvenient, especially if you want a simple plot
 out of a pipeline, or ensure your <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot()</a></code>
 functions are at the end of a pipe (or introduce curly braces
 <code>{}</code> to your pipeline).</p>
-<p>Therefore, the <code><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_qplot.html'>pipe_qplot()</a></code> function will run a
+<p>Therefore, the <code>pipe_qplot()</code> function will run a
 <code><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot()</a></code> function for it's side effects and
 return your original input unchanged. It can also save your plot
 if needed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_qplot.html'>pipe_qplot</a></span>(
+    <pre class="usage"><span class='fu'>pipe_qplot</span>(
   <span class='kw'>data</span>,
   <span class='kw'>x</span>,
   <span class='kw'>y</span>,
@@ -217,7 +217,7 @@ information regarding these arguments.</p></td>
     <pre class="examples"><div class='input'>
 <span class='kw'>palmerpenguins</span>::<span class='kw'><a href='https://allisonhorst.github.io/palmerpenguins/reference/penguins.html'>penguins</a></span> <span class='op'>%&gt;%</span>
   <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>species</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://michaelbarrowman.co.uk/mpipe/reference/pipe_qplot.html'>pipe_qplot</a></span>(<span class='kw'>bill_length_mm</span>,
+  <span class='fu'>pipe_qplot</span>(<span class='kw'>bill_length_mm</span>,
     fill = <span class='kw'>species</span>,
     theme = <span class='st'>"light"</span>,
     geom = <span class='st'>"density"</span>,
