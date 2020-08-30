@@ -167,7 +167,8 @@ information regarding these arguments.</p></td>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Current average: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Current standard error: "</span>, <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='kw'>.</span>) <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>.</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Returning mean:\n"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()</div><div class='output co'>#&gt; Current length:  87 
+  <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()
+</div><div class='output co'>#&gt; Current length:  87 
 #&gt; Current average:  0.4873048 
 #&gt; Current standard error:  0.003279136 
 #&gt; Returning mean:</div><div class='output co'>#&gt; [1] 0.4873048</div><div class='input'>
@@ -177,7 +178,8 @@ information regarding these arguments.</p></td>
 ) <span class='op'>%&gt;%</span>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Average x: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Current number of rows: "</span>, <span class='kw'>nrow</span>, <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
-  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(z = <span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>)</div><div class='output co'>#&gt; Average x:  0.4680811 
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(z = <span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>)
+</div><div class='output co'>#&gt; Average x:  0.4680811 
 #&gt; Current number of rows:  10 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 3</span><span>
 #&gt;        x      y     z
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -196,7 +198,8 @@ information regarding these arguments.</p></td>
   <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>bill_length_mm</span>)) <span class='op'>%&gt;%</span>
   <span class='fu'>pipe_cat</span>(<span class='st'>"Total average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>bill_length_mm</span>), <span class='st'>"\n"</span>) <span class='op'>%&gt;%</span>
   <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>species</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>pipe_cat</span>(<span class='kw'>species</span>, <span class='st'>" average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>bill_length_mm</span>), <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Total average Culmen Length:  43.92193 
+  <span class='fu'>pipe_cat</span>(<span class='kw'>species</span>, <span class='st'>" average Culmen Length: "</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>bill_length_mm</span>), <span class='st'>"\n"</span>)
+</div><div class='output co'>#&gt; Total average Culmen Length:  43.92193 
 #&gt; Adelie     average Culmen Length:  38.79139 
 #&gt; Chinstrap  average Culmen Length:  48.83382 
 #&gt; Gentoo     average Culmen Length:  47.50488 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 342 x 8</span><span>
