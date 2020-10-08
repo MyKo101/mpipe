@@ -129,7 +129,7 @@ get_theme <- function(theme, env = parent.frame()) {
     )
   }
   if (is.null(theme_fun)) {
-    mutils::glue_warn("{theme_fun_name}() not found", sub = F)
+    rlang::warn(paste0(theme_fun_name,"() not found"))
   }
   theme_fun
 }

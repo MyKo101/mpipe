@@ -1,5 +1,5 @@
 
-penguins <- mutils::clean_penguins()
+penguins <- clean_penguins()
 
 test_that("returned value is same as input", {
   expect_equal(

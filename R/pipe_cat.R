@@ -50,8 +50,8 @@ pipe_cat <- function(data, ..., file = "", sep = " ", fill = FALSE,
                      labels = NULL, append = FALSE) {
   if (dplyr::is_grouped_df(data)) {
     grp_tbl <- dplyr::group_keys(data) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
-      dplyr::mutate_all(mutils::justify)
+      dplyr::mutate(dplyr::across(.fns=as.character))%>%
+      dplyr::mutate(dplyr::across(.fns=format))
 
     data_split <- dplyr::group_split(data, .keep = F)
 

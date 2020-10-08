@@ -1,5 +1,5 @@
 library(dplyr)
-penguins <- mutils::clean_penguins()
+penguins <- clean_penguins()
 
 
 test_that("case works implicitly with characters", {

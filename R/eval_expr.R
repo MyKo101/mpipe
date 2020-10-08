@@ -92,7 +92,7 @@
 #' # without env, the calling environment is used
 #' eval_expr(lst, y)
 eval_expr <- function(data, expr, ..., env = NULL, allow_NULL = F, verbose = F) {
-  cat0 <- mutils::chatty(verbose)
+  cat0 <- chatty(verbose)
 
   if (is.null(env)) {
     cat0("No environment provided, so the caller environment is used")

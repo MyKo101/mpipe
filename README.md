@@ -45,8 +45,17 @@ other easier ways to get the same results, but they’re here to
 demonstrate `mpipe` functionality)
 
 ``` r
-mutils::load_packages(dplyr, magrittr, palmerpenguins, mutils, ggplot2)
-
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(ggplot2)
+library(magrittr)
 penguins <- palmerpenguins::penguins %>% 
   select(-body_mass_g,-flipper_length_mm) %>%
   filter_all(~!is.na(.))
@@ -284,13 +293,12 @@ matched to the other arguments provided to the `switch_branch()`
 function and numerics will be matched by position.
 
 This time, we will do similar to the previous example except checking
-which island ends up on top. We can see from the below (using the
-`table()` function overloaded by the `mutils` package), that if
-Torgersen is chosen as our random island, only Adelie penguins will be
-in our output.
+which island ends up on top. We can see from the below (using the `%$%`
+exposure pipe), that if Torgersen is chosen as our random island, only
+Adelie penguins will be in our output.
 
 ``` r
-penguins %>%
+penguins %$%
   table(species,island)
 #>            island
 #> species     Biscoe Dream Torgersen

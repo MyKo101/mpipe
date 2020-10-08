@@ -17,9 +17,9 @@ URL: https://michaelbarrowman.co.uk/mpipe,
     https://github.com/MyKo101/mpipe
 Imports: 
     dplyr,
+    tidyselect,
     ggplot2,
     magrittr,
-    mutils,
     rlang (>= 0.1.2),
     tibble,
     palmerpenguins,
@@ -28,9 +28,6 @@ Suggests:
     covr,
     roxygen2,
     testthat
-Remotes: 
-    MyKo101/mutils@main,
-    allisonhorst/palmerpenguins
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

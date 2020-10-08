@@ -1,5 +1,5 @@
 library(dplyr)
-penguins <- mutils::clean_penguins()
+penguins <- clean_penguins()
 
 test_that("predicate works implicitly", {
   expect_equal(
